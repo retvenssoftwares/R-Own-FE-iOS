@@ -1,0 +1,24 @@
+/* 
+  Localizable.strings
+  R-own
+
+  Created by Aman Sharma on 07/04/23.
+  
+*/
+
+
+//Login Screen Localize
+"intro-str-1" = "Première mondiale";
+"intro-str-2" = "Application de la communauté hôtelière";
+"login-str" = "Identifiez-vous ou inscrivez-vous";
+"enter-phone-str" = "Entrez le numéro de téléphone";
+"done-str" = "Fait";
+"continue-str-1" = "Continuer";
+"continue-str-2" = "Ou continuer avec";
+"terms-str-1" = "En continuant, vous acceptez notre";
+"terms-str-2" = "Termes et conditions";
+"terms-str-3" = "Les politiques de confidentialité";
+"terms-str-4" = "Politiques de contenu";
+
+
+//Phone Number Confirmation

@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 23.0.1, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 viewBox="0 0 390 512.5" style="enable-background:new 0 0 390 512.5;" xml:space="preserve">
+<style type="text/css">
+	.st0{clip-path:url(#SVGID_2_);}
+	.st1{fill:#272A3D;}
+	.st2{fill:#5D5F6D;filter:url(#Adobe_OpacityMaskFilter);stroke:#5D5F6D;stroke-width:12;}
+	.st3{mask:url(#mask0_1384_37065_1_);}
+	.st4{fill:#5D5F6D;}
+</style>
+<g>
+	<defs>
+		<rect id="SVGID_1_" width="390" height="512.5"/>
+	</defs>
+	<clipPath id="SVGID_2_">
+		<use xlink:href="#SVGID_1_"  style="overflow:visible;"/>
+	</clipPath>
+	<g class="st0">
+		<g>
+			<path class="st1" d="M0,43C0-13.6,0-41.9,17.6-59.4S63.4-77,120-77h229c56.6,0,84.9,0,102.4,17.6C469-41.9,469-13.6,469,43v322.1
+				c0,81.4,0,122-26.7,139.8c-26.7,17.8-64.3,2.2-139.4-29l-229-95.2c-35.8-14.9-53.7-22.3-63.8-37.5C0,328.1,0,308.7,0,269.9V43z"
+				/>
+		</g>
+		<g>
+			<defs>
+				<filter id="Adobe_OpacityMaskFilter" filterUnits="userSpaceOnUse" x="0" y="-77" width="469" height="589.5">
+					<feColorMatrix  type="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 1 0"/>
+				</filter>
+			</defs>
+			<mask maskUnits="userSpaceOnUse" x="0" y="-77" width="469" height="589.5" id="mask0_1384_37065_1_">
+				<path class="st2" d="M327.6,265.7c40.7-36.7,56-94.5,37.9-146.9C346.5,63.3,294.2,26,235.5,26s-111,37.3-130.1,92.8
+					c-18.1,52.4-2.8,110.2,37.9,146.9l-82.3,37.4l0,0C35.4,314.8,19,340.3,19,368.5l0,0v18.7c0,0,0,0,0,0c0,0,0,0,0,0
+					c0,19,7.6,37.3,21,50.8c13.5,13.5,31.7,21,50.8,21h289.4c19,0,37.3-7.6,50.8-21c13.5-13.5,21-31.7,21-50.8v-18.7
+					c0-28.2-16.4-53.7-42.1-65.4l0,0L327.6,265.7z M76.9,338L76.9,338l105-47.7c16.9,7.2,35.2,10.9,53.6,10.8
+					c18.4,0,36.6-3.7,53.6-10.8L394,338l0,0c12,5.4,19.6,17.3,19.6,30.5l0,0v18.7c0,18.5-15,33.5-33.5,33.5H90.8
+					c-8.9,0-17.4-3.5-23.7-9.8c-6.3-6.3-9.8-14.8-9.8-23.7v-18.7l0,0C57.3,355.3,65,343.4,76.9,338z M334.8,163.5
+					c0,54.8-44.4,99.2-99.3,99.2s-99.3-44.4-99.3-99.2s44.4-99.2,99.3-99.2S334.8,108.7,334.8,163.5z"/>
+			</mask>
+			<g class="st3">
+				<path class="st4" d="M0,43C0-13.6,0-41.9,17.6-59.4S63.4-77,120-77h229c56.6,0,84.9,0,102.4,17.6C469-41.9,469-13.6,469,43
+					v322.1c0,81.4,0,122-26.7,139.8c-26.7,17.8-64.3,2.2-139.4-29l-229-95.2c-35.8-14.9-53.7-22.3-63.8-37.5
+					C0,328.1,0,308.7,0,269.9V43z"/>
+			</g>
+		</g>
+	</g>
+</g>
+</svg>

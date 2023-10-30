@@ -1,0 +1,11 @@
+# Uncomment the next line to define a global platform for your project
+# platform :ios, '9.0'
+
+target 'R-own' do
+    # source 'https://github.com/CocoaPods/Specs.git'
+    pod 'mesibo'
+    pod 'mesibo-ui'
+    pod 'mesibo-calls'
+  # Pods for MantisSwiftUIExample
+    pod 'Mantis', '~> 2.14.1'
+end

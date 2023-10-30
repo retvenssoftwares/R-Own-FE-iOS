@@ -1,0 +1,6 @@
+module Pods_R_own {
+  umbrella header "Pods-R-own-umbrella.h"
+
+  export *
+  module * { export * }
+}

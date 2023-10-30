@@ -1,0 +1,39 @@
+PODS:
+  - Mantis (2.14.1)
+  - mesibo (2.1.0)
+  - mesibo-calls (2.1.0):
+    - mesibo (= 2.1.0)
+    - mesibo-webrtc (= 1.4.0)
+  - mesibo-mediapicker (2.0.31)
+  - mesibo-ui (2.1.0):
+    - mesibo (= 2.1.0)
+    - mesibo-mediapicker
+  - mesibo-webrtc (1.4.0):
+    - mesibo
+
+DEPENDENCIES:
+  - Mantis (~> 2.14.1)
+  - mesibo
+  - mesibo-calls
+  - mesibo-ui
+
+SPEC REPOS:
+  trunk:
+    - Mantis
+    - mesibo
+    - mesibo-calls
+    - mesibo-mediapicker
+    - mesibo-ui
+    - mesibo-webrtc
+
+SPEC CHECKSUMS:
+  Mantis: b91a7fb2b16c180c77a76bc83bb126abba105cd5
+  mesibo: 3a1083c11294516b63621d94da203605b391d9ae
+  mesibo-calls: 4ff1209cf3d31b4bcde0ab1cbfd941e1e1f538c4
+  mesibo-mediapicker: 5586574beb272a48f432f6fc44ed00b785aa0f4c
+  mesibo-ui: 9d1b7564c8390e1305b68d34e10599efff2cd75f
+  mesibo-webrtc: bff3012986dd1fb02680a620b56eb3920c9d5bde
+
+PODFILE CHECKSUM: 509d649d4d4c9aa7cc78ea056f60f706f1eb305c
+
+COCOAPODS: 1.12.0

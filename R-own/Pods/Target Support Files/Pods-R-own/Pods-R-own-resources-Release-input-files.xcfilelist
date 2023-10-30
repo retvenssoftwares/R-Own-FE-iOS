@@ -1,0 +1,5 @@
+${PODS_ROOT}/Target Support Files/Pods-R-own/Pods-R-own-resources.sh
+${PODS_CONFIGURATION_BUILD_DIR}/Mantis/MantisResources.bundle
+${PODS_ROOT}/mesibo-calls/mesibocall.framework/Resources/MesiboCallBundle.bundle
+${PODS_ROOT}/mesibo-mediapicker/mediapicker.framework/Resources/ImagePickerBundle.bundle
+${PODS_ROOT}/mesibo-ui/mesiboui.framework/Resources/MesiboUIResource.bundle
