@@ -30,7 +30,7 @@ struct ProfileNavbarView: View {
                         dismiss()
                     }
                 }, label: {
-                    Image(systemName: "arrow.backward.circle")
+                    Image(systemName: "chevron.backward")
                         .resizable()
                         .scaledToFit()
                         .frame(width: UIScreen.screenHeight/40, height: UIScreen.screenHeight/40)
@@ -70,8 +70,9 @@ struct ProfileNavbarView: View {
                     .frame(width: UIScreen.screenWidth/60, height: UIScreen.screenHeight/60)
             })
         }
-        .padding(.horizontal, UIScreen.screenWidth/10)
-        .padding(.vertical, UIScreen.screenHeight/40)
+        .padding(.horizontal, UIScreen.screenWidth/30)
+        .padding(.top, mprofile != "mainUser" ? UIScreen.screenHeight/100 : UIScreen.screenHeight/20)
+        .padding(.bottom, UIScreen.screenHeight/40)
     }
 }
 

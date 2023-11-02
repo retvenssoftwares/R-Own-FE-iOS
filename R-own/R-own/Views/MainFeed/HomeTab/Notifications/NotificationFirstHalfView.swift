@@ -11,7 +11,7 @@ struct NotificationFirstHalfView: View {
     var body: some View {
         //navbar
         HStack{
-            Image(systemName: "arrow.left.circle")
+            Image(systemName: "chevron.backward")
                 .resizable()
                 .scaledToFit()
                 .frame(width: UIScreen.screenHeight/50, height: UIScreen.screenHeight/50)

@@ -30,7 +30,7 @@ struct NormalProfileFPPView: View {
                     ScrollView{
                         VStack(alignment: .leading){
                             VStack{
-                                NormalProfileFPPViewFirstHalf(loginData: loginData, profileVM: profileVM, globalVM: globalVM, role: role, mainUser: mainUser, userID: userID, mesiboVM: mesiboVM)
+                                NormalProfileFPPViewFirstHalf(loginData: loginData, profileVM: profileVM, globalVM: globalVM, role: role, mainUser: mainUser, userID: userID, mesiboVM: mesiboVM, islaodingData: $islaodingData)
                                 
                                 
                                 //Posts

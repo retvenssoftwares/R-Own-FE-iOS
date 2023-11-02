@@ -21,29 +21,35 @@ struct LikedUserTabView: View {
     
     var body: some View {
         NavigationStack {
-            NavigationLink(destination: {
+            NavigationLink(isActive: $navigateToProfile, destination: {
                 ProfileView(loginData: loginData, profileVM: profileVM, globalVM: globalVM, mesiboVM: mesiboVM, role: likedUser.role, mainUser: false, userID: likedUser.userID)
-            }, label: {
-                HStack{
-                    ProfilePictureView(profilePic: likedUser.profilePic, verified: likedUser.verificationStatus == "false" ? false : true, height: UIScreen.screenHeight/15, width: UIScreen.screenHeight/15)
-                        .padding(.horizontal, UIScreen.screenWidth/40)
-                    VStack(alignment: .leading){
-                        if likedUser.fullName != "" {
-                            Text(likedUser.fullName)
-                                .font(.body)
-                                .fontWeight(.medium)
-                                .foregroundColor(.black)
-                        }
-                        if likedUser.jobTitle != "" {
-                            Text(likedUser.jobTitle)
-                                .font(.body)
-                                .fontWeight(.light)
-                                .foregroundColor(.black)
-                        }
+            }, label: {Text("")})
+            
+            HStack{
+                ProfilePictureView(profilePic: likedUser.profilePic, verified: likedUser.verificationStatus == "false" ? false : true, height: UIScreen.screenHeight/15, width: UIScreen.screenHeight/15)
+                    .padding(.horizontal, UIScreen.screenWidth/40)
+                VStack(alignment: .leading){
+                    if likedUser.fullName != "" {
+                        Text(likedUser.fullName)
+                            .font(.body)
+                            .fontWeight(.medium)
+                            .foregroundColor(.black)
                     }
-                    Spacer()
+                    if likedUser.jobTitle != "" {
+                        Text(likedUser.jobTitle)
+                            .font(.body)
+                            .fontWeight(.light)
+                            .foregroundColor(.black)
+                    }
                 }
-                .padding(.vertical, UIScreen.screenHeight/60)
+                Spacer()
+            }
+            .padding(.vertical, UIScreen.screenHeight/60)
+            .onTapGesture {
+                navigateToProfile.toggle()
+            }
+            .navigationDestination(isPresented: $navigateToProfile, destination: {
+                ProfileView(loginData: loginData, profileVM: profileVM, globalVM: globalVM, mesiboVM: mesiboVM, role: likedUser.role, mainUser: false, userID: likedUser.userID)
             })
         }
     }

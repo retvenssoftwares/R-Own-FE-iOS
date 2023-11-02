@@ -143,7 +143,8 @@ struct MainFeedView: View {
                                         print("Try again")
                                     }
                                 }
-                                mesiboData.messageList = [MessageListModel]()
+                                mesiboData.chatListMessageList = [MessageListModel]()
+                                mesiboData.messageType = "ChatTabList"
                                 mesiboData.mesiboMessageListInit(loginData: loginData)
                                 globalVM.ownCommunityModelList = [OwnCommunityGroupDetailsModel]()
                                 communityService.getOwnedCommunities(globalVM: globalVM, userID: loginData.mainUserID)

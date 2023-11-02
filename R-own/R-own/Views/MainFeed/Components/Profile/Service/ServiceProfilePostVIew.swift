@@ -199,9 +199,9 @@ struct ServiceProfilePostVIew: View {
                                 Image("SettingIcon")
                                     .resizable()
                                     .scaledToFit()
-                                    .frame(width: UIScreen.screenHeight/80, height: UIScreen.screenHeight/80)
+                                    .frame(width: UIScreen.screenHeight/40, height: UIScreen.screenHeight/40)
                                 Text(services.serviceName)
-                                    .font(.body)
+                                    .font(.subheadline)
                                     .fontWeight(.bold)
                                     .foregroundColor(.black)
                             }
@@ -210,15 +210,14 @@ struct ServiceProfilePostVIew: View {
                                 RoundedRectangle(cornerRadius: 20)
                                     .stroke(Color.black, lineWidth: 1)
                             )
-                            .padding(3)
                             HStack{
                                 Image("MapIcon")
                                     .resizable()
                                     .scaledToFit()
-                                    .frame(width: UIScreen.screenHeight/80, height: UIScreen.screenHeight/80)
+                                    .frame(width: UIScreen.screenHeight/40, height: UIScreen.screenHeight/40)
                                 Text(services.location)
-                                    .font(.body)
-                                    .fontWeight(.bold)
+                                    .font(.subheadline)
+                                    .fontWeight(.semibold)
                             }
                             .padding(5)
                             .overlay(
@@ -250,8 +249,6 @@ struct ServiceProfilePostVIew: View {
                         }
                     }
                 }
-                .padding(.horizontal, UIScreen.screenWidth/20)
-                .frame(height: UIScreen.screenHeight/8)
                 .background(.white)
             }
         }
@@ -267,7 +264,6 @@ struct ServiceProfilePostVIew: View {
         .shadow(color: .black.opacity(0.2), radius: 5, x: 2, y: 2)
         .padding(.vertical, UIScreen.screenHeight/70)
         .padding(.horizontal, UIScreen.screenWidth/30)
-        .frame(width: UIScreen.screenWidth)
         .toast(isPresenting: $alertFailed, duration: 2, tapToDismiss: true){
             AlertToast( type: .systemImage("exclamationmark.triangle.fill", .red), title: "Try Again")
         }

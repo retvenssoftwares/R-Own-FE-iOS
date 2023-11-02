@@ -43,28 +43,36 @@ struct MediaPostsView: View {
                     })
                     VStack{
                         VStack{
+                            NavigationLink(isActive: $navigateToProfileView, destination: {
+                                ProfileView(loginData: loginData, profileVM: profileVM, globalVM: globalVM, mesiboVM: mesiboVM, role: post.role!, mainUser: false, userID: post.userID)
+                            }, label: {Text("")})
                             HStack{
                                 //profilepic
-                                NavigationLink(destination: {
-                                    ProfileView(loginData: loginData, profileVM: profileVM, globalVM: globalVM, mesiboVM: mesiboVM, role: post.role!, mainUser: false, userID: post.userID)
-                                }, label: {
-                                    ProfilePictureView(profilePic: post.profilePic ?? "", verified: post.verificationStatus == "true" ? true : false, height: UIScreen.screenHeight/18, width: UIScreen.screenHeight/18)
+                                
+                                
+                                ProfilePictureView(profilePic: post.profilePic ?? "", verified: post.verificationStatus == "true" ? true : false, height: UIScreen.screenHeight/18, width: UIScreen.screenHeight/18)
+                                    .onTapGesture {
+                                        navigateToProfileView.toggle()
+                                        print("move to profile screen")
+                                    }
+                                    .navigationDestination(isPresented: $navigateToProfileView, destination: {
+                                        ProfileView(loginData: loginData, profileVM: profileVM, globalVM: globalVM, mesiboVM: mesiboVM, role: post.role!, mainUser: false, userID: post.userID)
+                                    })
+                                
+                                VStack(alignment: .leading) {
+                                    //name
+                                    Text(post.fullName!)
+                                        .foregroundColor(.black)
+                                        .font(.body)
+                                        .fontWeight(.bold)
+                                        .frame(alignment: .leading)
                                         .onTapGesture {
                                             navigateToProfileView.toggle()
                                             print("move to profile screen")
                                         }
-                                })
-                                VStack(alignment: .leading) {
-                                    //name
-                                    NavigationLink(destination: {
-                                        ProfileView(loginData: loginData, profileVM: profileVM, globalVM: globalVM, mesiboVM: mesiboVM, role: post.role!, mainUser: false, userID: post.userID)
-                                    }, label: {
-                                        Text(post.fullName!)
-                                            .foregroundColor(.black)
-                                            .font(.body)
-                                            .fontWeight(.bold)
-                                            .frame(alignment: .leading)
-                                    })
+                                        .navigationDestination(isPresented: $navigateToProfileView, destination: {
+                                            ProfileView(loginData: loginData, profileVM: profileVM, globalVM: globalVM, mesiboVM: mesiboVM, role: post.role!, mainUser: false, userID: post.userID)
+                                        })
                                     //profile
                                     if post.jobTitle != "" {
                                         Text(post.jobTitle)
@@ -93,12 +101,19 @@ struct MediaPostsView: View {
                             }
                             .frame(width: UIScreen.screenWidth/1.1)
                             
-                            NavigationLink(destination: {
+                            
+                            NavigationLink(isActive: $navigateToImageDetailView, destination: {
                                 ImagePostDetailScreen(post: $post, globalVM: globalVM, loginData: loginData)
-                            }, label: {
-                                NewFeedPostImageView(post: $post, currentIndex: $currentIndex, loginData: loginData, globalVM: globalVM)
-                                    .padding(.top, UIScreen.screenHeight/100)
-                            })
+                            }, label: {Text("")})
+                            
+                            NewFeedPostImageView(post: $post, currentIndex: $currentIndex, loginData: loginData, globalVM: globalVM)
+                                .padding(.top, UIScreen.screenHeight/100)
+                                .onTapGesture {
+                                    navigateToImageDetailView.toggle()
+                                }
+                                .navigationDestination(isPresented: $navigateToImageDetailView, destination: {
+                                    ImagePostDetailScreen(post: $post, globalVM: globalVM, loginData: loginData)
+                                })
                             
                             //caption display
                             VStack{

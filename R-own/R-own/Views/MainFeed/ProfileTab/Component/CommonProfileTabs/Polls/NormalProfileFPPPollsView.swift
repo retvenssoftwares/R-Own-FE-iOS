@@ -41,14 +41,14 @@ struct NormalProfileFPPPollsView: View {
                 HStack{
                     //profilepic
                     
-                    ProfilePictureView(profilePic: post.profilePic, verified: post.verificationStatus == "true" ? true : false, height: UIScreen.screenHeight/30, width: UIScreen.screenHeight/30)
+                    ProfilePictureView(profilePic: post.profilePic, verified: post.verificationStatus == "true" ? true : false, height: UIScreen.screenHeight/20, width: UIScreen.screenHeight/20)
+                    
                     VStack(alignment: .leading) {
                         //name
                         Text(post.fullName)
                             .foregroundColor(.black)
                             .font(.body)
                             .fontWeight(.bold)
-                            .frame(alignment: .leading)
                             .onTapGesture {
                                 print("move to profile screen")
                             }
@@ -58,7 +58,6 @@ struct NormalProfileFPPPollsView: View {
                                 .foregroundColor(.black)
                                 .font(.footnote)
                                 .fontWeight(.thin)
-                                .frame(alignment: .leading)
                         }
                         //location
                         if post.location != "" {
@@ -66,38 +65,47 @@ struct NormalProfileFPPPollsView: View {
                                 .foregroundColor(.black)
                                 .font(.footnote)
                                 .fontWeight(.thin)
-                                .frame(alignment: .leading)
                         }
                     }
+                    
                     Spacer()
                     //time
                     Text(relativeTime(from: post.dateAdded) ?? "")
                         .foregroundColor(.black)
                         .font(.footnote)
                         .fontWeight(.thin)
-                        .padding(.leading, 30)
-                        .frame(alignment: .leading)
                 }
-                .padding(.horizontal, UIScreen.screenWidth - UIScreen.screenWidth/1.05)
+                .frame(maxWidth: UIScreen.screenWidth)
+                .padding(.horizontal, UIScreen.screenWidth/30)
                     
-
-                Text(post.pollQuestion[0].question)
-                    .font(.body)
-                    .fontWeight(.semibold)
-                    .padding(.horizontal, UIScreen.screenWidth - UIScreen.screenWidth/1.05)
-                    .multilineTextAlignment(.leading)
-                    .padding(.vertical, UIScreen.screenHeight/60)
+                HStack{
+                    Text(post.pollQuestion[0].question)
+                        .font(.body)
+                        .fontWeight(.semibold)
+                        .multilineTextAlignment(.leading)
+                        .padding(.vertical, UIScreen.screenHeight/60)
+                    Spacer()
+                }
+                .frame(maxWidth: UIScreen.screenWidth)
+                .padding(.horizontal, UIScreen.screenWidth/30)
                 
                 ForEach(0..<post.pollQuestion[0].options.count, id: \.self){ count in
                     if post.pollQuestion[0].options.count > 0{
                         NormalProfileFPPPollsTabStruct( poll: post.pollQuestion[0].options[count], loginData: loginData, totalVotes: $totalVotes, totalVotesDisplay: Float(totalVotes), postID: post.postID, pollSelection: $post.voted)
+                            .frame(maxWidth: UIScreen.screenWidth/1.1)
+                            .padding(.horizontal, UIScreen.screenWidth/30)
                     } else{
                         Text("No option available")
                     }
                 }
+                
                 if mainUser{
                     HStack{
                         Spacer()
+                        NavigationLink(isActive: $navigateToPollsListView, destination: {
+                            VotersListView(post: post, globalVM: globalVM, loginData: loginData, profileVM: profileVM, mesiboVM: mesiboVM)
+                        }, label: {Text("")})
+                        
                         Button(action: {
                             print("opening bottom sheet to check votes")
                             globalVM.getPollVotes = [PollVotesModel]()
@@ -120,14 +128,12 @@ struct NormalProfileFPPPollsView: View {
                     }
                 }
             }
-            .padding(.vertical, UIScreen.screenHeight/70)
+            .padding(.vertical, UIScreen.screenHeight/50)
+            .frame(width: UIScreen.screenWidth/1.1)
             .background(.white)
             .cornerRadius(15)
             .clipped()
             .shadow(color: .black.opacity(0.2), radius: 5, x: 2, y: 2)
-            .padding(.vertical, UIScreen.screenHeight/70)
-            .padding(.horizontal, UIScreen.screenWidth/30)
-            .frame(width: UIScreen.screenWidth)
             .onLongPressGesture(perform: {
                 if mainUser {
                     showEditSheet = true

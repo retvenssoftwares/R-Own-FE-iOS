@@ -81,9 +81,9 @@ struct GroupMessageView: View {
         .onAppear{
 //            loginData.showLoader = true
 //            mesiboData.mesiboSetTPPUser(user.mesiboAccount[0].token, address: user.mesiboAccount[0].address)
-            mesiboVM.messageList = [MessageListModel]()
+            mesiboVM.chatMessageList = [MessageListModel]()
             mesiboVM.mesiboGroupSet(UInt32(groupID)!)
-            
+            mesiboVM.messageType = "MessageList"
             mesiboVM.mesiboMessageScreenInit(loginData: loginData)
         }
         .onDisappear{

@@ -27,7 +27,6 @@ struct ProfileImageViewWithoutBottomNav: View {
     
     @Binding var currentIndex: Int
     @GestureState private var dragOffet: CGFloat = 0
-    let images: [String] = ["PostSamplePic3", "PostSamplePic4", "PostSamplePic3", "PostSamplePic4", "PostSamplePic1", "PostSamplePic2", "PostSamplePic3", "PostSamplePic4", "PostSamplePic1", "PostSamplePic2"]
     @State var showCommentSheet: Bool = false
     @State var likeAnimationToggle: Bool = false
     
@@ -44,10 +43,9 @@ struct ProfileImageViewWithoutBottomNav: View {
                             image
                                 .resizable()
                                 .scaledToFill()
-                                .frame(width: UIScreen.screenWidth/1.2, height: (UIScreen.screenWidth/1.2)*1.33)
+                                .frame(width: UIScreen.screenWidth, height: (UIScreen.screenWidth)*1.33)
                                 .cornerRadius(15)
                                 .clipped()
-                                .padding(.horizontal, UIScreen.screenWidth-UIScreen.screenWidth/1.2)
                                 .opacity(currentIndex == index ? 1.0 : 0)
                                 .scaleEffect(currentIndex == index ? 1.2 : 0.8)
                                 .offset(x: CGFloat(index - currentIndex) * 300 + dragOffet, y: 0)
@@ -63,8 +61,7 @@ struct ProfileImageViewWithoutBottomNav: View {
                             //put your placeholder here
                             Rectangle()
                                 .fill(lightGreyUi)
-                                .frame(width: UIScreen.screenWidth/1.2, height: (UIScreen.screenWidth/1.2)*1.33)
-                                .padding(.horizontal, UIScreen.screenWidth-UIScreen.screenWidth/1.2)
+                                .frame(width: UIScreen.screenWidth, height: (UIScreen.screenWidth)*1.33)
                                 .shimmering(active: true)
                         }
                         .onAppear {
@@ -105,7 +102,7 @@ struct ProfileImageViewWithoutBottomNav: View {
                         }
                     }
                 }
-                .frame(width: UIScreen.screenWidth/1.2, height: (UIScreen.screenWidth/1.2)*1.33)
+                .frame(width: UIScreen.screenWidth, height: (UIScreen.screenWidth/1.2)*1.33)
                 .cornerRadius(15)
                 .clipped()
             } else {
@@ -115,10 +112,9 @@ struct ProfileImageViewWithoutBottomNav: View {
                             image
                                 .resizable()
                                 .scaledToFill()
-                                .frame(width: UIScreen.screenWidth/1.2, height: (UIScreen.screenWidth/1.2)*1.33)
+                                .frame(width: UIScreen.screenWidth, height: (UIScreen.screenWidth)*1.33)
                                 .cornerRadius(15)
                                 .clipped()
-                                .padding(.horizontal, UIScreen.screenWidth-UIScreen.screenWidth/1.2)
                                 .opacity(currentIndex == index ? 1.0 : 0)
                                 .scaleEffect(currentIndex == index ? 1.2 : 0.8)
                                 .offset(x: CGFloat(index - currentIndex) * 300 + dragOffet, y: 0)
@@ -134,8 +130,7 @@ struct ProfileImageViewWithoutBottomNav: View {
                             //put your placeholder here
                             Rectangle()
                                 .fill(lightGreyUi)
-                                .frame(width: UIScreen.screenWidth/1.2, height: (UIScreen.screenWidth/1.2)*1.33)
-                                .padding(.horizontal, UIScreen.screenWidth-UIScreen.screenWidth/1.2)
+                                .frame(width: UIScreen.screenWidth, height: (UIScreen.screenWidth)*1.33)
                                 .shimmering(active: true)
                         }
                         .onAppear {
@@ -176,7 +171,7 @@ struct ProfileImageViewWithoutBottomNav: View {
                         }
                     }
                 }
-                .frame(width: UIScreen.screenWidth/1.2, height: (UIScreen.screenWidth/1.2)*1.33)
+                .frame(width: UIScreen.screenWidth, height: (UIScreen.screenWidth/1.2)*1.33)
                 .cornerRadius(15)
                 .clipped()
                 .gesture(
@@ -189,17 +184,11 @@ struct ProfileImageViewWithoutBottomNav: View {
                             }
                         } else if value.translation.width < -threshold {
                             withAnimation{
-                                currentIndex = min(images.count - 1, currentIndex + 1)
+                                currentIndex = min(media.count - 1, currentIndex + 1)
                             }
                         }
                     })
                 )}
-        }
-        .onAppear{
-            print("width")
-            print(UIScreen.screenWidth/1.2)
-            print("height")
-            print((UIScreen.screenWidth/1.2)*1.33)
         }
     }
 }

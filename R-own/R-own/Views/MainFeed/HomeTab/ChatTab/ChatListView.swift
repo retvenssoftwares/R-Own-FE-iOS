@@ -29,9 +29,9 @@ struct ChatListView: View {
     
     var filteredMessages: [MessageListModel] {
         if searchChat.isEmpty {
-            return mesiboData.messageList
+            return mesiboData.chatListMessageList
         } else {
-            return mesiboData.messageList.filter { message in
+            return mesiboData.chatListMessageList.filter { message in
                 message.mMessage.profile?.getName()!.localizedCaseInsensitiveContains(searchChat) ?? false
             }
         }
@@ -80,16 +80,20 @@ struct ChatListView: View {
                         if filteredMessages.count > 0 {
                             ForEach(filteredMessages.reversed()) { message in
                                 if message.mMessage.isGroupMessage() {
-                                    ChatTabView(message: message.mMessage, address: (message.mMessage.profile!.getAddress())!, loginData: loginData, mesiboData: mesiboData, profileVM: profileVM, globalVM: globalVM, communityVM: communityVM)
-                                    Divider()
-                                        .frame(width: UIScreen.screenWidth/1.2)
-                                } else {
-                                    VStack{
-                                        if ((!(message.mMessage.profile?.isBlocked() ?? false))) {
-                                            ChatTabView(message: message.mMessage, address: (message.mMessage.profile!.getAddress())!, loginData: loginData, mesiboData: mesiboData, profileVM: profileVM, globalVM: globalVM, communityVM: communityVM)
-                                        }
+                                    if (message.mMessage.groupProfile?.getName() ?? "") != "" {
+                                        ChatTabView(message: message.mMessage, address: (message.mMessage.profile!.getAddress())!, loginData: loginData, mesiboData: mesiboData, profileVM: profileVM, globalVM: globalVM, communityVM: communityVM)
                                         Divider()
                                             .frame(width: UIScreen.screenWidth/1.2)
+                                    }
+                                } else {
+                                    if (message.mMessage.profile?.getName() ?? "") != "" {
+                                        VStack{
+                                            if ((!(message.mMessage.profile?.isBlocked() ?? false))) {
+                                                ChatTabView(message: message.mMessage, address: (message.mMessage.profile!.getAddress())!, loginData: loginData, mesiboData: mesiboData, profileVM: profileVM, globalVM: globalVM, communityVM: communityVM)
+                                            }
+                                            Divider()
+                                                .frame(width: UIScreen.screenWidth/1.2)
+                                        }
                                     }
                                 }
                             }

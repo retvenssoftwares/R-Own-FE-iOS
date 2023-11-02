@@ -101,7 +101,7 @@ struct PostImageWithoutBottomNav: View {
                         }
                     }
                 }
-                .frame(width: UIScreen.screenWidth/1.2, height: (UIScreen.screenWidth/1.2)*1.33)
+                .frame(width: UIScreen.screenWidth, height: (UIScreen.screenWidth)*1.33)
                 .cornerRadius(15)
                 .clipped()
             } else {
@@ -170,7 +170,7 @@ struct PostImageWithoutBottomNav: View {
                         }
                     }
                 }
-                .frame(width: UIScreen.screenWidth/1, height: (UIScreen.screenWidth)*1.33)
+                .frame(width: UIScreen.screenWidth, height: (UIScreen.screenWidth)*1.33)
                 .cornerRadius(15)
                 .clipped()
                 .gesture(

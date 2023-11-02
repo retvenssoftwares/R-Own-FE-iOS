@@ -27,6 +27,9 @@ struct MediaProfilePostView: View {
     
     var body: some View {
         NavigationStack{
+            NavigationLink(isActive: $navigateToImagePostDetailScreen, destination: {
+                ProfilePostDetailView( post: post, loginData: loginData, globalVM: globalVM, profileVM: profileVM, mesiboVM: mesiboVM, mainUser: mainUser)
+            }, label: {Text("")})
             AsyncImage(url: currentUrl) { image in
                 image
                 .resizable()

@@ -19,7 +19,7 @@ struct JobDetailsNavbar: View {
             Button(action: {
                 dismiss()
             }, label: {
-                Image(systemName: "arrow.backward.circle")
+                Image(systemName: "chevron.backward")
                     .resizable()
                     .scaledToFit()
                     .frame(width: UIScreen.screenWidth/40, height: UIScreen.screenHeight/70)

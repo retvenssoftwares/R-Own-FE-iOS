@@ -33,7 +33,7 @@ struct BasicNavbarView: View {
                 Button(action: {
                     dismiss()
                 }, label: {
-                    Image(systemName: "arrow.backward.circle")
+                    Image(systemName: "chevron.backward")
                         .resizable()
                         .scaledToFit()
                         .frame(width: UIScreen.screenHeight/50, height: UIScreen.screenHeight/50)

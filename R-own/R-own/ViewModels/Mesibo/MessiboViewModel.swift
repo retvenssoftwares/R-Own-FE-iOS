@@ -21,6 +21,8 @@ class MesiboViewModel: UIViewController, MesiboDelegate, ObservableObject{
     
     // MARK: user messages
     @Published var messageList: [MessageListModel] = []
+    @Published var chatMessageList: [MessageListModel] = []
+    @Published var chatListMessageList: [MessageListModel] = []
     @Published var showCallOutgoingScreen: Bool = false
     @State var mReadQuery: String = ""
     @Published var mCall: MesiboCallApi!
@@ -43,6 +45,7 @@ class MesiboViewModel: UIViewController, MesiboDelegate, ObservableObject{
     @Published var currentAudioDeviceToggle: Bool = false
     @Published var timeIntervalforvideo: Double = 1
     
+    @Published var messageType: String = "New"
     
     private var callTimer: Timer?
     
@@ -890,15 +893,28 @@ class MesiboViewModel: UIViewController, MesiboDelegate, ObservableObject{
 //    }
     
     @State var messageCount = 0
+    
     func addMessage(_ message: MesiboMessage) {
         self.messageCount += 1
-        messageList.insert(MessageListModel(id: (self.messageList.count + 1), mMessage: message), at: 0)
+        if self.messageType == "MessageList" {
+            chatMessageList.insert(MessageListModel(id: (self.chatMessageList.count + 1), mMessage: message), at: 0)
+        } else if self.messageType == "ChatTabList" {
+            chatListMessageList.insert(MessageListModel(id: (self.chatListMessageList.count + 1), mMessage: message), at: 0)
+            print("printing chatlist mess")
+            print(chatListMessageList)
+        } else{
+            messageList.insert(MessageListModel(id: (self.messageList.count + 1), mMessage: message), at: 0)
+        }
         print(randomString(length: 10))
     }
     
     func addNewMessage(_ message: MesiboMessage) {
         self.messageCount += 1
-        messageList.append(MessageListModel(id: (self.messageList.count + 1), mMessage: message))
+        if self.messageType == "MessageList" {
+            chatMessageList.append(MessageListModel(id: (self.chatMessageList.count + 1), mMessage: message))
+        } else{
+            messageList.append(MessageListModel(id: (self.messageList.count + 1), mMessage: message))
+        }
         print(randomString(length: 10))
     }
     

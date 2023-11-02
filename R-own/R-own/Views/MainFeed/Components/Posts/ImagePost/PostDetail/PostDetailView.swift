@@ -58,7 +58,6 @@ struct PostDetailView: View {
     
     var body: some View {
         NavigationStack{
-            ScrollView{
                 VStack {
                     VStack{
                         //Navbar
@@ -67,7 +66,7 @@ struct PostDetailView: View {
                             Button(action: {
                                 dismiss()
                             }, label: {
-                                Image(systemName: "arrow.backward.circle")
+                                Image(systemName: "chevron.backward")
                                     .resizable()
                                     .scaledToFit()
                                     .frame(width: UIScreen.screenHeight/50, height: UIScreen.screenHeight/50)
@@ -455,7 +454,6 @@ struct PostDetailView: View {
                                             .resizable()
                                             .scaledToFit()
                                             .frame(width: UIScreen.screenHeight/35, height: UIScreen.screenHeight/35)
-                                            .padding(.horizontal, UIScreen.screenWidth/30)
                                         if commentCount != 0 {
                                             Text(String(commentCount))
                                                 .foregroundColor(.black)
@@ -484,7 +482,6 @@ struct PostDetailView: View {
                                             .resizable()
                                             .scaledToFit()
                                             .frame(width: UIScreen.screenHeight/35, height: UIScreen.screenHeight/35)
-                                            .padding(.horizontal, UIScreen.screenWidth/30)
                                         Spacer()
                                     }
                                 })
@@ -509,18 +506,15 @@ struct PostDetailView: View {
                                             .resizable()
                                             .scaledToFit()
                                             .frame(width: UIScreen.screenHeight/35, height: UIScreen.screenHeight/35)
-                                            .padding(.horizontal, UIScreen.screenWidth/30)
-                                            .padding(.bottom, UIScreen.screenHeight/100)
                                         Spacer()
                                     }
                                 })
                             }
                             .frame(height: UIScreen.screenHeight/10)
                             .padding(.horizontal, UIScreen.screenWidth/30)
-                            .padding(.top, UIScreen.screenHeight/80)
+                            .padding(.top, UIScreen.screenHeight/50)
                         }
                         .frame(height: UIScreen.screenHeight/40)
-                        .padding(.horizontal, UIScreen.screenWidth/30)
                         .padding(.vertical, UIScreen.screenHeight/70)
                         //caption display
                         
@@ -580,12 +574,14 @@ struct PostDetailView: View {
                                 
                                     LikedUserListView(globalVM: globalVM, postID: postID, loginData: loginData, profileVM: profileVM, mesiboVM: mesiboVM)
                             })
+                            NavigationLink(isActive: $navigateToLikedUserListScreen, destination: {
+                                LikedUserListView(globalVM: globalVM, postID: postID, loginData: loginData, profileVM: profileVM, mesiboVM: mesiboVM)
+                            }, label: {Text("")})
                             
                             Spacer()
                         }
                     }
                 }
-            }
         }
         .onChange(of: globalVM.keyboardVisibility) { newValue in
             

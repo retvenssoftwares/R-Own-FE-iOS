@@ -26,7 +26,9 @@ struct CreatePostSubTabView: View {
     
     var body: some View {
         NavigationStack{
-            NavigationLink(isActive: $navigateToCreatePostView, destination: {CreatePostView(loginData: loginData, createPostVM: createPostVM, globalVM: globalVM, profileVM: profileVM)}, label: {Text("")})
+            NavigationLink(isActive: $navigateToCreatePostView, destination: {
+                CreatePostView(loginData: loginData, createPostVM: createPostVM, globalVM: globalVM, profileVM: profileVM)
+            }, label: {Text("")})
             VStack{
                 HStack{
                     ProfilePictureView(profilePic: loginData.mainUserProfilePic, verified: false, height: UIScreen.screenHeight/20, width: UIScreen.screenHeight/20)

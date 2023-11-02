@@ -39,7 +39,7 @@ struct GroupMessageFirstHalfView: View {
             Button(action: {
                 presentationMode.wrappedValue.dismiss()
             }, label: {
-                Image("BackBtn")
+                Image(systemName: "chevron.backward")
                     .resizable()
                     .scaledToFit()
                     .frame(width: UIScreen.screenHeight/35, height: UIScreen.screenHeight/35)

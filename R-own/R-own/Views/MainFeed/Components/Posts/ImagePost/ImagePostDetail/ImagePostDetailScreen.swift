@@ -36,10 +36,10 @@ struct ImagePostDetailScreen: View {
                         Button(action: {
                             dismiss()
                         }, label: {
-                            Image(systemName: "arrow.backward.circle")
+                            Image(systemName: "chevron.backward")
                                 .resizable()
                                 .scaledToFit()
-                                .frame(width: UIScreen.screenHeight/50, height: UIScreen.screenHeight/50)
+                                .frame(width: UIScreen.screenHeight/35, height: UIScreen.screenHeight/35)
                                 .padding(.leading, UIScreen.screenWidth/40)
                                 .foregroundColor(.white)
                         })
@@ -56,10 +56,9 @@ struct ImagePostDetailScreen: View {
                                     image
                                         .resizable()
                                         .scaledToFill()
-                                        .frame(width: UIScreen.screenWidth/1.2, height: (UIScreen.screenWidth/1.2)*1.33)
+                                        .frame(width: UIScreen.screenWidth, height: (UIScreen.screenWidth)*1.33)
                                         .cornerRadius(15)
                                         .clipped()
-                                        .padding(.horizontal, UIScreen.screenWidth-UIScreen.screenWidth/1.2)
                                         .opacity(currentIndex == index ? 1.0 : 0)
                                         .scaleEffect(currentIndex == index ? 1.2 : 0.8)
                                         .offset(x: CGFloat(index - currentIndex) * 300 + dragOffet, y: 0)
@@ -75,7 +74,7 @@ struct ImagePostDetailScreen: View {
                                     //put your placeholder here
                                     Rectangle()
                                         .fill(lightGreyUi)
-                                        .frame(width: UIScreen.screenWidth/1.2, height: (UIScreen.screenWidth/1.2)*1.33)
+                                        .frame(width: UIScreen.screenWidth, height: (UIScreen.screenWidth)*1.33)
                                         .padding(.horizontal, UIScreen.screenWidth-UIScreen.screenWidth/1.2)
                                         .shimmering(active: true)
                                 }
@@ -121,7 +120,7 @@ struct ImagePostDetailScreen: View {
                                 }
                             }
                         }
-                        .frame(width: UIScreen.screenWidth/1.2, height: (UIScreen.screenWidth/1.2)*1.33)
+                        .frame(width: UIScreen.screenWidth, height: (UIScreen.screenWidth/1.2)*1.33)
                         .cornerRadius(15)
                         .clipped()
                     } else {
@@ -131,10 +130,9 @@ struct ImagePostDetailScreen: View {
                                     image
                                         .resizable()
                                         .scaledToFill()
-                                        .frame(width: UIScreen.screenWidth/1.2, height: (UIScreen.screenWidth/1.2)*1.33)
+                                        .frame(width: UIScreen.screenWidth, height: (UIScreen.screenWidth)*1.33)
                                         .cornerRadius(15)
                                         .clipped()
-                                        .padding(.horizontal, UIScreen.screenWidth-UIScreen.screenWidth/1.2)
                                         .opacity(currentIndex == index ? 1.0 : 0)
                                         .scaleEffect(currentIndex == index ? 1 : 0.8)
                                         .offset(x: CGFloat(index - currentIndex) * 300 + dragOffet, y: 0)
@@ -150,7 +148,7 @@ struct ImagePostDetailScreen: View {
                                     //put your placeholder here
                                     Rectangle()
                                         .fill(lightGreyUi)
-                                        .frame(width: UIScreen.screenWidth/1.2, height: (UIScreen.screenWidth/1.2)*1.33)
+                                        .frame(width: UIScreen.screenWidth, height: (UIScreen.screenWidth)*1.33)
                                         .padding(.horizontal, UIScreen.screenWidth-UIScreen.screenWidth/1.2)
                                         .shimmering(active: true)
                                 }
@@ -196,7 +194,7 @@ struct ImagePostDetailScreen: View {
                                 }
                             }
                         }
-                        .frame(width: UIScreen.screenWidth/1.2, height: (UIScreen.screenWidth/1.2)*1.33)
+                        .frame(width: UIScreen.screenWidth, height: (UIScreen.screenWidth/1.2)*1.33)
                         .cornerRadius(15)
                         .clipped()
                         .gesture(
@@ -224,17 +222,17 @@ struct ImagePostDetailScreen: View {
                                 .font(.body)
                                 .fontWeight(.regular)
                                 .multilineTextAlignment(.leading)
-                                .padding(.horizontal, UIScreen.screenWidth/50)
+                                .padding(.horizontal, UIScreen.screenWidth/30)
                                 .padding(.vertical, UIScreen.screenHeight/70)
                                 .foregroundColor(.white)
-                                .padding(.leading, UIScreen.screenWidth/50)
                             Spacer()
                         }
                     }
                     HStack{
                         
-                        //likebutton
-                        
+                        VStack{
+                            //likebutton
+                            
                             Button(action: {
                                 if post.postID ?? "" != "" {
                                     if post.likeCount != nil {
@@ -254,92 +252,97 @@ struct ImagePostDetailScreen: View {
                                     Image(post.like == "not liked" ? "PostLike" : "PostLiked" )
                                         .resizable()
                                         .scaledToFit()
-                                        .frame(width: UIScreen.screenHeight/50, height: UIScreen.screenHeight/50)
-                                        .padding(.horizontal, UIScreen.screenWidth/30)
+                                        .frame(width: UIScreen.screenHeight/35, height: UIScreen.screenHeight/35)
                                     if post.likeCount! != 0 {
                                         Text(String(post.likeCount!))
-                                            .foregroundColor(.black)
+                                            .foregroundColor(.white)
                                             .font(.footnote)
                                             .fontWeight(.regular)
                                     }
                                 }
                             })
-                        //comment
-                        Button(action: {
-                            
-                            if post.postID ?? "" != "" {
-                                print("open comment screen")
-                                globalVM.commentList = CommentServiceModel(post: Post5355(id: "", userID: "", postID: "", comments: [Comment5355](), v: 0), commentCount: 0)
-                                mainFeedService.getCommentPost(globalVM: globalVM, postID: post.postID!)
-                                showCommentSheet = true
-                            }
-                        }, label: {
-                            VStack {
-                                Image("PostComment")
-                                    .resizable()
-                                    .scaledToFit()
-                                    .frame(width: UIScreen.screenHeight/50, height: UIScreen.screenHeight/50)
-                                    .padding(.horizontal, UIScreen.screenWidth/30)
-                                if post.commentCount! != 0 {
-                                    Text(String(post.commentCount!))
-                                        .foregroundColor(.black)
-                                        .font(.footnote)
-                                        .fontWeight(.regular)
+                            Spacer()
+                        }
+                        VStack{
+                            //comment
+                            Button(action: {
+                                
+                                if post.postID ?? "" != "" {
+                                    print("open comment screen")
+                                    globalVM.commentList = CommentServiceModel(post: Post5355(id: "", userID: "", postID: "", comments: [Comment5355](), v: 0), commentCount: 0)
+                                    mainFeedService.getCommentPost(globalVM: globalVM, postID: post.postID!)
+                                    showCommentSheet = true
+                                }
+                            }, label: {
+                                VStack {
+                                    Image("PostComment")
+                                        .resizable()
+                                        .scaledToFit()
+                                        .frame(width: UIScreen.screenHeight/35, height: UIScreen.screenHeight/35)
+                                    if post.commentCount! != 0 {
+                                        Text(String(post.commentCount!))
+                                            .foregroundColor(.white)
+                                            .font(.footnote)
+                                            .fontWeight(.regular)
+                                    }
+                                }
+                            })
+                            .sheet(isPresented: $showCommentSheet) {
+                                if post.postID ?? "" != "" {
+                                    CommentBottomSheetView(globalVM: globalVM, postID: post.postID ?? "", posterID: post.userID, loginData: loginData, commentCount: $post.commentCount.toUnwrapped(defaultValue: 0))
+                                        .presentationDetents([.medium])
+                                        .presentationDragIndicator(.visible)
                                 }
                             }
-                        })
-                        .sheet(isPresented: $showCommentSheet) {
-                            if post.postID ?? "" != "" {
-                                CommentBottomSheetView(globalVM: globalVM, postID: post.postID ?? "", posterID: post.userID, loginData: loginData, commentCount: $post.commentCount.toUnwrapped(defaultValue: 0))
-                                    .presentationDetents([.medium])
-                                    .presentationDragIndicator(.visible)
-                            }
+                            Spacer()
                         }
-                        
-                        Button(action: {
-                            print("open share bottomsheet")
-                            globalVM.getConnectionList = [ProfileConnectionListModel]()
-                            makeAPICall(globalVM: globalVM, userID: loginData.mainUserID)
-                            globalVM.showSharePostBottomSheet.toggle()
-                        }, label: {
-                            VStack {
-                                Image("PostShare")
-                                    .resizable()
-                                    .scaledToFit()
-                                    .frame(width: UIScreen.screenHeight/50, height: UIScreen.screenHeight/50)
-                                    .padding(.horizontal, UIScreen.screenWidth/30)
-                            }
-                        })
-                        .sheet(isPresented: $globalVM.showSharePostBottomSheet) {
-                            if post.postID ?? "" != "" {
-                                SendImagePostBottomSheet(loginData: loginData, globalVM: globalVM, postID: post.postID ?? "", firstImageLink: post.media[0].post, caption: post.caption )
-                            }
-                        }
-                        
-                        //save
-                        Button(action: {
-                            if post.postID ?? "" != "" {
-                                print("saved")
-                                if post.isSaved == "not saved"{
-                                    saveService.savePostID(loginData: loginData, postID: post.postID!)
-                                    post.isSaved = "saved"
-                                } else {
-                                    saveService.unsavePostID(loginData: loginData, postID: post.postID!)
-                                    post.isSaved = "not saved"
-                                }
-                            }
-                        }, label: {
-                            Image(post.isSaved == "not saved" ? "PostSave" : "PostSaved")
-                                .resizable()
-                                .scaledToFit()
-                                .frame(width: UIScreen.screenHeight/50, height: UIScreen.screenHeight/50)
-                                .padding(.horizontal, UIScreen.screenWidth/30)
-                                .padding(.bottom, UIScreen.screenHeight/100)
-                        })
-                        
                         Spacer()
+                        VStack{
+                            Button(action: {
+                                print("open share bottomsheet")
+                                globalVM.getConnectionList = [ProfileConnectionListModel]()
+                                makeAPICall(globalVM: globalVM, userID: loginData.mainUserID)
+                                globalVM.showSharePostBottomSheet.toggle()
+                            }, label: {
+                                VStack {
+                                    Image("PostShare")
+                                        .resizable()
+                                        .scaledToFit()
+                                        .frame(width: UIScreen.screenHeight/35, height: UIScreen.screenHeight/35)
+                                }
+                            })
+                            .sheet(isPresented: $globalVM.showSharePostBottomSheet) {
+                                if post.postID ?? "" != "" {
+                                    SendImagePostBottomSheet(loginData: loginData, globalVM: globalVM, postID: post.postID ?? "", firstImageLink: post.media[0].post, caption: post.caption )
+                                }
+                            }
+                            Spacer()
+                        }
+                        
+                        VStack{
+                            //save
+                            Button(action: {
+                                if post.postID ?? "" != "" {
+                                    print("saved")
+                                    if post.isSaved == "not saved"{
+                                        saveService.savePostID(loginData: loginData, postID: post.postID!)
+                                        post.isSaved = "saved"
+                                    } else {
+                                        saveService.unsavePostID(loginData: loginData, postID: post.postID!)
+                                        post.isSaved = "not saved"
+                                    }
+                                }
+                            }, label: {
+                                Image(post.isSaved == "not saved" ? "PostSave" : "PostSaved")
+                                    .resizable()
+                                    .scaledToFit()
+                                    .frame(width: UIScreen.screenHeight/35, height: UIScreen.screenHeight/35)
+                            })
+                            Spacer()
+                        }
                     }
                     .padding(.horizontal, UIScreen.screenWidth/30)
+                    .frame(height: UIScreen.screenHeight/10)
                 }
             }
             .background(.black)

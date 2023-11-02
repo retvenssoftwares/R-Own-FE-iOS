@@ -61,10 +61,10 @@ struct GroupMessageDetailsView: View {
                                 Button(action: {
                                     dismiss()
                                 }, label: {
-                                    Image(systemName: "arrow.left.circle")
+                                    Image(systemName: "chevron.backward")
                                         .resizable()
                                         .scaledToFit()
-                                        .frame(width: UIScreen.screenHeight/35, height: UIScreen.screenHeight/35)
+                                        .frame(width: UIScreen.screenHeight/30, height: UIScreen.screenHeight/30)
                                         .foregroundColor(greenUi)
                                         .padding(.vertical, 10)
                                 })
@@ -73,8 +73,8 @@ struct GroupMessageDetailsView: View {
                                 
                                 HStack(spacing: UIScreen.screenWidth/50){
                                     if adminStatus {
-                                        Button(action: {
-                                            navigateToEditCommunityView.toggle()
+                                        NavigationLink(destination: {
+                                            EditCommunityDetailView(globalVM: globalVM, loginData: loginData, communityVM: communityVM, mesiboVM: mesiboVM, communityPic: globalVM.communityDetail.profilePic, communityName: globalVM.communityDetail.groupName, communityDescription: globalVM.communityDetail.description, groupID: groupID)
                                         }, label: {
                                             Image("CommunityEditIcon")
                                                 .resizable()
@@ -84,12 +84,9 @@ struct GroupMessageDetailsView: View {
                                                 .padding(.horizontal, UIScreen.screenWidth/50)
                                                 .padding(.vertical, 10)
                                         })
-                                        .navigationDestination(isPresented: $navigateToEditCommunityView, destination: {
-                                            EditCommunityDetailView(globalVM: globalVM, loginData: loginData, communityVM: communityVM, mesiboVM: mesiboVM, communityPic: globalVM.communityDetail.profilePic, communityName: globalVM.communityDetail.groupName, communityDescription: globalVM.communityDetail.description, groupID: groupID)
-                                        })
                                         
-                                        Button(action: {
-                                            navigateToAddNewCommunityView.toggle()
+                                        NavigationLink(destination: {
+                                            EditAddNewMemberGroup(loginData: loginData, communityVM: communityVM, mesiboVM: mesiboVM, globalVM: globalVM, profileVM: profileVM, totalUsers: totalUsers)
                                         }, label: {
                                             Image("CommunityUserAdd")
                                                 .resizable()
@@ -98,9 +95,6 @@ struct GroupMessageDetailsView: View {
                                                 .foregroundColor(greenUi)
                                                 .padding(.horizontal, UIScreen.screenWidth/50)
                                                 .padding(.vertical, 10)
-                                        })
-                                        .navigationDestination(isPresented: $navigateToAddNewCommunityView, destination: {
-                                            EditAddNewMemberGroup(loginData: loginData, communityVM: communityVM, mesiboVM: mesiboVM, globalVM: globalVM, profileVM: profileVM, totalUsers: totalUsers)
                                         })
                                         
                                         

@@ -57,8 +57,11 @@ struct ChatView: View {
         .navigationBarBackButtonHidden(true)
         .onAppear{
             loginData.showLoader = true
-            mesiboData.messageList = [MessageListModel]()
+            mesiboData.messageType = "ChatTabList"
+            mesiboData.chatListMessageList = [MessageListModel]()
             mesiboData.mesiboMessageListInit(loginData: loginData)
+            print("=======================")
+            print(mesiboData.chatListMessageList)
         }
     }
 }

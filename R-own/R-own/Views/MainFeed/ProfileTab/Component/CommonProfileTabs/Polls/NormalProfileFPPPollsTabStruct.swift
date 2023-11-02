@@ -23,47 +23,56 @@ struct NormalProfileFPPPollsTabStruct: View {
     
     var body: some View {
         VStack{
-            HStack{
-                Text(poll.option)
-                Image(pollsSelected ? "PollsSelected" : "PollsUnselected")
-                    .resizable()
-                    .scaledToFit()
-                    .frame(width: UIScreen.screenHeight/80,height: UIScreen.screenHeight/80)
-                Spacer()
+            Button(action: {
+                print("Tapped")
+                if pollSelection == "no" {
+                    postService.updateOptionInPoll(loginData: loginData, postID: postID, optionID: poll.optionID)
+                    totalVotes += 1
+                    pollsSelected = true
+                    poll.votes!.append(Vote344(userID: loginData.mainUserID, fullName: loginData.mainUserFullName, role: loginData.mainUserRole, id: ""))
+                    progressViewPercent = (Float(poll.votes!.count)/Float(totalVotes))*100
+                    progressViewPercent = round(progressViewPercent * 10) / 10.0
+                    pollSelection = "yes"
+                }
+            }, label: {
                 
-                if pollSelection == "yes" {
-                    if totalVotes > 0 {
-                        Text("\(Int((Float(poll.votes!.count)/Float(totalVotes))*100)) %")
-                    } else {
-                        Text("0 %")
+                VStack(spacing: 1){
+                    HStack{
+                        Text(poll.option)
+                            .foregroundColor(.black)
+                        Image(pollsSelected ? "PollsSelected" : "PollsUnselected")
+                            .resizable()
+                            .scaledToFit()
+                            .frame(width: UIScreen.screenHeight/80,height: UIScreen.screenHeight/80)
+                        Spacer()
+                        
+                        if pollSelection == "yes" {
+                            if totalVotes > 0 {
+                                Text("\(Int((Float(poll.votes!.count)/Float(totalVotes))*100)) %")
+                                    .foregroundColor(.black)
+                            } else {
+                                Text("0 %")
+                                    .foregroundColor(.black)
+                            }
+                        }
+                    }
+                    if pollSelection == "yes" {
+                        ProgressView("", value: poll.votes!.count == 0 ? 0 : progressViewPercent, total: 100)
+                            .tint(pollsSelected ? greenUi : .black.opacity(0.8))
+                            .frame(width: UIScreen.screenWidth/1.4)
+                            .onAppear{
+                                progressViewPercent = (Float(poll.votes!.count)/Float(totalVotes))*100
+                                progressViewPercent = round(progressViewPercent * 10) / 10.0
+                            }
                     }
                 }
-            }
-            if pollSelection == "yes" {
-                ProgressView("", value: poll.votes!.count == 0 ? 0 : progressViewPercent, total: 100)
-                    .tint(pollsSelected ? greenUi : .black.opacity(0.8))
-                    .frame(width: UIScreen.screenWidth/1.6)
-                    .onAppear{
-                        progressViewPercent = (Float(poll.votes!.count)/Float(totalVotes))*100
-                        progressViewPercent = round(progressViewPercent * 10) / 10.0
-                    }
-            }
+                .padding(.vertical, UIScreen.screenHeight/90)
+                .padding(.horizontal, UIScreen.screenWidth/40)
+            })
         }
-        .padding()
         .overlay{
-            RoundedRectangle(cornerRadius: 15)
+            RoundedRectangle(cornerRadius: 10)
                 .stroke(.black, lineWidth: 1)
-        }
-        .onTapGesture {
-            if pollSelection == "no" {
-                postService.updateOptionInPoll(loginData: loginData, postID: postID, optionID: poll.optionID)
-                totalVotes += 1
-                pollsSelected = true
-                poll.votes!.append(Vote344(userID: loginData.mainUserID, fullName: loginData.mainUserFullName, role: loginData.mainUserRole, id: ""))
-                progressViewPercent = (Float(poll.votes!.count)/Float(totalVotes))*100
-                progressViewPercent = round(progressViewPercent * 10) / 10.0
-                pollSelection = "yes"
-            }
         }
         .onAppear{
             if poll.votes!.count > 0 {

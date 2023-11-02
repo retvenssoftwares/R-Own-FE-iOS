@@ -34,7 +34,7 @@ struct GroupUserDetailListView: View {
                         Button(action: {
                             dismiss()
                         }, label: {
-                            Image(systemName: "arrow.left.circle")
+                            Image(systemName: "chevron.backward")
                                 .resizable()
                                 .scaledToFit()
                                 .frame(width: UIScreen.screenHeight/50, height: UIScreen.screenHeight/50)
@@ -53,12 +53,12 @@ struct GroupUserDetailListView: View {
                         Spacer()
                         
                     }
-                    .padding(.vertical, UIScreen.screenHeight/40)
+                    .padding(.vertical, UIScreen.screenHeight/50)
                     .frame(width: UIScreen.screenWidth)
                     .background(jobsDarkBlue)
                 }
                 ScrollView{
-                    VStack(alignment: .leading, spacing: UIScreen.screenHeight/60){
+                    VStack(alignment: .leading){
                         ForEach(0..<totalUsers.count, id: \.self){ count in
                             GroupMembersCardView(communityVM: communityVM, user: totalUsers[count], loginData: loginData, profileVM: profileVM, globalVM: globalVM, mesiboVM: mesiboVM, adminStatus: adminStatus, memberStatus: memberStatus)
                         }

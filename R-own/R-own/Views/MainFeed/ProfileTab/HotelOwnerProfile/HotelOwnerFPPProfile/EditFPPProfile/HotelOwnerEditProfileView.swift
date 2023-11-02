@@ -34,43 +34,50 @@ struct HotelOwnerEditProfileView: View {
                 BasicNavbarView(navbarTitle: "Edit Your Hotel Profile")
                 ScrollView {
                     ZStack{
-                        if isLoading{
-                            VStack{
-                                //profile picture
-                                EditFPPProfilePicView(loginData: loginData, globalVM: globalVM, newHotelLogo: $newHotelLogo, currentLogoURL: currentLogoURLL)
-                                
-                                //Details
-                                HotelOwnerEditFPPProfileDetailsView(loginData: loginData, profileVM: profileVM, globalVM: globalVM, newBookingEngineLink: $newBookingEngineLink)
-                                
-                                //Save button
-                                Button(action: {
-                                    Task{
-                                        hotelService.updatehotelOwnerInfo(loginData: loginData, hotelOwnerName: globalVM.getHotelOwnerInfo.hotelOwnerInfo[0].hotelOwnerInfo.hotelownerName, hotelDescription: globalVM.getHotelOwnerInfo.hotelOwnerInfo[0].hotelOwnerInfo.hotelDescription, hotelType: globalVM.getHotelOwnerInfo.hotelOwnerInfo[0].hotelOwnerInfo.hotelType, websiteLink: globalVM.getHotelOwnerInfo.hotelOwnerInfo[0].hotelOwnerInfo.websiteLink)
-                                        let response = await hotelService.updateHotelBEAndLogo(hotelID: globalVM.getHotelOwnerInfo.hotelID, bookingengineLink: newBookingEngineLink, hotelLogo: newHotelLogo)
-                                        if response == "Success"{
-                                            alertInfoUpdated.toggle()
-                                        } else {
-                                            alertInfoUpdated.toggle()
+                        if loginData.profileCompletionPercentage == "100" {
+                            if isLoading{
+                                VStack{
+                                    //profile picture
+                                    EditFPPProfilePicView(loginData: loginData, globalVM: globalVM, newHotelLogo: $newHotelLogo, currentLogoURL: currentLogoURLL)
+                                    
+                                    //Details
+                                    HotelOwnerEditFPPProfileDetailsView(loginData: loginData, profileVM: profileVM, globalVM: globalVM, newBookingEngineLink: $newBookingEngineLink)
+                                    
+                                    //Save button
+                                    Button(action: {
+                                        Task{
+                                            hotelService.updatehotelOwnerInfo(loginData: loginData, hotelOwnerName: globalVM.getHotelOwnerInfo.hotelOwnerInfo[0].hotelOwnerInfo.hotelownerName, hotelDescription: globalVM.getHotelOwnerInfo.hotelOwnerInfo[0].hotelOwnerInfo.hotelDescription, hotelType: globalVM.getHotelOwnerInfo.hotelOwnerInfo[0].hotelOwnerInfo.hotelType, websiteLink: globalVM.getHotelOwnerInfo.hotelOwnerInfo[0].hotelOwnerInfo.websiteLink)
+                                            let response = await hotelService.updateHotelBEAndLogo(hotelID: globalVM.getHotelOwnerInfo.hotelID, bookingengineLink: newBookingEngineLink, hotelLogo: newHotelLogo)
+                                            if response == "Success"{
+                                                alertInfoUpdated.toggle()
+                                            } else {
+                                                alertInfoUpdated.toggle()
+                                            }
                                         }
-                                    }
-                                }, label: {
-                                    Text("SAVE")
-                                        .font(.body)
-                                        .fontWeight(.thin)
-                                        .foregroundColor(.black)
-                                        .frame(width: UIScreen.screenWidth/1.3)
-                                        .padding(.vertical, UIScreen.screenHeight/60)
-                                        .background(greenUi)
-                                        .cornerRadius(5)
-                                        .padding()
-                                })
+                                    }, label: {
+                                        Text("SAVE")
+                                            .font(.body)
+                                            .fontWeight(.thin)
+                                            .foregroundColor(.black)
+                                            .frame(width: UIScreen.screenWidth/1.3)
+                                            .padding(.vertical, UIScreen.screenHeight/60)
+                                            .background(greenUi)
+                                            .cornerRadius(5)
+                                            .padding()
+                                    })
+                                }
+                            } else {
+                                VStack {
+                                    Spacer()
+                                    ProgressView()
+                                    Spacer()
+                                }
                             }
                         } else {
-                            VStack {
-                                Spacer()
-                                ProgressView()
-                                Spacer()
-                            }
+                            Image("ProfileNotCompletedIllustration")
+                                .resizable()
+                                .scaledToFit()
+                                .frame(width: UIScreen.screenWidth/1.2)
                         }
                         DesignationBottomSheetView(globalVM: globalVM, designation: $profileVM.mainUserBio)
                     }

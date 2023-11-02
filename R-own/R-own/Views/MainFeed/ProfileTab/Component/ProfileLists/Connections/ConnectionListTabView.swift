@@ -92,6 +92,7 @@ struct ConnectionListTabView: View {
                 }
             }
             .padding(.horizontal, UIScreen.screenWidth/30)
+            .padding(.vertical, UIScreen.screenHeight/60)
         }
     }
     func deleteElementFromList(id: String) {

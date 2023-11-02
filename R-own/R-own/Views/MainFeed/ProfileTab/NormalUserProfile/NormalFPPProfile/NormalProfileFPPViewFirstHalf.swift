@@ -30,37 +30,27 @@ struct NormalProfileFPPViewFirstHalf: View {
     @State var navigateToProfessionalProfile2: Bool = false
     @State var navigateTOCHatView: Bool = false
     
+    @Binding var islaodingData: Bool
+    
     
     var body: some View {
         NavigationStack{
             VStack(alignment: .leading){
                 if mainUser {
                     ProfileNavbarView(loginData: loginData, globalVM: globalVM, navigateToBottomSheet: $profileVM.showNormalProfileEditBottomSheet, role: role, mprofile: mainUser ? "mainUser" : "")
-                        .padding(.top, UIScreen.screenHeight/30)
                 } else {
                     ProfileNavbarView(loginData: loginData, globalVM: globalVM, navigateToBottomSheet: $profileVM.showNormalProfileEditBottomSheet, role: role, mprofile: mainUser ? "mainUser" : "")
-                        .padding(.top, UIScreen.screenHeight/70)
                 }
                 VStack(alignment: .leading){
                     HStack{
-                        if globalVM.getNormalProfileHeader.data.profile.verificationStatus == "true" {
-                            ProfilePictureView(profilePic: mainUser ? loginData.mainUserProfilePic : globalVM.getNormalProfileHeader.data.profile.profilePic , verified: true , height: UIScreen.screenHeight/10, width: UIScreen.screenHeight/10)
-                                .onLongPressGesture(perform: {
-                                    if globalVM.getNormalProfileHeader.data.profile.profilePic != ""{
-                                        loginData.selectedProfilePicMax = mainUser ? loginData.mainUserProfilePic : globalVM.getNormalProfileHeader.data.profile.profilePic
-                                        print("showing profile max")
-                                        loginData.showProfileMax = true
-                                    }
-                                })
-                        } else if globalVM.getNormalProfileHeader.data.profile.verificationStatus == "false" {
-                            ProfilePictureView(profilePic: mainUser ? loginData.mainUserProfilePic : globalVM.getNormalProfileHeader.data.profile.profilePic , verified: false , height: UIScreen.screenHeight/10, width: UIScreen.screenHeight/10)
-                                .shadow(color: .black.opacity(0.12), radius: 2, x:2)
-                                .onLongPressGesture(perform: {
+                        ProfilePictureView(profilePic: mainUser ? loginData.mainUserProfilePic : globalVM.getNormalProfileHeader.data.profile.profilePic , verified: true , height: UIScreen.screenHeight/10, width: UIScreen.screenHeight/10)
+                            .onLongPressGesture(perform: {
+                                if globalVM.getNormalProfileHeader.data.profile.profilePic != ""{
                                     loginData.selectedProfilePicMax = mainUser ? loginData.mainUserProfilePic : globalVM.getNormalProfileHeader.data.profile.profilePic
                                     print("showing profile max")
                                     loginData.showProfileMax = true
-                                })
-                        }
+                                }
+                            })
                         
                         Spacer()
                         
@@ -73,9 +63,13 @@ struct NormalProfileFPPViewFirstHalf: View {
                                 .font(.footnote)
                                 .fontWeight(.regular)
                         }
+                        .padding(.horizontal, UIScreen.screenWidth/40)
                         
                         Spacer()
                         
+                        NavigationLink(isActive: $navigateToConnectionString, destination: {
+                            ConnectionsProfileListView(connectionOwnerName: mainUser ? "My" : globalVM.getNormalProfileHeader.data.profile.fullName, loginData: loginData, globalVM: globalVM, mainUser: mainUser, profileVM: profileVM, mesiboVM: mesiboVM)
+                        }, label: {Text("")})
                         VStack{
                             Text(String(globalVM.getNormalProfileHeader.data.connCountLength))
                                 .font(.footnote)
@@ -84,6 +78,7 @@ struct NormalProfileFPPViewFirstHalf: View {
                                 .font(.footnote)
                                 .fontWeight(.regular)
                         }
+                        .padding(.horizontal, UIScreen.screenWidth/40)
                         .onTapGesture {
                             if globalVM.getNormalProfileHeader.data.connectionStatus == "Connected" || mainUser {
                                 print("showing connections list")
@@ -97,6 +92,9 @@ struct NormalProfileFPPViewFirstHalf: View {
                         Spacer()
                         
                         if mainUser{
+                            NavigationLink(isActive: $navigateToRequestString, destination: {
+                                RequestProfileListView(loginData: loginData, globalVM: globalVM, mainUser: mainUser, profileVM: profileVM, mesiboVM: mesiboVM)
+                            }, label: {Text("")})
                             VStack{
                                 Text(String(globalVM.getNormalProfileHeader.data.reqsCountLength))
                                     .font(.footnote)
@@ -143,13 +141,12 @@ struct NormalProfileFPPViewFirstHalf: View {
                         }
                     }
                 }
-                .padding(.horizontal, UIScreen.screenWidth/10)
+                .padding(.horizontal, UIScreen.screenWidth/30)
                 
                 VStack{
                     
                     if !mainUser{
                         HStack{
-                            Spacer()
                             
                             if globalVM.getNormalProfileHeader.data.connectionStatus == "Connected"{
                                 Button(action: {
@@ -159,12 +156,11 @@ struct NormalProfileFPPViewFirstHalf: View {
                                     Text("REMOVE")
                                         .font(.body)
                                         .fontWeight(.semibold)
-                                        .padding(.horizontal, UIScreen.screenWidth/20)
                                         .padding(.vertical, UIScreen.screenHeight/100)
+                                        .frame(maxWidth: UIScreen.screenWidth)
                                         .foregroundColor(greenUi)
                                         .background(jobsDarkBlue)
-                                        .cornerRadius(10)
-                                        .padding()
+                                        .cornerRadius(8)
                                 })
                             } else if globalVM.getNormalProfileHeader.data.connectionStatus == "Not connected"{
                                 Button(action: {
@@ -174,29 +170,33 @@ struct NormalProfileFPPViewFirstHalf: View {
                                     Text("CONNECT")
                                         .font(.body)
                                         .fontWeight(.semibold)
-                                        .padding(.horizontal, UIScreen.screenWidth/20)
                                         .padding(.vertical, UIScreen.screenHeight/100)
+                                        .frame(maxWidth: UIScreen.screenWidth)
                                         .foregroundColor(greenUi)
                                         .background(jobsDarkBlue)
-                                        .cornerRadius(10)
-                                        .padding()
+                                        .cornerRadius(8)
                                 })
                             } else if globalVM.getNormalProfileHeader.data.connectionStatus == "Requested"{
                                 Button(action: {
                                     Task {
+                                        islaodingData = true
                                         let res = await profileService.cancelRequest(loginData: loginData, senderID: loginData.mainUserID, receiverID: userID)
-                                        globalVM.getNormalProfileHeader.data.connectionStatus = "Not connected"
+                                        if res == "Success"{
+                                            globalVM.getNormalProfileHeader.data.connectionStatus = "Not connected"
+                                            islaodingData = true
+                                        } else {
+                                            islaodingData = true
+                                        }
                                     }
                                 }, label: {
                                     Text("REQUESTED")
                                         .font(.body)
                                         .fontWeight(.semibold)
-                                        .padding(.horizontal, UIScreen.screenWidth/20)
                                         .padding(.vertical, UIScreen.screenHeight/100)
+                                        .frame(maxWidth: UIScreen.screenWidth)
                                         .foregroundColor(greenUi)
                                         .background(jobsDarkBlue)
-                                        .cornerRadius(10)
-                                        .padding()
+                                        .cornerRadius(8)
                                 })
                             } else if globalVM.getNormalProfileHeader.data.connectionStatus == "Confirm request"{
                                 Button(action: {
@@ -208,40 +208,39 @@ struct NormalProfileFPPViewFirstHalf: View {
                                     Text("CONFIRM REQUEST")
                                         .font(.body)
                                         .fontWeight(.semibold)
-                                        .padding(.horizontal, UIScreen.screenWidth/20)
                                         .padding(.vertical, UIScreen.screenHeight/100)
+                                        .frame(maxWidth: UIScreen.screenWidth)
                                         .foregroundColor(greenUi)
                                         .background(jobsDarkBlue)
-                                        .cornerRadius(10)
-                                        .padding()
+                                        .cornerRadius(8)
                                 })
                             }
                             
                             
-                            Spacer()
                             
                             if globalVM.getNormalProfileHeader.data.connectionStatus == "Connected"{
+                                
+                                NavigationLink(isActive: $navigateTOCHatView, destination: {
+                                    MessageView(loginData: loginData, mesiboAddress: globalVM.getNormalProfileHeader.data.profile.mesiboAccount[0].address, mesiboData: mesiboVM, profileVM: profileVM, globalVM: globalVM)
+                                }, label: {Text("")})
+                                
                                 Button(action: {
                                     navigateTOCHatView.toggle()
                                 }, label: {
                                     Text("INTERACT")
                                         .font(.body)
                                         .fontWeight(.semibold)
-                                        .padding(.horizontal, UIScreen.screenWidth/20)
                                         .padding(.vertical, UIScreen.screenHeight/100)
+                                        .frame(maxWidth: UIScreen.screenWidth)
                                         .foregroundColor(greenUi)
                                         .background(jobsDarkBlue)
-                                        .overlay{
-                                            RoundedRectangle(cornerRadius: 10)
-                                                .stroke(Color.black, lineWidth: 1)
-                                        }
+                                        .cornerRadius(8)
                                 })
                                 .navigationDestination(isPresented: $navigateTOCHatView, destination: {
                                     if globalVM.getNormalProfileHeader.data.profile.mesiboAccount.count > 0 {
                                         MessageView(loginData: loginData, mesiboAddress: globalVM.getNormalProfileHeader.data.profile.mesiboAccount[0].address, mesiboData: mesiboVM, profileVM: profileVM, globalVM: globalVM)
                                     }
                                 })
-                                Spacer()
                             }
                             if globalVM.getNormalProfileHeader.data.connectionStatus != "Connected" {
                                 NavigationLink(destination: {
@@ -251,26 +250,23 @@ struct NormalProfileFPPViewFirstHalf: View {
                                         .font(.body)
                                         .fontWeight(.semibold)
                                         .foregroundColor(.black)
-                                        .padding(.horizontal, UIScreen.screenWidth/20)
                                         .padding(.vertical, UIScreen.screenHeight/100)
+                                        .frame(maxWidth: UIScreen.screenWidth)
                                         .overlay{
-                                            RoundedRectangle(cornerRadius: 10)
+                                            RoundedRectangle(cornerRadius: 8)
                                                 .stroke(Color.black, lineWidth: 1)
                                         }
                                 })
                             }
                             
-                            Spacer()
                         }
                         .padding(.horizontal, UIScreen.screenWidth/30)
-                        .padding(.bottom, UIScreen.screenHeight/60)
                     }
                     
                         
                     if mainUser || globalVM.getNormalProfileHeader.data.connectionStatus == "Connected"{
                         
                         HStack{
-                            Spacer()
                             
                             NavigationLink(destination: {
                                 NormalUserProfessionalProfileView(loginData: loginData, userID: userID, role: role, mainUser: mainUser, globalVM: globalVM)
@@ -279,16 +275,17 @@ struct NormalProfileFPPViewFirstHalf: View {
                                     .font(.body)
                                     .fontWeight(.semibold)
                                     .foregroundColor(.black)
-                                    .padding(.horizontal, UIScreen.screenWidth/20)
                                     .padding(.vertical, UIScreen.screenHeight/100)
+                                    .frame(maxWidth: UIScreen.screenWidth)
                                     .overlay{
-                                        RoundedRectangle(cornerRadius: 10)
+                                        RoundedRectangle(cornerRadius: 8)
                                             .stroke(Color.black, lineWidth: 1)
                                     }
                             })
                             
-                            Spacer()
                         }
+                        .padding(.horizontal, UIScreen.screenWidth/30)
+                        .padding(.vertical, UIScreen.screenHeight/110)
                     }
                 }
             }

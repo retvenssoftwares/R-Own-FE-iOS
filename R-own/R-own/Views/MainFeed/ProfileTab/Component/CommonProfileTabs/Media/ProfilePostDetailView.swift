@@ -58,7 +58,7 @@ struct ProfilePostDetailView: View {
                         Button(action: {
                             dismiss()
                         }, label: {
-                            Image(systemName: "arrow.backward.circle")
+                            Image(systemName: "chevron.backward")
                                 .resizable()
                                 .scaledToFit()
                                 .frame(width: UIScreen.screenHeight/50, height: UIScreen.screenHeight/50)
@@ -572,15 +572,17 @@ struct ProfilePostDetailView: View {
                     
                     ScrollView{
                         HStack{
-                            //profilepic
+//                            NavigationLink(isActive: $navigateToProfileView, destination: {
+//                                ProfileView(loginData: loginData, profileVM: profileVM, globalVM: globalVM, mesiboVM: mesiboVM, role: , mainUser: false, userID: post.userID)
+//                            }, label: {Text("")})
                             ProfilePictureView(profilePic: post.profilePic, verified: post.verificationStatus == "true" ? true : false, height: UIScreen.screenHeight/15, width: UIScreen.screenHeight/15)
                                 .onTapGesture {
                                     navigateToProfileView.toggle()
                                     print("move to profile screen")
                                 }
-                                .navigationDestination(isPresented: $navigateToProfileView, destination: {
-                                    ProfileView(loginData: loginData, profileVM: profileVM, globalVM: globalVM, mesiboVM: mesiboVM, role: "NormalUser", mainUser: false, userID: post.userID)
-                                })
+//                                .navigationDestination(isPresented: $navigateToProfileView, destination: {
+//                                    ProfileView(loginData: loginData, profileVM: profileVM, globalVM: globalVM, mesiboVM: mesiboVM, role: , mainUser: false, userID: post.userID)
+//                                })
                             VStack(alignment: .leading) {
                                 //name
                                 Text(post.fullName)
@@ -657,6 +659,7 @@ struct ProfilePostDetailView: View {
                                                 .font(.footnote)
                                                 .fontWeight(.regular)
                                         }
+                                        Spacer()
                                     }
                                 })
                                 
@@ -672,7 +675,6 @@ struct ProfilePostDetailView: View {
                                             .resizable()
                                             .scaledToFit()
                                             .frame(width: UIScreen.screenHeight/35, height: UIScreen.screenHeight/35)
-                                            .padding(.horizontal, UIScreen.screenWidth/30)
                                         if post.commentCount != 0 {
                                             Text(String(post.commentCount))
                                                 .foregroundColor(.black)
@@ -699,7 +701,6 @@ struct ProfilePostDetailView: View {
                                             .resizable()
                                             .scaledToFit()
                                             .frame(width: UIScreen.screenHeight/35, height: UIScreen.screenHeight/35)
-                                            .padding(.horizontal, UIScreen.screenWidth/30)
                                         Spacer()
                                     }
                                 })
@@ -722,18 +723,15 @@ struct ProfilePostDetailView: View {
                                             .resizable()
                                             .scaledToFit()
                                             .frame(width: UIScreen.screenHeight/35, height: UIScreen.screenHeight/35)
-                                            .padding(.horizontal, UIScreen.screenWidth/30)
-                                            .padding(.bottom, UIScreen.screenHeight/100)
                                         Spacer()
                                     }
                                 })
                             }
                             .frame(height: UIScreen.screenHeight/10)
                             .padding(.horizontal, UIScreen.screenWidth/30)
-                            .padding(.top, UIScreen.screenHeight/80)
+                            .padding(.top, UIScreen.screenHeight/50)
                         }
                         .frame(height: UIScreen.screenHeight/40)
-                        .padding(.horizontal, UIScreen.screenWidth/30)
                         .padding(.vertical, UIScreen.screenHeight/70)
                         //caption display
                         HStack{
@@ -754,15 +752,19 @@ struct ProfilePostDetailView: View {
                                 }
                                 Spacer()
                             }
-                            Text(post.caption)
-                                .foregroundColor(.black)
-                                .font(.body)
-                                .fontWeight(.regular)
-                                .frame(alignment: .leading)
-                                .multilineTextAlignment(.leading)
+                            VStack{
+                                Text(post.caption)
+                                    .foregroundColor(.black)
+                                    .font(.body)
+                                    .fontWeight(.regular)
+                                    .frame(alignment: .leading)
+                                    .multilineTextAlignment(.leading)
+                                Spacer()
+                            }
                             Spacer()
                         }
                         .padding(.horizontal, UIScreen.screenWidth/30)
+                        
                         VStack{
                             VStack{
                                 HStack{
@@ -801,11 +803,15 @@ struct ProfilePostDetailView: View {
                             .navigationDestination(isPresented: $navigateToLikedUserListScreen, destination: {
                                 LikedUserListView(globalVM: globalVM, postID: post.postID, loginData: loginData, profileVM: profileVM, mesiboVM: mesiboVM)
                             })
+                            
+                            NavigationLink(isActive: $navigateToLikedUserListScreen, destination: {
+                                LikedUserListView(globalVM: globalVM, postID: post.postID, loginData: loginData, profileVM: profileVM, mesiboVM: mesiboVM)
+                            }, label: {Text("")})
+                            
                             Spacer()
                         }
                     }
                 }
-                MainLocationBottomSheetView(loginData: loginData, globalVM: globalVM, location: $post.location)
             }
         }
         .onChange(of: globalVM.keyboardVisibility) { newValue in

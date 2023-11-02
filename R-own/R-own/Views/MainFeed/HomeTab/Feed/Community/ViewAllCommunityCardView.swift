@@ -19,6 +19,9 @@ struct ViewAllCommunityCardView: View {
     
     var body: some View {
         VStack{
+            NavigationLink(isActive: $navigateToViewAllCommunityView, destination: {
+                CommunityDetailListView(loginData: loginData, globalVM: globalVM, communityVM: communityVM, mesiboVM: mesiboVM, profileVM: profileVM)
+            }, label: {Text("")})
             Button(action: {
                 navigateToViewAllCommunityView.toggle()
             }, label: {

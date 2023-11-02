@@ -33,10 +33,10 @@ struct MessageViewSecondHalf: View {
                 ScrollViewReader { scrollView in
                     ScrollView {
                         LazyVStack {
-                            ForEach( mesiboVM.messageList, id: \.id){ meess in
+                            ForEach( mesiboVM.chatMessageList, id: \.id){ meess in
                                 VStack{
                                     let text = meess.mMessage
-                                    if mesiboVM.messageList.before(meess)?.mMessage.getTimestamp().getDate(true) !=  text.getTimestamp().getDate(true) {
+                                    if mesiboVM.chatMessageList.before(meess)?.mMessage.getTimestamp().getDate(true) !=  text.getTimestamp().getDate(true) {
                                         MessageDateTab(date: formatDate(text.getTimestamp().getDate(true)))
                                         if (text.isIncoming()) {
                                             if text.isMissedCall(){
@@ -155,9 +155,9 @@ struct MessageViewSecondHalf: View {
                                 scrollView.scrollTo(1, anchor: .bottom)
                             }
                         }
-                        .onChange(of: mesiboVM.messageList, perform: { _ in
+                        .onChange(of: mesiboVM.chatMessageList, perform: { _ in
                             withAnimation {
-                                scrollView.scrollTo(mesiboVM.messageList.count, anchor: .bottom)
+                                scrollView.scrollTo(mesiboVM.chatMessageList.count, anchor: .bottom)
                             }
                         })
                     }

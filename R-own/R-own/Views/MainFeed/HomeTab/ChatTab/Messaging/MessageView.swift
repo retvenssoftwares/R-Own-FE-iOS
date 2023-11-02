@@ -82,7 +82,8 @@ struct MessageView: View {
         .onAppear{
             loginData.showLoader = true
             mesiboData.mesiboSetTPPUser(mesiboAddress)
-            mesiboData.messageList = []
+            mesiboData.chatMessageList = []
+            mesiboData.messageType = "MessageList"
             mesiboData.mesiboMessageScreenInit(loginData: loginData)
         }
 //        .onDisappear{

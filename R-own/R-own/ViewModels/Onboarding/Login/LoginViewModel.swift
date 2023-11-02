@@ -17,7 +17,7 @@ import CoreLocation
 class LoginViewModel: ObservableObject{
     
     //Hiding object var
-    @AppStorage("hidden_kpi") var isHiddenKPI: Bool = true
+    @AppStorage("hidden_kpi") var isHiddenKPI: Bool = false
     
     
     //View Properties

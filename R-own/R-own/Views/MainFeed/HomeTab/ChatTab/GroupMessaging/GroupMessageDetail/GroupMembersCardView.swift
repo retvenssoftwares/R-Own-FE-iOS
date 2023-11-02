@@ -26,17 +26,18 @@ struct GroupMembersCardView: View {
     
     var body: some View {
         NavigationStack{
+            
             HStack{
                 AsyncImage(url: currentUrl) { image in
                     image
                         .resizable()
                         .scaledToFill()
-                        .frame(width: UIScreen.screenHeight/20, height: UIScreen.screenHeight/20)
+                        .frame(width: UIScreen.screenHeight/15, height: UIScreen.screenHeight/15)
                         .clipShape(Circle())
                 } placeholder: {
                     Circle()
                         .fill(lightGreyUi)
-                        .frame(width: UIScreen.screenHeight/20, height: UIScreen.screenHeight/20)
+                        .frame(width: UIScreen.screenHeight/15, height: UIScreen.screenHeight/15)
                         .shimmering(active: true)
                 }
                 .onAppear {
@@ -46,7 +47,7 @@ struct GroupMembersCardView: View {
                         }
                     }
                 }
-                VStack(alignment: .leading){
+                VStack(alignment: .leading, spacing: 3){
                     Text(user.fullName)
                         .font(.body)
                         .fontWeight(.semibold)
@@ -56,7 +57,7 @@ struct GroupMembersCardView: View {
                             Image("LocationIcon")
                                 .resizable()
                                 .scaledToFit()
-                                .frame(width: UIScreen.screenHeight/80, height: UIScreen.screenHeight/80)
+                                .frame(width: UIScreen.screenHeight/40, height: UIScreen.screenHeight/40)
                             Text(user.location)
                                 .font(.body)
                                 .fontWeight(.light)
@@ -72,13 +73,13 @@ struct GroupMembersCardView: View {
                         .foregroundColor(.black)
                 }
             }
-            .padding(.horizontal, UIScreen.screenWidth/30)
             .padding(.vertical, UIScreen.screenHeight/60)
-            .frame(width: UIScreen.screenWidth/1.1)
-            .background(lightGreyUi)
+            .padding(.horizontal, UIScreen.screenWidth/30)
+            .frame(width: UIScreen.screenWidth/1.1, height: UIScreen.screenHeight/10)
+            .background(.white)
+            .cornerRadius(10)
             .clipped()
             .shadow(color: .black.opacity(0.2), radius: 5, x: 2, y: 2)
-            .cornerRadius(15)
             .padding(.vertical, UIScreen.screenHeight/90)
             .onTapGesture {
                 if user.userID != loginData.mainUserID{
@@ -92,9 +93,12 @@ struct GroupMembersCardView: View {
                     }
                 }
             }
-            .navigationDestination(isPresented: $navigateToProfileView, destination: {
+//            .navigationDestination(isPresented: $navigateToProfileView, destination: {
+//                ProfileView(loginData: loginData, profileVM: profileVM, globalVM: globalVM, mesiboVM: mesiboVM, role: user.role, mainUser: false, userID: user.userID)
+//            })
+            NavigationLink(isActive: $navigateToProfileView, destination: {
                 ProfileView(loginData: loginData, profileVM: profileVM, globalVM: globalVM, mesiboVM: mesiboVM, role: user.role, mainUser: false, userID: user.userID)
-            })
+            }, label: {Text("")})
         }
     }
     

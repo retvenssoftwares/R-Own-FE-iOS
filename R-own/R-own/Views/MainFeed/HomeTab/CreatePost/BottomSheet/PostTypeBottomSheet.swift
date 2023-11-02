@@ -235,6 +235,13 @@ struct PostTypeBottomSheet: View {
                     }
                 }
             )
+            .onAppear{
+                navigateToClicknShare = false
+                navigateToShareSomeMedia = false
+                navigateToupdateEvent = false
+                navigateToCheckIn = false
+                navigateToPolls = false
+            }
     }
     func onChanged(value: DragGesture.Value){
         if value.translation.height > 0{

@@ -26,11 +26,7 @@ struct NormalProfileFPPPollsTabView: View {
                         ForEach(0..<globalVM.getPollPost[0].posts.count, id: \.self) { item in
                             if globalVM.getPollPost[0].posts[item].displayStatus != "0"{
                                 if globalVM.getPollPost[0].posts[item].pollQuestion.count > 0 {
-                                    HStack{
-                                        Spacer()
                                         NormalProfileFPPPollsView(post: globalVM.getPollPost[0].posts[item], role: role, mainUser: mainUser, globalVM: globalVM, loginData: loginData, profileVM: profileVM, mesiboVM: mesiboVM)
-                                        Spacer()
-                                    }
                                 } else {
                                     Text("Poll data not available")
                                 }

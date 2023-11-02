@@ -11,7 +11,7 @@ struct EditFPPProfileNavView: View {
     var body: some View {
         VStack{
             HStack{
-                Image(systemName: "arrow.backward.circle")
+                Image(systemName: "chevron.backward")
                     .resizable()
                     .scaledToFit()
                     .frame(width: UIScreen.screenHeight/60, height: UIScreen.screenHeight/60)

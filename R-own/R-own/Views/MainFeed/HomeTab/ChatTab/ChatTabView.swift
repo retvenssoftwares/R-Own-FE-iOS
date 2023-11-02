@@ -234,7 +234,8 @@ struct ChatTabView: View {
                             print(message.profile?.getName())
                             message.profile?.deleteMessages(0)
                             DispatchQueue.main.asyncAfter(deadline: .now() + 1){
-                                mesiboData.messageList = [MessageListModel]()
+                                mesiboData.chatListMessageList = [MessageListModel]()
+                                mesiboData.messageType = "ChatTabList"
                                 mesiboData.mesiboMessageListInit(loginData: loginData)
                                 longTapChat.toggle()
                             }

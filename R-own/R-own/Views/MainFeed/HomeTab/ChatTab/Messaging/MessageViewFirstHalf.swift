@@ -50,7 +50,7 @@ struct MessageViewFirstHalf: View {
                             presentationMode.wrappedValue.dismiss()
                         }
                     }, label: {
-                        Image("BackBtn")
+                        Image(systemName: "chevron.backward")
                             .resizable()
                             .scaledToFit()
                             .frame(width: UIScreen.screenHeight/35, height: UIScreen.screenHeight/35)

@@ -65,7 +65,7 @@ struct ShareSomeMediaView: View {
                             Button(action: {
                                 dismiss()
                             }, label: {
-                                Image(systemName: "arrow.left.circle")
+                                Image(systemName: "chevron.backward")
                                     .resizable()
                                     .scaledToFit()
                                     .foregroundColor(.black)
@@ -251,6 +251,33 @@ struct ShareSomeMediaView: View {
                                             .scaledToFit()
                                             .frame(height: UIScreen.screenHeight/5)
                                             .foregroundColor(postBgGrey)
+                                            .onTapGesture {
+                                                self.shouldPresentCamera = true
+                                            }
+                                            .sheet(isPresented: $shouldPresentCamera) {
+                                                ImagePickerView(image: $image)
+                                                    .onAppear(perform: {
+                                                        image = nil
+                                                    })
+                                                    .onDisappear(perform: {
+                                                        if image != nil {
+                                                            shouldPresentCropper = true
+                                                        }
+                                                    })
+                                            }
+                                            .fullScreenCover(isPresented: $shouldPresentCropper, content: {
+                                                ImageCropper(image: $image,
+                                                             cropShapeType: $cropShapeType,
+                                                             presetFixedRatioType: $presetFixedRatioType,
+                                                             type: $cropperType,
+                                                             cropMandatory: true)
+                                                .ignoresSafeArea()
+                                                .onDisappear {
+                                                    if image != nil {
+                                                        imageList.append(image!)
+                                                    }
+                                                }
+                                            })
                                     } else {
                                         VStack{
                                             Image(uiImage: imageList[selectedImage-1])
@@ -266,7 +293,7 @@ struct ShareSomeMediaView: View {
                                                             Image("DeleteIcon")
                                                                 .resizable()
                                                                 .scaledToFit()
-                                                                .frame(width: UIScreen.screenWidth/80, height: UIScreen.screenWidth/80)
+                                                                .frame(width: UIScreen.screenWidth/40, height: UIScreen.screenWidth/40)
                                                                 .padding(2)
                                                                 .background(greenUi)
                                                                 .onTapGesture {

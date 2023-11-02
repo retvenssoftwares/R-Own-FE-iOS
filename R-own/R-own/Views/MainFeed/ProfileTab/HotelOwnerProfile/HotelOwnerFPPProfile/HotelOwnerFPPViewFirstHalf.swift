@@ -36,28 +36,17 @@ struct HotelOwnerFPPViewFirstHalf: View {
             VStack(alignment: .leading){
                 if mainUser {
                     ProfileNavbarView(loginData: loginData, globalVM: globalVM, navigateToBottomSheet: $profileVM.showHotelOwnerProfileEditBottomSheet, role: "Hotel Owner", mprofile: mainUser ? "mainUser" : "")
-                        .padding(.top, UIScreen.screenHeight/30)
                 } else {
                     ProfileNavbarView(loginData: loginData, globalVM: globalVM, navigateToBottomSheet: $profileVM.showHotelOwnerProfileEditBottomSheet, role: "Hotel Owner", mprofile: mainUser ? "mainUser" : "")
-                        .padding(.top, UIScreen.screenHeight/70)
                 }
                 VStack(alignment: .leading){
                     HStack{
-                        if globalVM.getHotelOwnerProfileHeader.profile.verificationStatus == "true" {
-                            ProfilePictureView(profilePic: mainUser ? loginData.mainUserProfilePic : globalVM.getHotelOwnerProfileHeader.profiledata.profilePic , verified: true , height: UIScreen.screenHeight/10, width: UIScreen.screenHeight/10)
-                                .onLongPressGesture(perform: {
-                                    loginData.selectedProfilePicMax = mainUser ? loginData.mainUserProfilePic : globalVM.getHotelOwnerProfileHeader.profiledata.profilePic
-                                    print("showing profile max")
-                                    loginData.showProfileMax = true
-                                })
-                        } else if globalVM.getHotelOwnerProfileHeader.profile.verificationStatus == "false" {
-                            ProfilePictureView(profilePic: mainUser ? loginData.mainUserProfilePic : globalVM.getHotelOwnerProfileHeader.profiledata.profilePic , verified: false , height: UIScreen.screenHeight/10, width: UIScreen.screenHeight/10)
-                                .onLongPressGesture(perform: {
-                                    loginData.selectedProfilePicMax = mainUser ? loginData.mainUserProfilePic : globalVM.getHotelOwnerProfileHeader.profiledata.profilePic
-                                    print("showing profile max")
-                                    loginData.showProfileMax = true
-                                })
-                        }
+                        ProfilePictureView(profilePic: mainUser ? loginData.mainUserProfilePic : globalVM.getHotelOwnerProfileHeader.profiledata.profilePic , verified: true , height: UIScreen.screenHeight/10, width: UIScreen.screenHeight/10)
+                            .onLongPressGesture(perform: {
+                                loginData.selectedProfilePicMax = mainUser ? loginData.mainUserProfilePic : globalVM.getHotelOwnerProfileHeader.profiledata.profilePic
+                                print("showing profile max")
+                                loginData.showProfileMax = true
+                            })
                         
                         Spacer()
                         
@@ -73,6 +62,10 @@ struct HotelOwnerFPPViewFirstHalf: View {
                         .padding(.horizontal, UIScreen.screenWidth/40)
                         
                         Spacer()
+                        
+                        NavigationLink(isActive: $navigateToConnectionString, destination: {
+                            ConnectionsProfileListView(connectionOwnerName: mainUser ? "My" : globalVM.getHotelOwnerProfileHeader.profiledata.fullName, loginData: loginData, globalVM: globalVM, mainUser: mainUser, profileVM: profileVM, mesiboVM: mesiboVM)
+                        }, label: {Text("")})
                         
                         VStack{
                             Text(String(globalVM.getHotelOwnerProfileHeader.connectionCount))
@@ -96,6 +89,9 @@ struct HotelOwnerFPPViewFirstHalf: View {
                         Spacer()
                         
                         if mainUser{
+                            NavigationLink(isActive: $navigateToRequestString, destination: {
+                                RequestProfileListView(loginData: loginData, globalVM: globalVM, mainUser: mainUser, profileVM: profileVM, mesiboVM: mesiboVM)
+                            }, label: {Text("")})
                             VStack{
                                 Text(String(globalVM.getHotelOwnerProfileHeader.requestsCount))
                                     .font(.footnote)
@@ -151,13 +147,12 @@ struct HotelOwnerFPPViewFirstHalf: View {
                         }
                     }
                 }
-                .padding(.horizontal, UIScreen.screenWidth/10)
+                .padding(.horizontal, UIScreen.screenWidth/30)
                 
                 VStack{
                     
                     if !mainUser{
                         HStack{
-                            Spacer()
                             
                             if globalVM.getHotelOwnerProfileHeader.connectionStatus == "Connected"{
                                 Button(action: {
@@ -167,12 +162,11 @@ struct HotelOwnerFPPViewFirstHalf: View {
                                     Text("REMOVE")
                                         .font(.body)
                                         .fontWeight(.semibold)
-                                        .padding(.horizontal, UIScreen.screenWidth/20)
                                         .padding(.vertical, UIScreen.screenHeight/100)
-                                        .foregroundColor(jobsDarkBlue)
-                                        .background(greenUi)
-                                        .cornerRadius(10)
-                                        .padding()
+                                        .frame(maxWidth: UIScreen.screenWidth)
+                                        .foregroundColor(greenUi)
+                                        .background(jobsDarkBlue)
+                                        .cornerRadius(8)
                                 })
                             } else if globalVM.getHotelOwnerProfileHeader.connectionStatus == "Not connected"{
                                 Button(action: {
@@ -182,12 +176,11 @@ struct HotelOwnerFPPViewFirstHalf: View {
                                     Text("CONNECT")
                                         .font(.body)
                                         .fontWeight(.semibold)
-                                        .padding(.horizontal, UIScreen.screenWidth/20)
                                         .padding(.vertical, UIScreen.screenHeight/100)
-                                        .foregroundColor(jobsDarkBlue)
-                                        .background(greenUi)
-                                        .cornerRadius(10)
-                                        .padding()
+                                        .frame(maxWidth: UIScreen.screenWidth)
+                                        .foregroundColor(greenUi)
+                                        .background(jobsDarkBlue)
+                                        .cornerRadius(8)
                                 })
                             } else if globalVM.getHotelOwnerProfileHeader.connectionStatus == "Requested"{
                                 Button(action: {
@@ -200,12 +193,11 @@ struct HotelOwnerFPPViewFirstHalf: View {
                                         .font(.body)
                                         .fontWeight(.semibold)
                                         .foregroundColor(greenUi)
-                                        .padding(.horizontal, UIScreen.screenWidth/20)
                                         .padding(.vertical, UIScreen.screenHeight/100)
-                                        .foregroundColor(jobsDarkBlue)
-                                        .background(greenUi)
-                                        .cornerRadius(10)
-                                        .padding()
+                                        .frame(maxWidth: UIScreen.screenWidth)
+                                        .foregroundColor(greenUi)
+                                        .background(jobsDarkBlue)
+                                        .cornerRadius(8)
                                 })
                             } else if globalVM.getHotelOwnerProfileHeader.connectionStatus == "Confirm request"{
                                 Button(action: {
@@ -217,38 +209,36 @@ struct HotelOwnerFPPViewFirstHalf: View {
                                     Text("Confirm Request")
                                         .font(.body)
                                         .fontWeight(.semibold)
-                                        .padding(.horizontal, UIScreen.screenWidth/20)
                                         .padding(.vertical, UIScreen.screenHeight/100)
-                                        .foregroundColor(jobsDarkBlue)
-                                        .background(greenUi)
-                                        .cornerRadius(10)
-                                        .padding()
+                                        .frame(maxWidth: UIScreen.screenWidth)
+                                        .foregroundColor(greenUi)
+                                        .background(jobsDarkBlue)
+                                        .cornerRadius(8)
                                 })
                             }
                             
                             
-                            Spacer()
                             
                             if globalVM.getHotelOwnerProfileHeader.connectionStatus == "Connected"{
+                                
+                                NavigationLink(isActive: $navigateTOCHatView, destination: {
+                                    MessageView(loginData: loginData, mesiboAddress: globalVM.getHotelOwnerProfileHeader.profiledata.mesiboAccount[0].address, mesiboData: mesiboVM, profileVM: profileVM, globalVM: globalVM)
+                                }, label: {Text("")})
                                 Button(action: {
                                     navigateTOCHatView.toggle()
                                 }, label: {
                                     Text("INTERACT")
                                         .font(.body)
                                         .fontWeight(.semibold)
-                                        .padding(.horizontal, UIScreen.screenWidth/20)
                                         .padding(.vertical, UIScreen.screenHeight/100)
-                                        .foregroundColor(jobsDarkBlue)
-                                        .background(greenUi)
-                                        .overlay{
-                                            RoundedRectangle(cornerRadius: 10)
-                                                .stroke(Color.black, lineWidth: 1)
-                                        }
+                                        .frame(maxWidth: UIScreen.screenWidth)
+                                        .foregroundColor(greenUi)
+                                        .background(jobsDarkBlue)
+                                        .cornerRadius(8)
                                 })
                                 .navigationDestination(isPresented: $navigateTOCHatView, destination: {
                                     MessageView(loginData: loginData, mesiboAddress: globalVM.getHotelOwnerProfileHeader.profiledata.mesiboAccount[0].address, mesiboData: mesiboVM, profileVM: profileVM, globalVM: globalVM)
                                 })
-                                Spacer()
                             }
                             
                             //                                Button(action: {
@@ -269,6 +259,8 @@ struct HotelOwnerFPPViewFirstHalf: View {
                             //                                    BrandProfileView(loginData: loginData, globalVM: globalVM, userID: userID, profileVM: profileVM, mesiboVM: mesiboVM, mainUserCheck: true)
                             //                                })
                         }
+                        .padding(.horizontal, UIScreen.screenWidth/30)
+                        .padding(.vertical, UIScreen.screenHeight/110)
                     }
                 }
             }

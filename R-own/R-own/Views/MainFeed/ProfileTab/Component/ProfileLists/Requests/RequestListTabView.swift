@@ -27,7 +27,7 @@ struct RequestListTabView: View {
         NavigationStack{
             HStack{
                 VStack{
-                    ProfilePictureView(profilePic: requestedConnection.profilePic, verified: requestedConnection.verificationStatus == "true" ? true : false, height: UIScreen.screenHeight/20, width: UIScreen.screenHeight/20)
+                    ProfilePictureView(profilePic: requestedConnection.profilePic, verified: requestedConnection.verificationStatus == "true" ? true : false, height: UIScreen.screenHeight/15, width: UIScreen.screenHeight/15)
                 }
                 .onTapGesture {
                     print("switching to profile view")
@@ -42,8 +42,8 @@ struct RequestListTabView: View {
                     
                     if requestedConnection.normalUserInfo.count > 0{
                         Text(requestedConnection.normalUserInfo[0].jobTitle)
-                            .font(.body)
-                            .fontWeight(.regular)
+                            .font(.footnote)
+                            .fontWeight(.semibold)
                     }
                 }
                 .onTapGesture {
@@ -80,11 +80,12 @@ struct RequestListTabView: View {
                         print("accepting..")
                     }, label: {
                         Text("ACCEPT")
-                            .font(.body)
+                            .font(.footnote)
                             .fontWeight(.bold)
                             .foregroundColor(jobsDarkBlue)
-                            .padding(.horizontal, UIScreen.screenWidth/60)
-                            .padding(.vertical, UIScreen.screenHeight/70)
+                            .frame(width: UIScreen.screenWidth/6)
+                            .padding(.horizontal, UIScreen.screenWidth/17)
+                            .padding(.vertical, UIScreen.screenHeight/80)
                             .background(greenUi)
                             .cornerRadius(5)
                     })
@@ -112,17 +113,18 @@ struct RequestListTabView: View {
                         print("Rejecting..")
                     }, label: {
                         Text("REJECT")
-                            .font(.body)
+                            .font(.footnote)
                             .fontWeight(.bold)
                             .foregroundColor(greenUi)
-                            .padding(.horizontal, UIScreen.screenWidth/60)
-                            .padding(.vertical, UIScreen.screenHeight/70)
+                            .frame(width: UIScreen.screenWidth/6)
+                            .padding(.horizontal, UIScreen.screenWidth/17)
+                            .padding(.vertical, UIScreen.screenHeight/80)
                             .background(jobsDarkBlue)
                             .cornerRadius(5)
                     })
                 }
             }
-            .padding(.horizontal, UIScreen.screenWidth/10)
+            .padding(.horizontal, UIScreen.screenWidth/30)
             .padding(.vertical, UIScreen.screenHeight/60)
         }
     }

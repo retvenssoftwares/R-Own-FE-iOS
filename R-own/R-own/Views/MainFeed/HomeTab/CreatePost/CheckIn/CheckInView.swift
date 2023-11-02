@@ -47,7 +47,7 @@ struct CheckInView: View {
                         Button(action: {
                             dismiss()
                         }, label: {
-                            Image(systemName: "arrow.left.circle")
+                            Image(systemName: "chevron.backward")
                                 .resizable()
                                 .scaledToFit()
                                 .foregroundColor(.black)
@@ -114,6 +114,8 @@ struct CheckInView: View {
                                 createPostVM.venuePostBottomSheet.toggle()
                             }
                     }
+                    
+                    
                     Button(action: {
                         if createPostVM.checkinHotelID != "" {
                             navigateToCheckinPostView.toggle()
@@ -133,17 +135,18 @@ struct CheckInView: View {
                     .navigationDestination(isPresented: $navigateToCheckinPostView, destination: {
                         CheckInPostView(loginData: loginData, createPostVM: createPostVM, globalVM: globalVM)
                     })
+                    
+                    NavigationLink(isActive: $navigateToCheckinPostView, destination: {
+                        CheckInPostView(loginData: loginData, createPostVM: createPostVM, globalVM: globalVM)
+                    }, label: {Text("")})
+                    
                     Spacer()
+                    
                 }
                 CheckVenueBottomSheet(loginData: loginData, createPostVM: createPostVM, globalVM: globalVM)
             }
             .onAppear{
-                createPostVM.checkinHotelID = ""
-                createPostVM.checkinHotelLogo = ""
-                createPostVM.checkinHotelName = ""
-                createPostVM.checkinHotelRating = ""
-                createPostVM.checkinHotelAddress = ""
-                createPostVM.checkinHotelCoverPic = ""
+                navigateToCheckinPostView = false
             }
             .toast(isPresenting: $alertNoHotel, duration: 2, tapToDismiss: true){
                 AlertToast( type: .systemImage("exclamationmark.triangle.fill", .red), title: "Hotel not selected", subTitle: ("Select a hotel to post"))

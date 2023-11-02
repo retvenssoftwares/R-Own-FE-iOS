@@ -77,11 +77,8 @@ struct CheckInPostDisplayView: View {
                                 .padding(.leading, 30)
                                 .frame(alignment: .leading)
                         }
-                        .padding(.horizontal, UIScreen.screenWidth - UIScreen.screenWidth/1.05)
-                        
-                        
-                        
-                        
+                        .frame(maxWidth: UIScreen.screenWidth)
+                        .padding(.horizontal, UIScreen.screenWidth/30)
                     }
                     VStack{
                         HStack{
@@ -96,6 +93,7 @@ struct CheckInPostDisplayView: View {
                         }
                         
                         NavigationLink(isActive: $navigateToHotelDetail, destination: {ExploreHotelDetailView(globalVM: globalVM, hotelID: post.hotelID ?? "", savedStatus: $savedStatus)}, label: {Text("")})
+                        
                         AsyncImage(url: currentUrl) { image in
                             image
                                 .resizable()
@@ -196,9 +194,10 @@ struct CheckInPostDisplayView: View {
                                 }
                                 Spacer()
                             }
-                            .padding(.horizontal, UIScreen.screenWidth - UIScreen.screenWidth/1.05)
+                            .padding(.horizontal, UIScreen.screenWidth/30)
                         }
                         .padding(.vertical, UIScreen.screenHeight/80)
+                        
                         HStack{
                             
                             //likebutton
@@ -218,7 +217,7 @@ struct CheckInPostDisplayView: View {
                                     Image(post.liked == "not liked" ? "PostLikeBlack" : "PostLikedBlack" )
                                         .resizable()
                                         .scaledToFit()
-                                        .frame(width: UIScreen.screenHeight/50, height: UIScreen.screenHeight/50)
+                                        .frame(width: UIScreen.screenHeight/35, height: UIScreen.screenHeight/35)
                                     if post.likeCount > 0 {
                                         Text(String(post.likeCount))
                                             .foregroundColor(.white)
@@ -239,7 +238,7 @@ struct CheckInPostDisplayView: View {
                                     Image("PostCommentBlack")
                                         .resizable()
                                         .scaledToFit()
-                                        .frame(width: UIScreen.screenHeight/50, height: UIScreen.screenHeight/50)
+                                        .frame(width: UIScreen.screenHeight/35, height: UIScreen.screenHeight/35)
                                         .padding(.horizontal, UIScreen.screenWidth/30)
                                     if post.commentCount > 0 {
                                         Text(String(post.commentCount))
@@ -262,14 +261,12 @@ struct CheckInPostDisplayView: View {
                         
                     }
                 }
-                .padding(.vertical, UIScreen.screenHeight/70)
+                .padding(.vertical, UIScreen.screenHeight/50)
+                .frame(width: UIScreen.screenWidth/1.1)
                 .background(.white)
                 .cornerRadius(15)
                 .clipped()
                 .shadow(color: .black.opacity(0.2), radius: 5, x: 2, y: 2)
-                .padding(.vertical, UIScreen.screenHeight/70)
-                .padding(.horizontal, UIScreen.screenWidth/30)
-                .frame(width: UIScreen.screenWidth)
                 .onLongPressGesture(perform: {
                     if mainUser {
                         showEditSheet = true

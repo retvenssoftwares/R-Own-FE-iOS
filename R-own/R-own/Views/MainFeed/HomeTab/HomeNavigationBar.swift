@@ -127,7 +127,8 @@ struct HomeNavigationBar: View {
                     }
                 }
             }
-            mesiboData.messageList = [MessageListModel]()
+            mesiboData.chatListMessageList = [MessageListModel]()
+            mesiboData.messageType = "ChatTabList"
             mesiboData.mesiboMessageListInit(loginData: loginData)
             
             DispatchQueue.main.asyncAfter(deadline: .now() + 3) {

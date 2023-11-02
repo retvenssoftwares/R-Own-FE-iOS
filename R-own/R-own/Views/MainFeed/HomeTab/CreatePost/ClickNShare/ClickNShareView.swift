@@ -59,7 +59,7 @@ struct ClickNShareView: View {
                         Button(action: {
                             dismiss()
                         }, label: {
-                            Image(systemName: "arrow.left.circle")
+                            Image(systemName: "chevron.backward")
                                 .resizable()
                                 .scaledToFit()
                                 .foregroundColor(.black)

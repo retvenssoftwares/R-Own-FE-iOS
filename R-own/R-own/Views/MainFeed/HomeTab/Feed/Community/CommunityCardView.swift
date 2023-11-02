@@ -105,6 +105,9 @@ struct CommunityCardView: View {
             .navigationDestination(isPresented: $navigateToGroupChatView, destination: {
                 GroupMessageView(loginData: loginData, communityVM: communityVM, mesiboVM: mesiboVM, groupID: community.groupID, communityName: community.groupName, communityPic: community.profilePic, globalVM: globalVM, profileVM: profileVM)
             })
+            NavigationLink(isActive: $navigateToGroupChatView, destination: {
+                GroupMessageView(loginData: loginData, communityVM: communityVM, mesiboVM: mesiboVM, groupID: community.groupID, communityName: community.groupName, communityPic: community.profilePic, globalVM: globalVM, profileVM: profileVM)
+            }, label: {Text("")})
         }
     }
 }

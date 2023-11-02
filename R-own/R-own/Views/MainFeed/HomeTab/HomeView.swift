@@ -251,7 +251,8 @@ struct HomeView: View {
                 }
 //                globalVM.feedList = [FeedModel(posts: [Post535]())]
 //                mainFeedService.getFeed(globalVM: globalVM, userID: loginData.mainUserID)
-                mesiboData.messageList = [MessageListModel]()
+                mesiboData.chatListMessageList = [MessageListModel]()
+                mesiboData.messageType = "ChatTabList"
                 mesiboData.mesiboMessageListInit(loginData: loginData)
                 globalVM.ownCommunityModelList = [OwnCommunityGroupDetailsModel]()
                 communityService.getOwnedCommunities(globalVM: globalVM, userID: loginData.mainUserID)
