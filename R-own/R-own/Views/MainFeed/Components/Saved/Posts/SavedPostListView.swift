@@ -52,7 +52,6 @@ struct SavedPostListView: View {
                 }
             }
         }
-        .padding(.bottom, UIScreen.screenHeight/9)
         .onAppear{
             globalVM.getSavePostList = [GetSavePostModel(posts: [PostSave](), page: 0, pageSize: 0)]
             saveService.getSavePost(globalVM: globalVM, userID: loginData.mainUserID, pageNo: 1)

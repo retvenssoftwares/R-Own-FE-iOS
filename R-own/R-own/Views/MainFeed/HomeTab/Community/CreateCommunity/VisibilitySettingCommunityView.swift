@@ -185,9 +185,9 @@ struct VisibilitySettingCommunityView: View {
                             Spacer()
                             Button(action: {
                                 if communityVM.communityType == "" {
-                                    communityStatusNotSelected.toggle()
+                                    communityStatusNotSelected = true
                                 } else {
-                                    navigateToCommunityLocation.toggle()
+                                    navigateToCommunityLocation = true
                                 }
                             }, label: {
                                 Circle()
@@ -205,6 +205,11 @@ struct VisibilitySettingCommunityView: View {
                             .padding(.trailing, UIScreen.screenWidth/30)
                             .navigationDestination(isPresented: $navigateToCommunityLocation, destination: {
                                 CommunityLocationView(loginData: loginData, communityVM: communityVM, mesiboVM: mesiboVM, globalVM: globalVM, profileVM: profileVM)
+                            })
+                            NavigationLink(isActive: $navigateToCommunityLocation, destination: {
+                                CommunityLocationView(loginData: loginData, communityVM: communityVM, mesiboVM: mesiboVM, globalVM: globalVM, profileVM: profileVM)
+                            }, label: {
+                                Text("")
                             })
                         }
                     }
@@ -224,6 +229,9 @@ struct VisibilitySettingCommunityView: View {
                             globalVM.keyboardVisibility = false
         }
         .navigationBarBackButtonHidden()
+        .onAppear{
+            navigateToCommunityLocation = false
+        }
     }
 }
 

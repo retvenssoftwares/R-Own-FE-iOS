@@ -118,7 +118,7 @@ struct CheckInView: View {
                     
                     Button(action: {
                         if createPostVM.checkinHotelID != "" {
-                            navigateToCheckinPostView.toggle()
+                            navigateToCheckinPostView = true
                         } else {
                             alertNoHotel = true
                         }
@@ -131,9 +131,6 @@ struct CheckInView: View {
                             .padding(.vertical, UIScreen.screenHeight/80)
                             .background(greenUi)
                             .cornerRadius(5)
-                    })
-                    .navigationDestination(isPresented: $navigateToCheckinPostView, destination: {
-                        CheckInPostView(loginData: loginData, createPostVM: createPostVM, globalVM: globalVM)
                     })
                     
                     NavigationLink(isActive: $navigateToCheckinPostView, destination: {

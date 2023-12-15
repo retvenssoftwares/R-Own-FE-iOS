@@ -51,10 +51,15 @@ struct AccountSettingView: View {
                         .padding(.vertical, UIScreen.screenHeight/80)
                         .padding(.horizontal, UIScreen.screenWidth/40)
                         .onTapGesture {
-                            navigateToSyncContacts.toggle()
+                            navigateToSyncContacts = true
                         }
                         .navigationDestination(isPresented: $navigateToSyncContacts, destination: {
                             SyncContactsSettingVIew(loginData: loginData, globalVM: globalVM)
+                        })
+                        NavigationLink(isActive: $navigateToSyncContacts, destination: {
+                            SyncContactsSettingVIew(loginData: loginData, globalVM: globalVM)
+                        }, label: {
+                            Text("")
                         })
                         Divider()
                     }
@@ -71,10 +76,15 @@ struct AccountSettingView: View {
                         .padding(.vertical, UIScreen.screenHeight/80)
                         .padding(.horizontal, UIScreen.screenWidth/40)
                         .onTapGesture {
-                            navigateToAccountmanagement.toggle()
+                            navigateToAccountmanagement = true
                         }
                         .navigationDestination(isPresented: $navigateToAccountmanagement, destination: {
                             AccountManagementSettingView(loginData: loginData)
+                        })
+                        NavigationLink(isActive: $navigateToAccountmanagement, destination: {
+                            AccountManagementSettingView(loginData: loginData)
+                        }, label: {
+                            Text("")
                         })
                         Divider()
                     }
@@ -83,6 +93,10 @@ struct AccountSettingView: View {
             }
         }
         .navigationBarBackButtonHidden()
+        .onAppear{
+            navigateToSyncContacts = false
+            navigateToSyncContacts = false
+        }
     }
 }
 

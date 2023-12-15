@@ -26,8 +26,13 @@ class UserViewModel: ObservableObject{
 //    func updateUserDetailsAfterLogin(loginData: LoginViewModel) {
 //        userData.updateUserDataAfterLogin(loginData: loginData)
 //    }
-    func updateUserDetailsAfterLoginWithoutPic(loginData: LoginViewModel) {
-        userData.updateuserDataAfterLoginWithoutImage(loginData: loginData)
+    func updateUserDetailsAfterLoginWithoutPic(loginData: LoginViewModel) async -> String {
+        do {
+            let result = try await userData.updateUserDataAfterLoginWithoutImage(loginData: loginData)
+            return "Success"
+        } catch {
+            return "Failure"
+        }
     }
 //    func updateMesiboDataAfterLogin(loginData: LoginViewModel) {
 //        userData.updateMesiboDataOnUserProfile(loginData: loginData)

@@ -46,11 +46,14 @@ struct LikedUserTabView: View {
             }
             .padding(.vertical, UIScreen.screenHeight/60)
             .onTapGesture {
-                navigateToProfile.toggle()
+                navigateToProfile = true
             }
             .navigationDestination(isPresented: $navigateToProfile, destination: {
                 ProfileView(loginData: loginData, profileVM: profileVM, globalVM: globalVM, mesiboVM: mesiboVM, role: likedUser.role, mainUser: false, userID: likedUser.userID)
             })
+        }
+        .onAppear{
+            navigateToProfile = false
         }
     }
 }

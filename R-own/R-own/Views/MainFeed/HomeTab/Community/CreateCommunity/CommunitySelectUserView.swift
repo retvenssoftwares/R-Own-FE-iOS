@@ -175,7 +175,7 @@ struct CommunitySelectUserView: View {
                             if communityVM.selectedGroupMember.count < 2 {
                                 userNotSelected.toggle()
                             } else {
-                                navigateToUploadIconView.toggle()
+                                navigateToUploadIconView = true
                             }
                         }, label: {
                             Circle()
@@ -193,6 +193,11 @@ struct CommunitySelectUserView: View {
                         .padding(.trailing, UIScreen.screenWidth/30)
                         .padding(.bottom, UIScreen.screenHeight/10)
                         .navigationDestination(isPresented: $navigateToUploadIconView, destination: {CommunityUploadIconView(loginData: loginData, communityVM: communityVM, mesiboVM: mesiboVM, globalVM: globalVM, profileVM: profileVM)})
+                        NavigationLink(isActive: $navigateToUploadIconView, destination: {
+                            CommunityUploadIconView(loginData: loginData, communityVM: communityVM, mesiboVM: mesiboVM, globalVM: globalVM, profileVM: profileVM)
+                        }, label: {
+                            Text("")
+                        })
                     }
                 }
             }
@@ -216,6 +221,9 @@ struct CommunitySelectUserView: View {
                             globalVM.keyboardVisibility = false
         }
         .navigationBarBackButtonHidden()
+        .onAppear{
+            navigateToUploadIconView = false
+        }
     }
     func makeAPICall(globalVM: GlobalViewModel, userID: String){
         

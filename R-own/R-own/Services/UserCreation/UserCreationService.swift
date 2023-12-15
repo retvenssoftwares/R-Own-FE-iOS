@@ -123,132 +123,97 @@ class UserCreationService: ObservableObject{
 
     
     //multipart api call to send picture over server
-    
-    func updateUserDataAfterLogin(loginData: LoginViewModel, profilePic: UIImage?, fullName: String, email: String, apnToken: String) {
-//          let userphonenumber: Int = (loginData.mainUserPhoneNumber.deletingPrefix("+") as NSString).integerValue
-        //Set Your URL
-            let api_url = "http://64.227.150.47/main/update/\(loginData.mainUserID)"
-            guard let url = URL(string: api_url) else {
-                return
-            }
 
-            var urlRequest = URLRequest(url: url, cachePolicy: .reloadIgnoringLocalAndRemoteCacheData, timeoutInterval: 10.0 * 1000)
-            urlRequest.httpMethod = "PATCH"
-            urlRequest.addValue("application/json", forHTTPHeaderField: "Accept")
+    enum UpdateUserDataError: Error {
+        case networkError(AFError)
+        case serializationError(Error)
+    }
 
-            //Set Image Data
-           // Now Execute
-            AF.upload(multipartFormData: { multiPart in
-                multiPart.append((fullName).data(using: String.Encoding.utf8)!, withName: "Full_name")
-                multiPart.append((email).data(using: String.Encoding.utf8)!, withName: "Email")
-                if apnToken != "" {
-                    multiPart.append((apnToken).data(using: String.Encoding.utf8)!, withName: "device_token")
-                }
-                if profilePic != nil {
-                    let uiImage: UIImage = profilePic!
-                    let imgData = uiImage.jpegData(compressionQuality: 0.5)!
-                    multiPart.append(imgData, withName: "Profile_pic", fileName: randomString(length: 6)+"profilepic.png", mimeType: "image/png")
-                }
-            }, with: urlRequest)
+    @MainActor
+    func updateUserDataAfterLogin(loginData: LoginViewModel, profilePic: UIImage?, fullName: String, email: String, apnToken: String) async throws -> String {
+        let api_url = "http://64.227.150.47/main/update/\(loginData.mainUserID)"
+        guard let url = URL(string: api_url) else {
+            throw UpdateUserDataError.networkError(AFError.explicitlyCancelled)
+        }
+
+        var urlRequest = URLRequest(url: url, cachePolicy: .reloadIgnoringLocalAndRemoteCacheData, timeoutInterval: 10.0 * 1000)
+        urlRequest.httpMethod = "PATCH"
+        urlRequest.addValue("application/json", forHTTPHeaderField: "Accept")
+
+        do {
+            return try await withCheckedThrowingContinuation { continuation in
+                AF.upload(multipartFormData: { multiPart in
+                    multiPart.append((fullName).data(using: String.Encoding.utf8)!, withName: "Full_name")
+                    multiPart.append((email).data(using: String.Encoding.utf8)!, withName: "Email")
+                    if apnToken != "" {
+                        multiPart.append((apnToken).data(using: String.Encoding.utf8)!, withName: "device_token")
+                    }
+                    if let profilePic = profilePic {
+                        let imgData = profilePic.jpegData(compressionQuality: 0.5)!
+                        multiPart.append(imgData, withName: "Profile_pic", fileName: randomString(length: 6) + "profilepic.png", mimeType: "image/png")
+                    }
+                }, with: urlRequest)
                 .uploadProgress(queue: .main, closure: { progress in
-                    //Current upload progress of file
+                    // Current upload progress of file
                     print("Upload Progress: \(progress.fractionCompleted)")
                 })
-                .responseJSON(completionHandler: { data in
+                .responseJSON { response in
+                    switch response.result {
+                    case .success:
+                        continuation.resume(returning: "Success")
 
-                           switch data.result {
-
-                           case .success(_):
-
-                            do {
-
-                            let dictionary = try JSONSerialization.jsonObject(with: data.data!, options: .fragmentsAllowed) as! NSDictionary
-
-                                print("Success!")
-                                print(dictionary)
-                                self.updateMesiboDataOnUserProfile(loginData: loginData)
-                           }
-                           catch {
-                              // catch error.
-                            print("catch error")
-
-                                  }
-                            break
-
-                           case .failure(_):
-                            print("failure")
-
-                            break
-
-                        }
-
-
-                })
-    }
-    
-    func updateuserDataAfterLoginWithoutImage(loginData: LoginViewModel) {
-        
-        //Updating the user Interest
-        print("Starting to update user profile without image")
-        print("using these info to update: ")
-        print(loginData.mainUserFullName)
-        print(loginData.mainUserEmail)
-        print(loginData.mainUserProfilePic)
-        
-        guard let url = URL(string: "http://64.227.150.47/main/update/\(loginData.mainUserID)") else {
-            print("Error: cannot create URL")
-            return
-        }
-        
-        // Create & Add data to the model
-        let body: [String: AnyHashable] = [
-            "Full_name": loginData.mainUserFullName,
-            "Email": loginData.mainUserEmail,
-            "Profile_pic": loginData.mainUserProfilePic,
-            "device_token": loginData.apnToken
-        ]
-        
-        
-        
-        // Create the request
-        var request = URLRequest(url: url)
-        request.httpMethod = "PATCH"
-        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-        
-        // Convert request to JSON data
-        request.httpBody = try? JSONSerialization.data(withJSONObject: body, options: .fragmentsAllowed)
-        
-        let task = URLSession.shared.dataTask(with: request) { data, response, error in
-            
-            DispatchQueue.main.async {
-                guard error == nil else {
-                    print("Error: error calling PATCH")
-                    print(error!)
-                    return
-                }
-                guard let data = data else {
-                    print("Error: Did not receive data")
-                    return
-                }
-                guard let response = response as? HTTPURLResponse, (200 ..< 299) ~= response.statusCode else {
-                    print("Error: HTTP request failed")
-                    return
-                }
-                do {
-                    let decoder = JSONDecoder()
-                    let decodedData = try decoder.decode(NormalMessageResponse.self, from: data)
-                    
-                    print("user data updated on server")
-                    self.updateMesiboDataOnUserProfile(loginData: loginData)
-                } catch {
-                    print("Error: Trying to convert JSON data to string")
-                    return
+                    case .failure(let error):
+                        print("Failure: \(error)")
+                        continuation.resume(throwing: UpdateUserDataError.networkError(error))
+                    }
                 }
             }
+        } catch {
+            throw error
         }
-        task.resume()
-        
     }
+
+    
+    func updateUserDataAfterLoginWithoutImage(loginData: LoginViewModel) async -> String {
+        do {
+            print("Starting to update user profile without image")
+            print("using these info to update: ")
+            print(loginData.mainUserFullName)
+            print(loginData.mainUserEmail)
+            print(loginData.mainUserProfilePic)
+            
+            guard let url = URL(string: "http://64.227.150.47/main/update/\(loginData.mainUserID)") else {
+                print("Error: cannot create URL")
+                return "Failure: Invalid URL"
+            }
+            
+            let body: [String: AnyHashable] = [
+                "Full_name": loginData.mainUserFullName,
+                "Email": loginData.mainUserEmail,
+                "Profile_pic": loginData.mainUserProfilePic,
+                "device_token": loginData.apnToken
+            ]
+            
+            var request = URLRequest(url: url)
+            request.httpMethod = "PATCH"
+            request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+            request.httpBody = try? JSONSerialization.data(withJSONObject: body, options: .fragmentsAllowed)
+            
+            let (data, _) = try await URLSession.shared.data(for: request)
+            
+            let decoder = JSONDecoder()
+            let decodedData = try decoder.decode(NormalMessageResponse.self, from: data)
+            
+            print("user data updated on server")
+            self.updateMesiboDataOnUserProfile(loginData: loginData)
+            
+            return "Success"
+        } catch {
+            print("Error: \(error)")
+            return "Failure: \(error.localizedDescription)"
+        }
+    }
+
     
     func updateMesiboDataOnUserProfile(loginData: LoginViewModel) {
         

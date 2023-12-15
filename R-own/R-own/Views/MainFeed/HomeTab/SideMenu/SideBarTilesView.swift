@@ -177,164 +177,179 @@ struct SideBarTileHnSDropDownView: View {
     @State var isShowingMailView = false
     
     var body: some View {
-        Button(action: {
-            withAnimation{
-                showDropDown.toggle()
-            }
-        }, label: {
-            HStack{
-                Image("SidebarHelpnSupport")
-                    .resizable()
-                    .scaledToFit()
-                    .frame(width: UIScreen.screenHeight/50, height: UIScreen.screenHeight/50)
-                    .padding(.leading, UIScreen.screenWidth/20)
-                    .padding(.trailing, UIScreen.screenWidth/60)
-                Text("Help & Support")
-                    .foregroundColor(.black)
-                    .font(.subheadline)
-                    .fontWeight(.bold)
-                Spacer()
-                if showDropDown{
-                    Image(systemName: "chevron.down")
-                        .resizable()
-                        .scaledToFit()
-                        .foregroundColor(.black)
-                        .frame(width: UIScreen.screenHeight/50, height: UIScreen.screenHeight/60)
-                        .padding(.trailing, 20)
-                }else{
-                    Image(systemName: "chevron.right")
-                        .resizable()
-                        .scaledToFit()
-                        .foregroundColor(.black)
-                        .frame(width: UIScreen.screenHeight/50, height: UIScreen.screenHeight/60)
-                        .padding(.trailing, 20)
+        VStack{
+            Button(action: {
+                withAnimation{
+                    showDropDown.toggle()
                 }
-            }
-        })
-        .frame(width: UIScreen.screenWidth/1.4, height: UIScreen.screenHeight/30)
-        .padding(.vertical, 7)
-        .background(.white)
-        .cornerRadius(7)
-        .clipped()
-        .shadow(color: .black.opacity(0.2), radius: 5, x: 2, y: 2)
-    
-    if showDropDown{
-//        Button(action: {
-//            navigateToChatWithUsView.toggle()
-//        }, label: {
-//            HStack{
-//                Image("SidebarChatWithUs")
-//                    .resizable()
-//                    .scaledToFit()
-//                    .frame(width: UIScreen.screenHeight/50, height: UIScreen.screenHeight/50)
-//                    .padding(.leading, UIScreen.screenWidth/20)
-//                    .padding(.trailing, UIScreen.screenWidth/60)
-//                Text("Chat With Us")
-//                    .foregroundColor(.black)
-////                                    .font(.system(size: 19))
-//                    .fontWeight(.bold)
-//                Spacer()
-//
-//            }
-//        })
-//        .frame(width: UIScreen.screenWidth/1.6, height: UIScreen.screenHeight/30)
-//        .padding(.vertical, 7)
-//        .background(lightGreyUi)
-//        .cornerRadius(7)
-//        .clipped()
-//        .shadow(color: Color.black.opacity(0.5), radius: 5)
-//        .navigationDestination(isPresented: $navigateToChatWithUsView, destination: {
-//            ChatWithUsView()
-//        })
-        
-        Button(action: {
-            isShowingMailView.toggle()
-        }, label: {
-            HStack{
-                Image("SidebarDropUsAMail")
-                    .resizable()
-                    .scaledToFit()
-                    .frame(width: UIScreen.screenHeight/50, height: UIScreen.screenHeight/50)
-                    .padding(.leading, UIScreen.screenWidth/20)
-                    .padding(.trailing, UIScreen.screenWidth/60)
-                Text("Drop Us A Mail")
-                    .foregroundColor(.black)
-                    .font(.subheadline)
-                    .fontWeight(.bold)
-                Spacer()
+            }, label: {
+                HStack{
+                    Image("SidebarHelpnSupport")
+                        .resizable()
+                        .scaledToFit()
+                        .frame(width: UIScreen.screenHeight/50, height: UIScreen.screenHeight/50)
+                        .padding(.leading, UIScreen.screenWidth/20)
+                        .padding(.trailing, UIScreen.screenWidth/60)
+                    Text("Help & Support")
+                        .foregroundColor(.black)
+                        .font(.subheadline)
+                        .fontWeight(.bold)
+                    Spacer()
+                    if showDropDown{
+                        Image(systemName: "chevron.down")
+                            .resizable()
+                            .scaledToFit()
+                            .foregroundColor(.black)
+                            .frame(width: UIScreen.screenHeight/50, height: UIScreen.screenHeight/60)
+                            .padding(.trailing, 20)
+                    }else{
+                        Image(systemName: "chevron.right")
+                            .resizable()
+                            .scaledToFit()
+                            .foregroundColor(.black)
+                            .frame(width: UIScreen.screenHeight/50, height: UIScreen.screenHeight/60)
+                            .padding(.trailing, 20)
+                    }
+                }
+            })
+            .frame(width: UIScreen.screenWidth/1.4, height: UIScreen.screenHeight/30)
+            .padding(.vertical, 7)
+            .background(.white)
+            .cornerRadius(7)
+            .clipped()
+            .shadow(color: .black.opacity(0.2), radius: 5, x: 2, y: 2)
+            
+            if showDropDown{
+                //        Button(action: {
+                //            navigateToChatWithUsView.toggle()
+                //        }, label: {
+                //            HStack{
+                //                Image("SidebarChatWithUs")
+                //                    .resizable()
+                //                    .scaledToFit()
+                //                    .frame(width: UIScreen.screenHeight/50, height: UIScreen.screenHeight/50)
+                //                    .padding(.leading, UIScreen.screenWidth/20)
+                //                    .padding(.trailing, UIScreen.screenWidth/60)
+                //                Text("Chat With Us")
+                //                    .foregroundColor(.black)
+                ////                                    .font(.system(size: 19))
+                //                    .fontWeight(.bold)
+                //                Spacer()
+                //
+                //            }
+                //        })
+                //        .frame(width: UIScreen.screenWidth/1.6, height: UIScreen.screenHeight/30)
+                //        .padding(.vertical, 7)
+                //        .background(lightGreyUi)
+                //        .cornerRadius(7)
+                //        .clipped()
+                //        .shadow(color: Color.black.opacity(0.5), radius: 5)
+                //        .navigationDestination(isPresented: $navigateToChatWithUsView, destination: {
+                //            ChatWithUsView()
+                //        })
                 
+                Button(action: {
+                    isShowingMailView.toggle()
+                }, label: {
+                    HStack{
+                        Image("SidebarDropUsAMail")
+                            .resizable()
+                            .scaledToFit()
+                            .frame(width: UIScreen.screenHeight/50, height: UIScreen.screenHeight/50)
+                            .padding(.leading, UIScreen.screenWidth/20)
+                            .padding(.trailing, UIScreen.screenWidth/60)
+                        Text("Drop Us A Mail")
+                            .foregroundColor(.black)
+                            .font(.subheadline)
+                            .fontWeight(.bold)
+                        Spacer()
+                        
+                    }
+                })
+                .frame(width: UIScreen.screenWidth/1.6, height: UIScreen.screenHeight/30)
+                .padding(.vertical, 7)
+                .background(lightGreyUi)
+                .cornerRadius(7)
+                .clipped()
+                .shadow(color: .black.opacity(0.2), radius: 5, x: 2, y: 2)
+                .sheet(isPresented: $isShowingMailView) {
+                    MailView(isShowingMailView: $isShowingMailView,
+                             recipient: "rown@retvensservices.com",
+                             subject: "", body: "")
+                }
+                
+                
+                
+                Button(action: {
+                    navigateToFAQsView = true
+                }, label: {
+                    HStack{
+                        Image("SidebarFAQs")
+                            .resizable()
+                            .scaledToFit()
+                            .frame(width: UIScreen.screenHeight/50, height: UIScreen.screenHeight/50)
+                            .padding(.leading, UIScreen.screenWidth/20)
+                            .padding(.trailing, UIScreen.screenWidth/60)
+                        Text("FAQ's")
+                            .foregroundColor(.black)
+                            .font(.subheadline)
+                            .fontWeight(.bold)
+                        Spacer()
+                        
+                    }
+                })
+                .frame(width: UIScreen.screenWidth/1.6, height: UIScreen.screenHeight/30)
+                .padding(.vertical, 7)
+                .background(lightGreyUi)
+                .cornerRadius(7)
+                .clipped()
+                .shadow(color: .black.opacity(0.2), radius: 5, x: 2, y: 2)
+                .navigationDestination(isPresented: $navigateToFAQsView, destination: {
+                    FAQsView(globalVM: globalVM)
+                })
+                NavigationLink(isActive: $navigateToFAQsView, destination: {
+                    FAQsView(globalVM: globalVM)
+                }, label: {
+                    Text("")
+                })
+                
+                Button(action: {
+                    navigateToSpottedABugView = true
+                }, label: {
+                    HStack{
+                        Image("SidebarSpottedABug")
+                            .resizable()
+                            .scaledToFit()
+                            .frame(width: UIScreen.screenHeight/50, height: UIScreen.screenHeight/50)
+                            .padding(.leading, UIScreen.screenWidth/20)
+                            .padding(.trailing, UIScreen.screenWidth/60)
+                        Text("Spotted A Bug ?")
+                            .foregroundColor(.black)
+                            .font(.subheadline)
+                            .fontWeight(.bold)
+                        Spacer()
+                        
+                    }
+                })
+                .frame(width: UIScreen.screenWidth/1.6, height: UIScreen.screenHeight/30)
+                .padding(.vertical, 7)
+                .background(lightGreyUi)
+                .cornerRadius(7)
+                .clipped()
+                .shadow(color: .black.opacity(0.2), radius: 5, x: 2, y: 2)
+                .navigationDestination(isPresented: $navigateToSpottedABugView, destination: {
+                    SpottedABugView(globalVM: globalVM)
+                })
+                NavigationLink(isActive: $navigateToSpottedABugView, destination: {
+                    SpottedABugView(globalVM: globalVM)
+                }, label: {
+                    Text("")
+                })
             }
-        })
-        .frame(width: UIScreen.screenWidth/1.6, height: UIScreen.screenHeight/30)
-        .padding(.vertical, 7)
-        .background(lightGreyUi)
-        .cornerRadius(7)
-        .clipped()
-        .shadow(color: .black.opacity(0.2), radius: 5, x: 2, y: 2)
-        .sheet(isPresented: $isShowingMailView) {
-            MailView(isShowingMailView: $isShowingMailView,
-                     recipient: "rown@retvensservices.com",
-            subject: "", body: "")
         }
-        
-        
-        
-        Button(action: {
-            navigateToFAQsView.toggle()
-        }, label: {
-            HStack{
-                Image("SidebarFAQs")
-                    .resizable()
-                    .scaledToFit()
-                    .frame(width: UIScreen.screenHeight/50, height: UIScreen.screenHeight/50)
-                    .padding(.leading, UIScreen.screenWidth/20)
-                    .padding(.trailing, UIScreen.screenWidth/60)
-                Text("FAQ's")
-                    .foregroundColor(.black)
-                    .font(.subheadline)
-                    .fontWeight(.bold)
-                Spacer()
-                
-            }
-        })
-        .frame(width: UIScreen.screenWidth/1.6, height: UIScreen.screenHeight/30)
-        .padding(.vertical, 7)
-        .background(lightGreyUi)
-        .cornerRadius(7)
-        .clipped()
-        .shadow(color: .black.opacity(0.2), radius: 5, x: 2, y: 2)
-        .navigationDestination(isPresented: $navigateToFAQsView, destination: {
-            FAQsView(globalVM: globalVM)
-        })
-        
-        Button(action: {
-            navigateToSpottedABugView.toggle()
-        }, label: {
-            HStack{
-                Image("SidebarSpottedABug")
-                    .resizable()
-                    .scaledToFit()
-                    .frame(width: UIScreen.screenHeight/50, height: UIScreen.screenHeight/50)
-                    .padding(.leading, UIScreen.screenWidth/20)
-                    .padding(.trailing, UIScreen.screenWidth/60)
-                Text("Spotted A Bug ?")
-                    .foregroundColor(.black)
-                    .font(.subheadline)
-                    .fontWeight(.bold)
-                Spacer()
-                
-            }
-        })
-        .frame(width: UIScreen.screenWidth/1.6, height: UIScreen.screenHeight/30)
-        .padding(.vertical, 7)
-        .background(lightGreyUi)
-        .cornerRadius(7)
-        .clipped()
-        .shadow(color: .black.opacity(0.2), radius: 5, x: 2, y: 2)
-        .navigationDestination(isPresented: $navigateToSpottedABugView, destination: {
-            SpottedABugView(globalVM: globalVM)
-        })
+        .onAppear{
+            navigateToFAQsView = false
+            navigateToSpottedABugView = false
+        }
     }
-    
-    }
-    }
+}

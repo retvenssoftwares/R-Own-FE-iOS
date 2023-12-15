@@ -39,7 +39,7 @@ struct BlockedUsersTab: View {
                         if res == "Success"{
                             globalVM.blockedUserList.remove(at: count)
                             
-                            mesiboVM.mesiboSetTPPUser(globalVM.blockedUserList[count].mesiboAccount.address)
+                            mesiboVM.mesiboSetTPPUser(blockedUser.mesiboAccount.address)
                             mesiboVM.mProfile.block(false)
                             mesiboVM.mProfile.save()
                             

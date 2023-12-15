@@ -477,6 +477,8 @@ class ExploreService: ObservableObject{
                     for i in 0..<decodedData[0].posts.count {
                         DispatchQueue.main.async {
                             globalVM.exploreSearchPeopleList[0].posts.append(decodedData[0].posts[i])
+                            print(decodedData[0].posts[i].fullName)
+                            print(globalVM.exploreSearchPeopleList[0].posts)
                         }
                     }
                     globalVM.toastSearchLoading.toggle()

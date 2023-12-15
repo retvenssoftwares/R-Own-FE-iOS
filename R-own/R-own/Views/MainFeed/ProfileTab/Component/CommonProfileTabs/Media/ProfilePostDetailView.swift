@@ -113,70 +113,7 @@ struct ProfilePostDetailView: View {
                                     Text("Edit your post")
                                         .font(.headline)
                                     VStack{
-                                        //                                VStack(alignment: .leading){
-                                        //                                    Text(loginData.mainUserFullName)
-                                        //                                        .font(.system(size: UIScreen.screenHeight/60))
-                                        //                                        .fontWeight(.bold)
-                                        //                                    HStack{
-                                        //                                        HStack{
-                                        //                                            Image("PostsCanSeeIcon")
-                                        //                                                .resizable()
-                                        //                                                .scaledToFit()
-                                        //                                                .frame(width: UIScreen.screenHeight/80, height: UIScreen.screenHeight/80)
-                                        //
-                                        //                                            if canSeeAudienceName == "" {
-                                        //                                                Text("Can See")
-                                        //                                                    .font(.system(size: UIScreen.screenHeight/90))
-                                        //                                            } else {
-                                        //                                                Text(canSeeAudienceName)
-                                        //                                                    .font(.system(size: UIScreen.screenHeight/90))
-                                        //                                            }
-                                        //
-                                        //                                            Image(systemName: "chevron.down")
-                                        //                                                .resizable()
-                                        //                                                .scaledToFit()
-                                        //                                                .frame(width: UIScreen.screenHeight/100, height: UIScreen.screenHeight/100)
-                                        //                                        }
-                                        //                                        .padding(5)
-                                        //                                        .background(.white)
-                                        //                                        .cornerRadius(5)
-                                        //                                        .overlay(RoundedRectangle(cornerRadius: 10)
-                                        //                                            .stroke(.black, lineWidth: 1))
-                                        //                                        .onTapGesture {
-                                        //                                            createPostVM.canSeeAudienceBottomSheet.toggle()
-                                        //                                        }
-                                        //                                        HStack{
-                                        //                                            Image("PostsCanCommentIcon")
-                                        //                                                .resizable()
-                                        //                                                .scaledToFit()
-                                        //                                                .frame(width: UIScreen.screenHeight/80, height: UIScreen.screenHeight/80)
-                                        //
-                                        //
-                                        //                                            if canCommentAudienceName == "" {
-                                        //                                                Text("Can Comment")
-                                        //                                                    .font(.system(size: UIScreen.screenHeight/90))
-                                        //                                            } else {
-                                        //                                                Text(canCommentAudienceName)
-                                        //                                                    .font(.system(size: UIScreen.screenHeight/90))
-                                        //                                            }
-                                        //
-                                        //                                            Image(systemName: "chevron.down")
-                                        //                                                .resizable()
-                                        //                                                .scaledToFit()
-                                        //                                                .frame(width: UIScreen.screenHeight/100, height: UIScreen.screenHeight/100)
-                                        //                                        }
-                                        //                                        .padding(5)
-                                        //                                        .background(.white)
-                                        //                                        .cornerRadius(5)
-                                        //                                        .overlay(RoundedRectangle(cornerRadius: 10)
-                                        //                                            .stroke(.black, lineWidth: 1))
-                                        //                                        .onTapGesture {
-                                        //                                            createPostVM.canCommentAudienceBottomSheet.toggle()
-                                        //                                        }
-                                        //                                    }
-                                        //                                }
                                         
-//                                        AutoFetchLocationTab(autoLocation: $post.location, loginData: loginData, globalVM: globalVM, width: UIScreen.screenWidth/1.2)
                                         
                                         TextEditor(text: $post.caption)
                                             .frame(width: UIScreen.screenWidth/1.2, height: UIScreen.screenWidth/5)
@@ -798,7 +735,7 @@ struct ProfilePostDetailView: View {
                             .padding(.vertical, UIScreen.screenHeight/70)
                             .padding(.horizontal, UIScreen.screenWidth/30)
                             .onTapGesture {
-                                navigateToLikedUserListScreen.toggle()
+                                navigateToLikedUserListScreen = true
                             }
                             .navigationDestination(isPresented: $navigateToLikedUserListScreen, destination: {
                                 LikedUserListView(globalVM: globalVM, postID: post.postID, loginData: loginData, profileVM: profileVM, mesiboVM: mesiboVM)
@@ -806,7 +743,9 @@ struct ProfilePostDetailView: View {
                             
                             NavigationLink(isActive: $navigateToLikedUserListScreen, destination: {
                                 LikedUserListView(globalVM: globalVM, postID: post.postID, loginData: loginData, profileVM: profileVM, mesiboVM: mesiboVM)
-                            }, label: {Text("")})
+                            }, label: {
+                                Text("")}
+                            )
                             
                             Spacer()
                         }
@@ -821,6 +760,8 @@ struct ProfilePostDetailView: View {
         }
         .navigationBarBackButtonHidden()
         .onAppear{
+            navigateToProfileView = false
+            navigateToLikedUserListScreen = false
             mainfeedService.getCommentPost(globalVM: globalVM, postID: post.postID)
         }
     }

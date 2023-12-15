@@ -102,15 +102,12 @@ struct NormalProfileFPPPollsView: View {
                 if mainUser{
                     HStack{
                         Spacer()
-                        NavigationLink(isActive: $navigateToPollsListView, destination: {
-                            VotersListView(post: post, globalVM: globalVM, loginData: loginData, profileVM: profileVM, mesiboVM: mesiboVM)
-                        }, label: {Text("")})
                         
                         Button(action: {
                             print("opening bottom sheet to check votes")
                             globalVM.getPollVotes = [PollVotesModel]()
                             profileService.getPollVotes(globalVM: globalVM, postID: post.postID)
-                            navigateToPollsListView.toggle()
+                            navigateToPollsListView = true
                         }, label: {
                             Text("Check Votes")
                                 .font(.body)
@@ -123,7 +120,11 @@ struct NormalProfileFPPPollsView: View {
                         .navigationDestination(isPresented: $navigateToPollsListView, destination: {
                             VotersListView(post: post, globalVM: globalVM, loginData: loginData, profileVM: profileVM, mesiboVM: mesiboVM)
                         })
-                        
+                        NavigationLink(isActive: $navigateToPollsListView, destination: {
+                            VotersListView(post: post, globalVM: globalVM, loginData: loginData, profileVM: profileVM, mesiboVM: mesiboVM)
+                        }, label: {
+                            Text("")
+                        })
                         Spacer()
                     }
                 }
@@ -202,6 +203,8 @@ struct NormalProfileFPPPollsView: View {
             })
         }
         .onAppear{
+            navigateToVotersList = false
+            navigateToPollsListView = false
             for i in 0..<post.pollQuestion[0].options.count {
                 totalVotes += post.pollQuestion[0].options[i].votes!.count
             }

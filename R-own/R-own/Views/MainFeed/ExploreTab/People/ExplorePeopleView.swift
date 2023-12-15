@@ -22,6 +22,7 @@ struct ExplorePeopleView: View {
     
     @State var counter1: Int = 1
     @State var counter2: Int = 1
+    @State var isLoading: Bool = false
     
     var body: some View {
         NavigationStack{
@@ -80,33 +81,37 @@ struct ExplorePeopleView: View {
                                 }
                             }
                         } else {
-                            if globalVM.exploreSearchPeopleList.count > 0 {
-                                ForEach(0..<globalVM.exploreSearchPeopleList[0].posts.count, id: \.self) { id in
-                                    if globalVM.exploreSearchPeopleList[0].posts[id].displayStatus == "1"{
-                                        if globalVM.exploreSearchPeopleList[0].posts[id].userID != loginData.mainUserID {
-                                            if globalVM.exploreSearchPeopleList[0].posts[id].fullName != "" {
-                                                ExplorePeopleSearchListView(loginData: loginData, people: globalVM.exploreSearchPeopleList[0].posts[id], globalVM: globalVM, profileVM: profileVM, mesiboVM: mesiboVM)
-                                                    .onAppear{
-                                                        if globalVM.exploreSearchPeopleList[0].posts.count > 6 {
-                                                            if id == globalVM.exploreSearchPeopleList[0].posts.count - 2 {
-                                                                counter2 = counter2 + 1
-                                                                exploreService.getExplorePeopleBySearch(globalVM: globalVM, userID: loginData.mainUserID, keyword: exploreVM.explorePeopleSearchText, pageNumber: String(counter2))
+                            if isLoading {
+                                ProgressView()
+                            } else {
+                                if globalVM.exploreSearchPeopleList.count > 0 {
+                                    ForEach(0..<globalVM.exploreSearchPeopleList[0].posts.count, id: \.self) { id in
+                                        if globalVM.exploreSearchPeopleList[0].posts[id].displayStatus == "1"{
+                                            if globalVM.exploreSearchPeopleList[0].posts[id].userID != loginData.mainUserID {
+                                                if globalVM.exploreSearchPeopleList[0].posts[id].fullName != "" {
+                                                    ExplorePeopleSearchListView(loginData: loginData, people: globalVM.exploreSearchPeopleList[0].posts[id], globalVM: globalVM, profileVM: profileVM, mesiboVM: mesiboVM)
+                                                        .onAppear{
+                                                            if globalVM.exploreSearchPeopleList[0].posts.count > 6 {
+                                                                if id == globalVM.exploreSearchPeopleList[0].posts.count - 2 {
+                                                                    counter2 = counter2 + 1
+                                                                    exploreService.getExplorePeopleBySearch(globalVM: globalVM, userID: loginData.mainUserID, keyword: exploreVM.explorePeopleSearchText, pageNumber: String(counter2))
+                                                                }
                                                             }
                                                         }
-                                                    }
-                                                Divider()
+                                                    Divider()
+                                                }
                                             }
                                         }
                                     }
-                                }
-                            } else {
-                                VStack{
-                                    Spacer()
-                                    Image("NothingToSeeHereIllustration")
-                                        .resizable()
-                                        .scaledToFit()
-                                        .frame(width: UIScreen.screenWidth/1.5, height: UIScreen.screenHeight/2)
-                                    Spacer()
+                                } else {
+                                    VStack{
+                                        Spacer()
+                                        Image("NothingToSeeHereIllustration")
+                                            .resizable()
+                                            .scaledToFit()
+                                            .frame(width: UIScreen.screenWidth/1.5, height: UIScreen.screenHeight/2)
+                                        Spacer()
+                                    }
                                 }
                             }
                         }
@@ -133,7 +138,13 @@ struct ExplorePeopleView: View {
         if globalVM.toastSearchLoading == false {
             globalVM.toastSearchLoading.toggle()
         }
+        isLoading = true
+        
         exploreService.getExplorePeopleBySearch(globalVM: globalVM, userID: loginData.mainUserID, keyword: exploreVM.explorePeopleSearchText, pageNumber: String(1))
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+            isLoading = false
+        }
+        
     }
 }
 

@@ -38,10 +38,15 @@ struct ProfileSettingView: View {
                         .padding(.vertical, UIScreen.screenHeight/80)
                         .padding(.horizontal, UIScreen.screenWidth/40)
                         .onTapGesture {
-                            navigateToAccountSetting.toggle()
+                            navigateToAccountSetting = true
                         }
                         .navigationDestination(isPresented: $navigateToAccountSetting, destination: {
                             AccountSettingView(loginData: loginData, globalVM: globalVM)
+                        })
+                        NavigationLink(isActive: $navigateToAccountSetting, destination: {
+                            AccountSettingView(loginData: loginData, globalVM: globalVM)
+                        }, label: {
+                            Text("")
                         })
                         Divider()
                     }
@@ -87,7 +92,7 @@ struct ProfileSettingView: View {
 //                    }
                     VStack(alignment: .leading){
                         Button(action: {
-                            navigateToBlockedUserList.toggle()
+                            navigateToBlockedUserList = true
                         }, label: {
                             HStack{
                                 Image(systemName: "nosign")
@@ -106,6 +111,11 @@ struct ProfileSettingView: View {
                         .navigationDestination(isPresented: $navigateToBlockedUserList, destination: {
                             BlockedUsersListView(loginData: loginData, globalVM: globalVM, mesiboVM: mesiboVM)
                         })
+                        NavigationLink(isActive: $navigateToBlockedUserList, destination: {
+                            BlockedUsersListView(loginData: loginData, globalVM: globalVM, mesiboVM: mesiboVM)
+                        }, label: {
+                            Text("")
+                        })
                         Divider()
                     }
                     VStack(alignment: .leading){
@@ -121,10 +131,15 @@ struct ProfileSettingView: View {
                         .padding(.vertical, UIScreen.screenHeight/80)
                         .padding(.horizontal, UIScreen.screenWidth/40)
                         .onTapGesture {
-                            navigateToVerificationSetting.toggle()
+                            navigateToVerificationSetting = true
                         }
                         .navigationDestination(isPresented: $navigateToVerificationSetting, destination: {
                             VerificationSettingView(loginData: loginData, globalVM: globalVM, profileVM: profileVM)
+                        })
+                        NavigationLink(isActive: $navigateToVerificationSetting, destination: {
+                            VerificationSettingView(loginData: loginData, globalVM: globalVM, profileVM: profileVM)
+                        }, label: {
+                            Text("")
                         })
                         Divider()
                     }
@@ -133,6 +148,11 @@ struct ProfileSettingView: View {
             }
         }
         .navigationBarBackButtonHidden()
+        .onAppear{
+            navigateToAccountSetting = false
+            navigateToBlockedUserList = false
+            navigateToVerificationSetting = false
+        }
     }
 }
 

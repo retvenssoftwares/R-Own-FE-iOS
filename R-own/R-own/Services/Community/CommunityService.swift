@@ -316,7 +316,63 @@ class CommunityService: ObservableObject{
         })
     }
 
+    
+    // MARK: - multipart service
 
+    func updateNewGroupInfo(loginData: LoginViewModel, communityVM: CommunityViewModel, groupID: String, communityName: String, commuinityDescp: String, communityImage: UIImage?, completion: @escaping (Result<String, Error>) -> Void) {
+        // Set Your URL
+        print("Starting to update group/ community info")
+        let api_url = "http://64.227.150.47/main/editGroup"
+        guard let url = URL(string: api_url) else {
+            completion(.failure(NSError(domain: "Invalid URL", code: -1, userInfo: nil)))
+            return
+        }
+
+        var urlRequest = URLRequest(url: url, cachePolicy: .reloadIgnoringLocalAndRemoteCacheData, timeoutInterval: 10.0 * 1000)
+        urlRequest.httpMethod = "PATCH"
+
+        // Set Image Data
+        // Now Execute
+        AF.upload(multipartFormData: { multiPart in
+            if groupID != "" {
+                multiPart.append((groupID).data(using: String.Encoding.utf8)!, withName: "grp_id")
+            }
+            if communityName != "" {
+                multiPart.append((communityName).data(using: String.Encoding.utf8)!, withName: "attribute")
+            }
+            if commuinityDescp != "" {
+                multiPart.append((commuinityDescp).data(using: String.Encoding.utf8)!, withName: "description")
+            }
+            if let image = communityImage {
+                if let imageData = image.jpegData(compressionQuality: 0.5) {
+                    multiPart.append(imageData, withName: "image", fileName: randomString(length: 6) + "groupProfilePic.png", mimeType: "image/png")
+                }
+            }
+        }, with: urlRequest)
+        .uploadProgress(queue: .main, closure: { progress in
+            // Current upload progress of file
+            print("Upload Progress: \(progress.fractionCompleted)")
+        })
+        .responseJSON(completionHandler: { response in
+            switch response.result {
+            case .success:
+                if let data = response.data {
+                    do {
+                        let dictionary = try JSONSerialization.jsonObject(with: data, options: .fragmentsAllowed) as! NSDictionary
+                        print("Success! Community Updated")
+                        print(dictionary)
+                        completion(.success("Success"))
+                    } catch {
+                        print("Catch error")
+                        completion(.failure(error))
+                    }
+                }
+            case .failure(let error):
+                print("Failure")
+                completion(.failure(error))
+            }
+        })
+    }
     
     
     // MARK: - patch service
@@ -690,5 +746,137 @@ class CommunityService: ObservableObject{
             return "Failure: \(error.localizedDescription)"
         }
     }
+    
+    
+    
+    
+    // MARK: - multipart service
 
+
+    func sendGroupNotificationWithImage(loginData: LoginViewModel, title: String, body: String, groupID: String, senderUserID: String, messageImage: UIImage?) {
+    //        let userphonenumber: Int = (loginData.mainUserPhoneNumber.deletingPrefix("+") as NSString).integerValue
+        //Set Your URL
+            let api_url = "http://64.227.150.47/main/sendGroupNotification"
+        
+            guard let url = URL(string: api_url) else {
+                print("wrong url")
+                return
+            }
+    
+            var urlRequest = URLRequest(url: url, cachePolicy: .reloadIgnoringLocalAndRemoteCacheData, timeoutInterval: 10.0 * 1000)
+            urlRequest.httpMethod = "POST"
+            urlRequest.addValue("application/json", forHTTPHeaderField: "Accept")
+    
+            //Set Image Data
+           // Now Execute
+            AF.upload(multipartFormData: { multiPart in
+                multiPart.append((title).data(using: String.Encoding.utf8)!, withName: "title")
+                print(22)
+                multiPart.append((body).data(using: String.Encoding.utf8)!, withName: "body")
+                print(23)
+                multiPart.append((groupID).data(using: String.Encoding.utf8)!, withName: "group_id")
+                print(24)
+                multiPart.append((senderUserID).data(using: String.Encoding.utf8)!, withName: "sender_user_id")
+                print(25)
+                if let image = messageImage {
+                    if let imageData = image.jpegData(compressionQuality: 0.3) {
+                        multiPart.append(imageData, withName: "image", fileName: randomString(length: 6) + "groupMessageImage.png", mimeType: "image/png")
+                    }
+                }
+            }, with: urlRequest)
+                .uploadProgress(queue: .main, closure: { progress in
+                    //Current upload progress of file
+                    print("Upload Progress: \(progress.fractionCompleted)")
+                })
+                .responseJSON(completionHandler: { data in
+    
+                           switch data.result {
+    
+                           case .success(_):
+    
+                            do {
+    
+                            let dictionary = try JSONSerialization.jsonObject(with: data.data!, options: .fragmentsAllowed) as! NSDictionary
+    
+                                print("Success!")
+                                print(dictionary)
+                           }
+                           catch {
+                              // catch error.
+                            print("catch error")
+    
+                                  }
+                            break
+    
+                           case .failure(_):
+                            print("failure")
+    
+                            break
+    
+                        }
+    
+    
+                })
+    }
+
+    // MARK: - post service
+
+    func sendGroupNotificationWithoutImage(loginData: LoginViewModel, title: String, body: String, groupID: String, senderUserID: String) {
+    
+        //Updating the user Interest
+        print("Starting to send message without image")
+        
+        guard let url = URL(string: "http://64.227.150.47/main/sendGroupNotificationWithoutImage") else {
+            print("Error: cannot create URL")
+            return
+        }
+    
+        // Create & Add data to the model
+        let body: [String: AnyHashable] = [
+            "title": title,
+            "body": body,
+            "group_id": groupID,
+            "sender_user_id": senderUserID
+        ]
+    
+    
+    
+        // Create the request
+        var request = URLRequest(url: url)
+        request.httpMethod = "POST"
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+    
+        // Convert request to JSON data
+        request.httpBody = try? JSONSerialization.data(withJSONObject: body, options: .fragmentsAllowed)
+    
+        let task = URLSession.shared.dataTask(with: request) { data, response, error in
+    
+            DispatchQueue.main.async {
+                guard error == nil else {
+                    print("Error: error calling PATCH")
+                    print(error!)
+                    return
+                }
+                guard let data = data else {
+                    print("Error: Did not receive data")
+                    return
+                }
+                guard let response = response as? HTTPURLResponse, (200 ..< 299) ~= response.statusCode else {
+                    print("Error: HTTP request failed")
+                    return
+                }
+                do {
+                    let decoder = JSONDecoder()
+                    let decodedData = try decoder.decode(NormalMessageResponse.self, from: data)
+    
+                    print("sent notification")
+                } catch {
+                    print("Error: Trying to convert JSON data to string")
+                    return
+                }
+            }
+        }
+        task.resume()
+    
+    }
 }

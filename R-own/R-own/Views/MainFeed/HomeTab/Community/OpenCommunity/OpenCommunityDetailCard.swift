@@ -63,7 +63,7 @@ struct OpenCommunityDetailCard: View {
                         
                         if joinToggle {
                             Button(action: {
-                                navigateToGroupDetailView.toggle()
+                                navigateToGroupDetailView = true
                             }, label: {
                                 Text("VIEW")
                                     .font(.footnote)
@@ -77,9 +77,14 @@ struct OpenCommunityDetailCard: View {
                             .navigationDestination(isPresented: $navigateToGroupDetailView, destination: {
                                 GroupMessageDetailsView(loginData: loginData, communityVM: communityVM, mesiboVM: mesiboVM, groupID: community.groupID, globalVM: globalVM, profileVM: profileVM, memberStatus: true)
                             })
+                            NavigationLink(isActive: $navigateToGroupDetailView, destination: {
+                                GroupMessageDetailsView(loginData: loginData, communityVM: communityVM, mesiboVM: mesiboVM, groupID: community.groupID, globalVM: globalVM, profileVM: profileVM, memberStatus: true)
+                            }, label: {
+                                Text("")
+                            })
                         } else {
                             Button(action: {
-                                navigateToGroupChatView.toggle()
+                                navigateToGroupChatView = true
                             }, label: {
                                 Text("CHAT")
                                     .font(.footnote)
@@ -92,6 +97,11 @@ struct OpenCommunityDetailCard: View {
                             })
                             .navigationDestination(isPresented: $navigateToGroupChatView, destination: {
                                 GroupMessageView(loginData: loginData, communityVM: communityVM, mesiboVM: mesiboVM, groupID: community.groupID, communityName: community.groupName, communityPic: community.profilePic, globalVM: globalVM, profileVM: profileVM)
+                            })
+                            NavigationLink(isActive: $navigateToGroupChatView, destination: {
+                                GroupMessageView(loginData: loginData, communityVM: communityVM, mesiboVM: mesiboVM, groupID: community.groupID, communityName: community.groupName, communityPic: community.profilePic, globalVM: globalVM, profileVM: profileVM)
+                            }, label: {
+                                Text("")
                             })
                         }
                     }
@@ -120,6 +130,10 @@ struct OpenCommunityDetailCard: View {
             .padding(.vertical, UIScreen.screenHeight/70)
             
             Divider()
+        }
+        .onAppear{
+            navigateToGroupChatView = false
+            navigateToGroupDetailView = false
         }
     }
 }

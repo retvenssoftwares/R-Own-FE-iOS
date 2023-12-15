@@ -45,13 +45,19 @@ struct GroupTabView: View {
             .background(.white.opacity(0.1))
             .frame(width: UIScreen.screenWidth)
             .onTapGesture {
-                navigateToChatView.toggle()
+                navigateToChatView = true
             }
             .navigationDestination(isPresented: $navigateToChatView, destination: {
                 MessageView(loginData: loginData, mesiboAddress: (message.profile!.getAddress())!, mesiboData: mesiboData, profileVM: profileVM, globalVM: globalVM)
             })
+            NavigationLink(isActive: $navigateToChatView, destination: {
+                MessageView(loginData: loginData, mesiboAddress: (message.profile!.getAddress())!, mesiboData: mesiboData, profileVM: profileVM, globalVM: globalVM)
+            }, label: {
+                Text("")
+            })
         }
         .onAppear{
+            navigateToChatView = false
         }
     }
 }

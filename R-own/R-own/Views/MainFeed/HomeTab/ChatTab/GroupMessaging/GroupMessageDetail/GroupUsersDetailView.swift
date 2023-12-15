@@ -169,7 +169,7 @@ struct GroupUsersDetailView: View {
                             Button(action: {
                                 selectedUserType = "Normal User"
                                 selectedUserNav = "View all other members"
-                                navigateToUserDetailList.toggle()
+                                navigateToUserDetailList = true
                             }, label: {
                                 HStack{
                                     Text("View all the other members")
@@ -200,6 +200,7 @@ struct GroupUsersDetailView: View {
             .padding(.horizontal, UIScreen.screenWidth/30)
         }
         .onAppear{
+            navigateToUserDetailList = false
         }
     }
 }

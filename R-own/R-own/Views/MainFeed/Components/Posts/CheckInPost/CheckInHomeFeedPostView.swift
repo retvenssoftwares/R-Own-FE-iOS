@@ -44,22 +44,21 @@ struct CheckInHomeFeedPostView: View {
                             VStack{
                                 HStack{
                                     //profilepic
-                                    NavigationLink(destination: {
-                                        ProfileView(loginData: loginData, profileVM: profileVM, globalVM: globalVM, mesiboVM: mesiboVM, role: post.role!, mainUser: false, userID: post.userID)
-                                    }, label: {
-                                        ProfilePictureView(profilePic: post.profilePic ?? "", verified: post.verificationStatus == "true" ? true : false, height: UIScreen.screenHeight/15, width: UIScreen.screenHeight/15)
-                                    })
+                                    ProfilePictureView(profilePic: post.profilePic ?? "", verified: post.verificationStatus == "true" ? true : false, height: UIScreen.screenHeight/15, width: UIScreen.screenHeight/15)
+                                        .onTapGesture {
+                                            navigateToProfileView = true
+                                        }
                                     VStack(alignment: .leading) {
                                         //name
-                                        NavigationLink(destination: {
-                                            ProfileView(loginData: loginData, profileVM: profileVM, globalVM: globalVM, mesiboVM: mesiboVM, role: post.role!, mainUser: false, userID: post.userID)
-                                        }, label: {
-                                            Text(post.fullName!)
-                                                .foregroundColor(.black)
-                                                .font(.headline)
-                                                .fontWeight(.bold)
-                                                .frame(alignment: .leading)
-                                        })
+                                        Text(post.fullName!)
+                                            .foregroundColor(.black)
+                                            .font(.headline)
+                                            .fontWeight(.bold)
+                                            .frame(alignment: .leading)
+                                            .onTapGesture {
+                                                navigateToProfileView = true
+                                            }
+                                        
                                         //profile
                                         if post.jobTitle != "" {
                                             Text(post.jobTitle == "" ? "" : post.jobTitle)
@@ -77,6 +76,11 @@ struct CheckInHomeFeedPostView: View {
                                                 .frame(alignment: .leading)
                                         }
                                     }
+                                    NavigationLink(isActive: $navigateToProfileView, destination: {
+                                        ProfileView(loginData: loginData, profileVM: profileVM, globalVM: globalVM, mesiboVM: mesiboVM, role: post.role!, mainUser: false, userID: post.userID)
+                                    }, label: {
+                                        Text("")
+                                    })
                                     Spacer()
                                     //time
                                     Text(relativeTime(from: post.dateAdded) ?? "")
@@ -101,9 +105,6 @@ struct CheckInHomeFeedPostView: View {
                                     Spacer()
                                 }
                                 
-                                NavigationLink(destination: {
-                                    ExploreHotelDetailView(globalVM: globalVM, hotelID: post.hotelID ?? "", savedStatus: $savedStatus)
-                                }, label: {
                                     AsyncImage(url: currentUrl) { image in
                                         image
                                             .resizable()
@@ -125,13 +126,21 @@ struct CheckInHomeFeedPostView: View {
                                             .cornerRadius(15)
                                             .shimmering(active: true)
                                     }
+                                    .onTapGesture {
+                                        navigateToHotelDetail = true
+                                    }
                                     .onAppear {
+                                        
                                         if currentUrl == nil {
                                             DispatchQueue.main.async {
                                                 currentUrl = URL(string: post.hotelCoverpicURL ?? "")
                                             }
                                         }
                                     }
+                                NavigationLink(isActive: $navigateToHotelDetail, destination: {
+                                    ExploreHotelDetailView(globalVM: globalVM, hotelID: post.hotelID ?? "", savedStatus: $savedStatus)
+                                }, label: {
+                                    Text("")
                                 })
                                 
                             }
@@ -294,6 +303,10 @@ struct CheckInHomeFeedPostView: View {
                     }
                 }
             }
+        }
+        .onAppear{
+            navigateToHotelDetail = false
+            navigateToProfileView = false
         }
     }
     // Function to get the number of lines for a given text in a given size with a specified font

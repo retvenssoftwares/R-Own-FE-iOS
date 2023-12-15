@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import Shimmer
 
 struct SavedPostsCardView: View {
     
@@ -27,15 +28,20 @@ struct SavedPostsCardView: View {
                     image
                         .resizable()
                         .scaledToFill()
-                        .frame(width: UIScreen.screenWidth/3.5, height: (UIScreen.screenWidth/3.5)*1.33)
+                        .frame(width: UIScreen.screenWidth/3.3, height: (UIScreen.screenWidth/3.3)*1.33)
                         .clipped()
                         .onTapGesture {
                             print("imagePost is tapped")
-                            navigateToImagePostDetailScreen.toggle()
+                            navigateToImagePostDetailScreen = true
                         }
                         .navigationDestination(isPresented: $navigateToImagePostDetailScreen, destination: {
                             SavedPostDetailView(postID: post.postid, loginData: loginData, globalVM: globalVM, profileVM: profileVM, mesiboVM: mesiboVM)
                         })
+                    NavigationLink(isActive: $navigateToImagePostDetailScreen, destination: {
+                        SavedPostDetailView(postID: post.postid, loginData: loginData, globalVM: globalVM, profileVM: profileVM, mesiboVM: mesiboVM)
+                    }, label: {
+                        Text("")
+                    })
                 } placeholder: {
                     Rectangle()
                         .fill(lightGreyUi)
@@ -51,7 +57,9 @@ struct SavedPostsCardView: View {
                 }
             }
         }
-        .padding(10)
+        .onAppear{
+            navigateToImagePostDetailScreen = false
+        }
     }
 }
 

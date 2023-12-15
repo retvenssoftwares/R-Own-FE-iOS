@@ -54,9 +54,12 @@ struct CreatePostSubTabView: View {
                 .clipped()
                 .padding(.vertical, UIScreen.screenHeight/80)
                 .onTapGesture {
-                    navigateToCreatePostView.toggle()
+                    navigateToCreatePostView = true
                 }
             }
+        }
+        .onAppear{
+            navigateToCreatePostView = false
         }
     }
 }

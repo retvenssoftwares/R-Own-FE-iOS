@@ -27,7 +27,7 @@ struct ExplorePeopleListView: View {
                 }
                 .onTapGesture {
                     print("switching to profile view")
-                    switchToProfile.toggle()
+                    switchToProfile = true
                 }
                 
                 VStack(alignment: .leading){
@@ -41,7 +41,7 @@ struct ExplorePeopleListView: View {
                 .padding(.horizontal, UIScreen.screenWidth/30)
                 .onTapGesture {
                     print("switching to profile view")
-                    switchToProfile.toggle()
+                    switchToProfile = true
                 }
                 Spacer()
                 VStack{
@@ -78,6 +78,11 @@ struct ExplorePeopleListView: View {
                                 MessageView(loginData: loginData, mesiboAddress: people.mesiboAccount[0].address, mesiboData: mesiboVM, profileVM: profileVM, globalVM: globalVM)
                             }
                         })
+                        NavigationLink(isActive: $navigateToChat, destination: {
+                            MessageView(loginData: loginData, mesiboAddress: people.mesiboAccount[0].address, mesiboData: mesiboVM, profileVM: profileVM, globalVM: globalVM)
+                        }, label: {
+                            Text("")
+                        })
                     } else if people.connectionStatus == "Confirm Request" {
                         Button(action: {
                             Task {
@@ -112,7 +117,7 @@ struct ExplorePeopleListView: View {
                     
                     Button(action: {
                         print("View..")
-                        switchToProfile.toggle()
+                        switchToProfile = true
                     }, label: {
                         Text("VIEW")
                             .font(.subheadline)
@@ -125,10 +130,19 @@ struct ExplorePeopleListView: View {
                     .navigationDestination(isPresented: $switchToProfile, destination: {
                         ProfileView(loginData: loginData, profileVM: profileVM, globalVM: globalVM, mesiboVM: mesiboVM, role: people.role, mainUser: false, userID: people.userID)
                     })
+                    NavigationLink(isActive: $switchToProfile, destination: {
+                        ProfileView(loginData: loginData, profileVM: profileVM, globalVM: globalVM, mesiboVM: mesiboVM, role: people.role, mainUser: false, userID: people.userID)
+                    }, label: {
+                        Text("")
+                    })
                 }
             }
             .padding(.horizontal, UIScreen.screenWidth/20)
             .padding(.vertical, UIScreen.screenHeight/60)
+        }
+        .onAppear{
+            navigateToChat = false
+            switchToProfile = false
         }
     }
 }

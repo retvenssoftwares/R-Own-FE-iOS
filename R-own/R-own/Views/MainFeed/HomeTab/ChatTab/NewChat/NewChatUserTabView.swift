@@ -49,13 +49,21 @@ struct NewChatUserTabView: View {
             .frame(width: UIScreen.screenWidth)
             .onTapGesture {
                 mesiboData.messageList = [MessageListModel]()
-                navigateToChatView.toggle()
+                navigateToChatView = true
             }
             .navigationDestination(isPresented: $navigateToChatView, destination: {
                 if user.mesiboAccount.count > 0{
                     MessageView(loginData: loginData, mesiboAddress: user.mesiboAccount[0].address, mesiboData: mesiboData, profileVM: profileVM, globalVM: globalVM)
                 }
             })
+            NavigationLink(isActive: $navigateToChatView, destination: {
+                MessageView(loginData: loginData, mesiboAddress: user.mesiboAccount[0].address, mesiboData: mesiboData, profileVM: profileVM, globalVM: globalVM)
+            }, label: {
+                Text("")
+            })
+        }
+        .onAppear{
+            navigateToChatView = false
         }
     }
 }

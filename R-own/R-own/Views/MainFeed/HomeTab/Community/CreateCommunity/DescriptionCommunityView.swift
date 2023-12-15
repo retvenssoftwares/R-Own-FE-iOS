@@ -172,15 +172,20 @@ struct DescriptionCommunityView: View {
                                 }
                                 .onTapGesture {
                                     if communityVM.communityName == "" {
-                                        nameNotPresent.toggle()
+                                        nameNotPresent = true
                                     } else if communityVM.communityDescription == "" {
-                                        descriptionNotPresent.toggle()
+                                        descriptionNotPresent = true
                                     } else {
-                                        navigateToVisibilitySetting.toggle()
+                                        navigateToVisibilitySetting = true
                                     }
                                 }
                                 .padding(.trailing, UIScreen.screenWidth/30)
                                 .navigationDestination(isPresented: $navigateToVisibilitySetting, destination: {VisibilitySettingCommunityView(loginData: loginData, communityVM: communityVM , mesiboVM: mesiboVM, globalVM: globalVM, profileVM: profileVM)})
+                            NavigationLink(isActive: $navigateToVisibilitySetting, destination: {
+                                VisibilitySettingCommunityView(loginData: loginData, communityVM: communityVM , mesiboVM: mesiboVM, globalVM: globalVM, profileVM: profileVM)
+                            }, label: {
+                                Text("")
+                            })
                         }
                         
                     }
@@ -199,6 +204,9 @@ struct DescriptionCommunityView: View {
             globalVM.keyboardVisibility = false
         }
         .navigationBarBackButtonHidden()
+        .onAppear{
+            navigateToVisibilitySetting = false
+        }
     }
 }
 

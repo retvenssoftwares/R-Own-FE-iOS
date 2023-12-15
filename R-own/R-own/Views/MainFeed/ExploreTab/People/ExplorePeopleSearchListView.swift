@@ -17,6 +17,7 @@ struct ExplorePeopleSearchListView: View {
     @StateObject var profileService = ProfileService()
     
     @State var switchToProfile: Bool = false
+    @State var navigateToChat: Bool = false
     
     var body: some View {
         NavigationStack{
@@ -26,7 +27,7 @@ struct ExplorePeopleSearchListView: View {
                 }
                 .onTapGesture {
                     print("switching to profile view")
-                    switchToProfile.toggle()
+                    switchToProfile = true
                 }
                 
                 VStack(alignment: .leading){
@@ -40,7 +41,7 @@ struct ExplorePeopleSearchListView: View {
                 .padding(.horizontal, UIScreen.screenWidth/30)
                 .onTapGesture {
                     print("switching to profile view")
-                    switchToProfile.toggle()
+                    switchToProfile = true
                 }
                 Spacer()
                 VStack{
@@ -62,11 +63,9 @@ struct ExplorePeopleSearchListView: View {
                         })
                     } else if people.connectionStatus == "Connected" {
                         Button(action: {
-                            print("interacting..")
-                            profileService.removeConnection(loginData: loginData, senderID: loginData.mainUserID, receiverID: people.userID)
-                            people.connectionStatus = "Not Connected"
+                            navigateToChat = true
                         }, label: {
-                            Text("REMOVE")
+                            Text("INTERACT")
                                 .font(.subheadline)
                                 .fontWeight(.bold)
                                 .foregroundColor(jobsDarkBlue)
@@ -74,7 +73,33 @@ struct ExplorePeopleSearchListView: View {
                                 .background(greenUi)
                                 .cornerRadius(5)
                         })
-                    } else {
+                        .navigationDestination(isPresented: $navigateToChat, destination: {
+                            if people.mesiboAccount.count > 0 {
+                                MessageView(loginData: loginData, mesiboAddress: people.mesiboAccount[0].address, mesiboData: mesiboVM, profileVM: profileVM, globalVM: globalVM)
+                            }
+                        })
+                        NavigationLink(isActive: $navigateToChat, destination: {
+                            MessageView(loginData: loginData, mesiboAddress: people.mesiboAccount[0].address, mesiboData: mesiboVM, profileVM: profileVM, globalVM: globalVM)
+                        }, label: {
+                            Text("")
+                        })
+                    } else if people.connectionStatus == "Confirm Request" {
+                        Button(action: {
+                            Task {
+                                print("confirming..")
+                                let res = await profileService.acceptRequest(loginData: loginData, senderID: loginData.mainUserID, receiverID: people.userID)
+                                people.connectionStatus = "Connected"
+                            }
+                        }, label: {
+                            Text("CONFIRM")
+                                .font(.subheadline)
+                                .fontWeight(.bold)
+                                .foregroundColor(jobsDarkBlue)
+                                .frame(width: UIScreen.screenWidth/4, height: UIScreen.screenHeight/35)
+                                .background(greenUi)
+                                .cornerRadius(5)
+                        })
+                    } else if people.connectionStatus == "Not Connected"{
                         Button(action: {
                             print("interacting..")
                             profileService.sendRequest(loginData: loginData, senderID: loginData.mainUserID, receiverID: people.userID)
@@ -92,23 +117,32 @@ struct ExplorePeopleSearchListView: View {
                     
                     Button(action: {
                         print("View..")
-                        switchToProfile.toggle()
+                        switchToProfile = true
                     }, label: {
                         Text("VIEW")
                             .font(.subheadline)
                             .fontWeight(.bold)
-                            .foregroundColor(greenUi)
+                            .foregroundColor(jobsDarkBlue)
                             .frame(width: UIScreen.screenWidth/4, height: UIScreen.screenHeight/35)
-                            .background(jobsDarkBlue)
+                            .background(greenUi)
                             .cornerRadius(5)
                     })
                     .navigationDestination(isPresented: $switchToProfile, destination: {
                         ProfileView(loginData: loginData, profileVM: profileVM, globalVM: globalVM, mesiboVM: mesiboVM, role: people.role, mainUser: false, userID: people.userID)
                     })
+                    NavigationLink(isActive: $switchToProfile, destination: {
+                        ProfileView(loginData: loginData, profileVM: profileVM, globalVM: globalVM, mesiboVM: mesiboVM, role: people.role, mainUser: false, userID: people.userID)
+                    }, label: {
+                        Text("")
+                    })
                 }
             }
-            .padding(.horizontal, UIScreen.screenWidth/10)
+            .padding(.horizontal, UIScreen.screenWidth/20)
             .padding(.vertical, UIScreen.screenHeight/60)
+        }
+        .onAppear{
+            navigateToChat = false
+            switchToProfile = false
         }
     }
 }

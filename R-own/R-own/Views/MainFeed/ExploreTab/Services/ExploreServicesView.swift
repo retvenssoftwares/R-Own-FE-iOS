@@ -28,7 +28,6 @@ struct ExploreServicesView: View {
         GridItem(.flexible())
         ]
     
-    
     var body: some View {
             VStack{
                 TextField("Search", text: $exploreVM.exploreServicesSearchText )
@@ -47,9 +46,8 @@ struct ExploreServicesView: View {
                         }
                     }
                     .onChange(of: exploreVM.exploreServicesSearchText) { newValue in
-                        if newValue.count >= 2 {
-                            searchPost()
-                        }
+                        globalVM.exploreSearchServiceList = [ExploreServiceSearchModel(page: 0, pageSize: 0, posts: [ExploreServiceSearch]())]
+                        searchPost()
                     }
                     .focused($isKeyboardShowing)
                 
@@ -86,7 +84,7 @@ struct ExploreServicesView: View {
                                         if globalVM.exploreSearchServiceList[0].posts[id].displayStatus == "1" {
                                             ExploreSearchServicesTabView(vendor: globalVM.exploreSearchServiceList[0].posts[id], loginData: loginData, globalVM: globalVM, profileVM: profileVM, mesiboVM: mesiboVM)
                                                 .onAppear{
-                                                    if globalVM.exploreSearchServiceList[0].posts.count > 4 {
+                                                    if globalVM.exploreSearchServiceList[0].posts.count > 6 {
                                                         if id == globalVM.exploreSearchServiceList[0].posts.count - 2 {
                                                             counter2 = counter2 + 1
                                                             exploreService.getExploreSearchServices(globalVM: globalVM, userID: loginData.mainUserID, pageNumber: String(counter2), keyword: exploreVM.exploreServicesSearchText)
@@ -120,7 +118,6 @@ struct ExploreServicesView: View {
                 }
             } 
             .onChange(of: globalVM.keyboardVisibility) { newValue in
-                
                             isKeyboardShowing = false
                             globalVM.keyboardVisibility = false
             }

@@ -32,12 +32,17 @@ struct PollsTabView: View {
                         //profilepic
                         ProfilePictureView(profilePic: post.profilePic, verified: post.verificationStatus == "false" ? false : true, height: UIScreen.screenHeight/30, width: UIScreen.screenHeight/30)
                             .onTapGesture {
-                                navigateToProfileView.toggle()
+                                navigateToProfileView = true
                                 print("move to profile screen")
                             }
                             .navigationDestination(isPresented: $navigateToProfileView, destination: {
                                 ProfileView(loginData: loginData, profileVM: profileVM, globalVM: globalVM, mesiboVM: mesiboVM, role: post.role, mainUser: false, userID: post.userID)
                             })
+                        NavigationLink(isActive: $navigateToProfileView, destination: {
+                            ProfileView(loginData: loginData, profileVM: profileVM, globalVM: globalVM, mesiboVM: mesiboVM, role: post.role, mainUser: false, userID: post.userID)
+                        }, label: {
+                            Text("")
+                        })
                         VStack(alignment: .leading) {
                             //name
                             Text(post.fullName)
@@ -119,6 +124,7 @@ struct PollsTabView: View {
             }
         }
         .onAppear{
+            navigateToProfileView = false
             if post.pollQuestion.count != 0 {
                 for i in 0..<post.pollQuestion[0].options.count {
                     totalVotes += post.pollQuestion[0].options[i].votes.count

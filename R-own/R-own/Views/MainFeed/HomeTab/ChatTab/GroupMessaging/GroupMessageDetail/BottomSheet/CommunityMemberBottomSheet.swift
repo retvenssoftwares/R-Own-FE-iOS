@@ -78,7 +78,7 @@ struct CommunityMemberBottomSheet: View {
                             
                             
                             Button(action: {
-                                navigateTOProfileView.toggle()
+                                navigateTOProfileView = true
                             }, label: {
                                 Text("View Profile")
                                     .font(.body)
@@ -93,6 +93,11 @@ struct CommunityMemberBottomSheet: View {
                             })
                             .navigationDestination(isPresented: $navigateTOProfileView, destination: {
                                 ProfileView(loginData: loginData, profileVM: profileVM, globalVM: globalVM, mesiboVM: mesiboVM, role: communityVM.selectedGroupUserRole, mainUser: false, userID: communityVM.selectedGroupUserID)
+                            })
+                            NavigationLink(isActive: $navigateTOProfileView, destination: {
+                                ProfileView(loginData: loginData, profileVM: profileVM, globalVM: globalVM, mesiboVM: mesiboVM, role: communityVM.selectedGroupUserRole, mainUser: false, userID: communityVM.selectedGroupUserID)
+                            }, label: {
+                                Text("")
                             })
                         }
                         
@@ -124,6 +129,9 @@ struct CommunityMemberBottomSheet: View {
             
                             isKeyboardShowing = false
                             globalVM.keyboardVisibility = false
+        }
+        .onAppear{
+            navigateTOProfileView = false
         }
     }
 }

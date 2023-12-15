@@ -28,8 +28,10 @@ struct HotelOwnerProfileFPPTabBarView: View {
                             .fontWeight(.medium)
                             .foregroundColor(.black)
                             .frame(width: UIScreen.screenWidth/4, height: UIScreen.screenHeight/40)
+                            .padding(.horizontal, UIScreen.screenWidth/20)
+                            .padding(.vertical, UIScreen.screenHeight/85)
                             .background(profileTabSelected == "Media" ? .white : .white.opacity(0))
-                            .cornerRadius(15)
+                            .cornerRadius(8)
                     })
                     
                     Button(action: {
@@ -42,8 +44,10 @@ struct HotelOwnerProfileFPPTabBarView: View {
                             .fontWeight(.medium)
                             .foregroundColor(.black)
                             .frame(width: UIScreen.screenWidth/4, height: UIScreen.screenHeight/40)
+                            .padding(.horizontal, UIScreen.screenWidth/20)
+                            .padding(.vertical, UIScreen.screenHeight/85)
                             .background(profileTabSelected == "Polls" ? .white : .white.opacity(0))
-                            .cornerRadius(15)
+                            .cornerRadius(8)
                     })
                     
                     Button(action: {
@@ -56,8 +60,10 @@ struct HotelOwnerProfileFPPTabBarView: View {
                             .fontWeight(.medium)
                             .foregroundColor(.black)
                             .frame(width: UIScreen.screenWidth/4, height: UIScreen.screenHeight/40)
+                            .padding(.horizontal, UIScreen.screenWidth/20)
+                            .padding(.vertical, UIScreen.screenHeight/85)
                             .background(profileTabSelected == "Status" ? .white : .white.opacity(0))
-                            .cornerRadius(15)
+                            .cornerRadius(8)
                     })
                     
                     if loginData.isHiddenKPI{
@@ -71,8 +77,10 @@ struct HotelOwnerProfileFPPTabBarView: View {
                                 .fontWeight(.light)
                                 .foregroundColor(.black)
                                 .frame(width: UIScreen.screenWidth/6, height: UIScreen.screenHeight/40)
+                                .padding(.horizontal, UIScreen.screenWidth/20)
+                                .padding(.vertical, UIScreen.screenHeight/85)
                                 .background(profileTabSelected == "Events" ? .white : .white.opacity(0))
-                                .cornerRadius(15)
+                                .cornerRadius(8)
                         })
                     }
                     
@@ -86,8 +94,10 @@ struct HotelOwnerProfileFPPTabBarView: View {
                             .fontWeight(.medium)
                             .foregroundColor(.black)
                             .frame(width: UIScreen.screenWidth/4, height: UIScreen.screenHeight/40)
+                            .padding(.horizontal, UIScreen.screenWidth/20)
+                            .padding(.vertical, UIScreen.screenHeight/85)
                             .background(profileTabSelected == "Hotels" ? .white : .white.opacity(0))
-                            .cornerRadius(15)
+                            .cornerRadius(8)
                     })
                     
                 }

@@ -42,7 +42,7 @@ struct SavedPostDetailView: View {
                         HStack{
                             //profilepic
                             Button(action: {
-                                navigateToProfileView.toggle()
+                                navigateToProfileView = true
                                 print("move to profile screen")
                             }, label: {
                                 ProfilePictureView(profilePic: globalVM.postDetails[0].profilePic, verified: globalVM.postDetails[0].verificationStatus == "true" ? true : false, height: UIScreen.screenHeight/20, width: UIScreen.screenHeight/20)
@@ -50,10 +50,15 @@ struct SavedPostDetailView: View {
                             .navigationDestination(isPresented: $navigateToProfileView, destination: {
                                 ProfileView(loginData: loginData, profileVM: profileVM, globalVM: globalVM, mesiboVM: mesiboVM, role: globalVM.postDetails[0].role, mainUser: false, userID: loginData.mainUserID)
                             })
+                            NavigationLink(isActive: $navigateToProfileView, destination: {
+                                ProfileView(loginData: loginData, profileVM: profileVM, globalVM: globalVM, mesiboVM: mesiboVM, role: globalVM.postDetails[0].role, mainUser: false, userID: loginData.mainUserID)
+                            }, label: {
+                                Text("")
+                            })
                             VStack(alignment: .leading) {
                                 //name
                                 Button(action: {
-                                    navigateToProfileView.toggle()
+                                    navigateToProfileView = true
                                     print("move to profile screen")
                                 }, label: {
                                     Text(globalVM.postDetails[0].fullName)
@@ -80,6 +85,12 @@ struct SavedPostDetailView: View {
                                 }
                             }
                             
+                            NavigationLink(isActive: $navigateToProfileView, destination: {
+                                ProfileView(loginData: loginData, profileVM: profileVM, globalVM: globalVM, mesiboVM: mesiboVM, role: globalVM.postDetails[0].role, mainUser: false, userID: loginData.mainUserID)
+                            }, label: {
+                                Text("")
+                            })
+                            
                             Spacer()
                             //time
                             Text(relativeTime(from: globalVM.postDetails[0].dateAdded) ?? "")
@@ -104,6 +115,8 @@ struct SavedPostDetailView: View {
                                     }
                                 }
                             }
+                            .padding(.top, UIScreen.screenHeight/60)
+                            
                             HStack{
                                 //likebutton
                                 
@@ -122,15 +135,12 @@ struct SavedPostDetailView: View {
                                         Image(globalVM.postDetails[0].liked == "not liked" ? "PostLikeBlack" : "PostLikedBlack" )
                                             .resizable()
                                             .scaledToFit()
-                                            .frame(width: UIScreen.screenHeight/40, height: UIScreen.screenHeight/40)
+                                            .frame(width: UIScreen.screenHeight/35, height: UIScreen.screenHeight/35)
                                         if globalVM.postDetails[0].likeCount != 0 {
                                             Text(String(globalVM.postDetails[0].likeCount))
                                                 .foregroundColor(.black)
-                                                .font(.body)
+                                                .font(.footnote)
                                                 .fontWeight(.regular)
-                                                .onTapGesture {
-                                                    navigateToLikedUserListScreen.toggle()
-                                                }
                                             
                                         }
                                         Spacer()
@@ -148,12 +158,11 @@ struct SavedPostDetailView: View {
                                         Image("PostCommentBlack")
                                             .resizable()
                                             .scaledToFit()
-                                            .frame(width: UIScreen.screenHeight/40, height: UIScreen.screenHeight/40)
-                                            .padding(.horizontal, UIScreen.screenWidth/30)
+                                            .frame(width: UIScreen.screenHeight/35, height: UIScreen.screenHeight/35)
                                         if globalVM.postDetails[0].commentCount != 0 {
                                             Text(String(globalVM.postDetails[0].commentCount))
                                                 .foregroundColor(.black)
-                                                .font(.body)
+                                                .font(.footnote)
                                                 .fontWeight(.regular)
                                         }
                                         Spacer()
@@ -161,9 +170,10 @@ struct SavedPostDetailView: View {
                                 })
                                 .sheet(isPresented: $showCommentSheet) {
                                     CommentBottomSheetView(globalVM: globalVM, postID: globalVM.postDetails[0].postID, posterID: loginData.mainUserID, loginData: loginData, commentCount: $globalVM.postDetails[0].commentCount)
-                                        .presentationDetents([.medium])
+                                        .presentationDetents([.medium, .large])
                                         .presentationDragIndicator(.visible)
                                 }
+                                Spacer()
                                 Button(action: {
                                     print("open share bottomsheet")
                                     globalVM.getConnectionList = [ProfileConnectionListModel]()
@@ -174,8 +184,7 @@ struct SavedPostDetailView: View {
                                         Image("PostShareBlack")
                                             .resizable()
                                             .scaledToFit()
-                                            .frame(width: UIScreen.screenHeight/40, height: UIScreen.screenHeight/40)
-                                            .padding(.horizontal, UIScreen.screenWidth/30)
+                                            .frame(width: UIScreen.screenHeight/35, height: UIScreen.screenHeight/35)
                                         Spacer()
                                     }
                                 })
@@ -197,18 +206,15 @@ struct SavedPostDetailView: View {
                                         Image(globalVM.postDetails[0].saved == "not saved" ? "PostSaveBlack" : "PostSavedBlack")
                                             .resizable()
                                             .scaledToFit()
-                                            .frame(width: UIScreen.screenHeight/40, height: UIScreen.screenHeight/40)
-                                            .padding(.horizontal, UIScreen.screenWidth/30)
-                                            .padding(.bottom, UIScreen.screenHeight/100)
+                                            .frame(width: UIScreen.screenHeight/35, height: UIScreen.screenHeight/35)
                                         Spacer()
                                     }
                                 })
-                                Spacer()
                             }
                         }
-                        .frame(height: UIScreen.screenHeight/40)
+                        .frame(height: UIScreen.screenHeight/10)
                         .padding(.horizontal, UIScreen.screenWidth/30)
-                        .padding(.vertical, UIScreen.screenHeight/70)
+                        .padding(.top, UIScreen.screenHeight/50)
                         //caption display
                         HStack{
                             VStack{
@@ -246,22 +252,29 @@ struct SavedPostDetailView: View {
                                     Text("Liked By")
                                         .font(.body)
                                         .fontWeight(.bold)
+                                        .foregroundColor(.black)
                                     Spacer()
                                 }
                                 HStack{
                                     Text("\(globalVM.postDetails[0].likeCount) people have liked this.")
-                                        .font(.body)
+                                        .font(.footnote )
                                         .fontWeight(.medium)
+                                        .foregroundColor(.black)
                                     Spacer()
                                 }
                             }
                             .padding(.vertical, UIScreen.screenHeight/70)
                             .padding(.horizontal, UIScreen.screenWidth/30)
                             .onTapGesture {
-                                navigateToLikedUserListScreen.toggle()
+                                navigateToLikedUserListScreen = true
                             }
                             .navigationDestination(isPresented: $navigateToLikedUserListScreen, destination: {
                                 LikedUserListView(globalVM: globalVM, postID: globalVM.postDetails[0].postID, loginData: loginData, profileVM: profileVM, mesiboVM: mesiboVM)
+                            })
+                            NavigationLink(isActive: $navigateToLikedUserListScreen, destination: {
+                                LikedUserListView(globalVM: globalVM, postID: globalVM.postDetails[0].postID, loginData: loginData, profileVM: profileVM, mesiboVM: mesiboVM)
+                            }, label: {
+                                Text("")
                             })
                             Spacer()
                         }
@@ -283,6 +296,9 @@ struct SavedPostDetailView: View {
         .onAppear{
             makepostDEtailCall(globalVM: globalVM, userID: loginData.mainUserID, postID: postID)
             mainfeedService.getCommentPost(globalVM: globalVM, postID: loginData.notificationUserpostID)
+            navigateToProfileView = false
+            navigateToProfileView = false
+            navigateToLikedUserListScreen = false
         }
     }
     func makeAPICall(globalVM: GlobalViewModel, userID: String){

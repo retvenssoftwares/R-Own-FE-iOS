@@ -355,22 +355,22 @@ struct PostDetailView: View {
                     ScrollView{
                         HStack{
                             //profilepic
-                            NavigationLink(destination: {
-                                ProfileView(loginData: loginData, profileVM: profileVM, globalVM: globalVM, mesiboVM: mesiboVM, role: role, mainUser: false, userID: posterID)
-                            }, label: {
                                 ProfilePictureView(profilePic: postProfilePic, verified: verificationStatus == "true" ? true : false, height: UIScreen.screenHeight/15, width: UIScreen.screenHeight/15)
-                            })
+                                .onTapGesture {
+                                    navigateToProfileView = true
+                                }
+                            
                             VStack(alignment: .leading) {
                                 //name
-                                NavigationLink(destination: {
-                                    ProfileView(loginData: loginData, profileVM: profileVM, globalVM: globalVM, mesiboVM: mesiboVM, role: role, mainUser: false, userID: posterID)
-                                }, label: {
-                                    Text(postUserFullName)
-                                        .foregroundColor(.black)
-                                        .font(.headline)
-                                        .fontWeight(.bold)
-                                        .frame(alignment: .leading)
-                                })
+                                Text(postUserFullName)
+                                    .foregroundColor(.black)
+                                    .font(.headline)
+                                    .fontWeight(.bold)
+                                    .frame(alignment: .leading)
+                                    .onTapGesture {
+                                        navigateToProfileView = true
+                                    }
+                                
                                 //profile
                                 if postUserDesignation != "" {
                                     Text(postUserDesignation)
@@ -388,7 +388,11 @@ struct PostDetailView: View {
                                         .frame(alignment: .leading)
                                 }
                             }
-                            
+                            NavigationLink(isActive: $navigateToProfileView, destination: {
+                                ProfileView(loginData: loginData, profileVM: profileVM, globalVM: globalVM, mesiboVM: mesiboVM, role: role, mainUser: false, userID: posterID)
+                            }, label: {
+                                Text("")
+                            })
                             Spacer()
                             //time
                             Text(relativeTime(from: postTime) ?? "")
@@ -413,6 +417,7 @@ struct PostDetailView: View {
                                 }
                             }
                             .padding(.top, UIScreen.screenHeight/60)
+                            
                             HStack{
                                 //likebutton
                                 
@@ -568,7 +573,7 @@ struct PostDetailView: View {
                             .padding(.vertical, UIScreen.screenHeight/70)
                             .padding(.horizontal, UIScreen.screenWidth/30)
                             .onTapGesture {
-                                navigateToLikedUserListScreen.toggle()
+                                navigateToLikedUserListScreen = true
                             }
                             .navigationDestination(isPresented: $navigateToLikedUserListScreen, destination: {
                                 
@@ -591,6 +596,8 @@ struct PostDetailView: View {
         .navigationBarBackButtonHidden()
         .onAppear{
             mainfeedService.getCommentPost(globalVM: globalVM, postID: postID)
+            navigateToProfileView = false
+            navigateToLikedUserListScreen = false
         }
     }
     func makeAPICall(globalVM: GlobalViewModel, userID: String){

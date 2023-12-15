@@ -65,12 +65,17 @@ struct TPPUserSettingBottomSheet: View {
                             .navigationDestination(isPresented: $navigateToAboutPage, destination: {
                                 ProfileAboutView(globalVM: globalVM)
                             })
+                            NavigationLink(isActive: $navigateToAboutPage, destination: {
+                                ProfileAboutView(globalVM: globalVM)
+                            }, label: {
+                                Text("")
+                            })
                             Divider()
                         }
                         VStack(alignment: .leading){
                             Button(action: {
                                 
-                                    navigateToReportPage.toggle()
+                                    navigateToReportPage = true
                             }, label: {
                                 
                                 HStack{
@@ -87,6 +92,11 @@ struct TPPUserSettingBottomSheet: View {
                             })
                             .navigationDestination(isPresented: $navigateToReportPage, destination: {
                                 ProfileReportView(loginData: loginData, globalVM: globalVM)
+                            })
+                            NavigationLink(isActive: $navigateToReportPage, destination: {
+                                ProfileReportView(loginData: loginData, globalVM: globalVM)
+                            }, label: {
+                                Text("")
                             })
                             Divider()
                         }
@@ -274,6 +284,10 @@ struct TPPUserSettingBottomSheet: View {
                     }
                 }
             )
+        }
+        .onAppear{
+            navigateToAboutPage = false
+            navigateToReportPage = false
         }
     }
     func onChanged(value: DragGesture.Value){

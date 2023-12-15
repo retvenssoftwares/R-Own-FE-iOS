@@ -252,7 +252,7 @@ struct HospitalityExpertBasicInfoView: View {
                         } else if loginData.mainUserJobEnd == "" {
                             alertJobEnd = true
                         } else if loginData.mainUserJobEnd != "Present" {
-                            if Int(loginData.mainUserJobStart) ?? 0 > Int(loginData.mainUserJobEnd ) ?? 0{
+                            if Int(loginData.mainUserJobStart)! > Int(loginData.mainUserJobEnd )!{
                                 alertJobEndGreaterThanStart = true
                             }
                         } else {

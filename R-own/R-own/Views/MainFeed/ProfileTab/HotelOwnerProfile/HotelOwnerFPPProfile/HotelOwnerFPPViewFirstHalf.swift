@@ -41,7 +41,7 @@ struct HotelOwnerFPPViewFirstHalf: View {
                 }
                 VStack(alignment: .leading){
                     HStack{
-                        ProfilePictureView(profilePic: mainUser ? loginData.mainUserProfilePic : globalVM.getHotelOwnerProfileHeader.profiledata.profilePic , verified: true , height: UIScreen.screenHeight/10, width: UIScreen.screenHeight/10)
+                        ProfilePictureView(profilePic: mainUser ? loginData.mainUserProfilePic : globalVM.getHotelOwnerProfileHeader.profiledata.profilePic , verified: globalVM.getHotelOwnerProfileHeader.profile.verificationStatus == "true" ? true : false , height: UIScreen.screenHeight/10, width: UIScreen.screenHeight/10)
                             .onLongPressGesture(perform: {
                                 loginData.selectedProfilePicMax = mainUser ? loginData.mainUserProfilePic : globalVM.getHotelOwnerProfileHeader.profiledata.profilePic
                                 print("showing profile max")
@@ -79,7 +79,7 @@ struct HotelOwnerFPPViewFirstHalf: View {
                         .onTapGesture {
                             if globalVM.getHotelOwnerProfileHeader.connectionStatus == "Connected" || mainUser {
                                 print("showing connections list")
-                                navigateToConnectionString.toggle()
+                                navigateToConnectionString = true
                             }
                         }
                         .navigationDestination(isPresented: $navigateToConnectionString, destination: {
@@ -103,7 +103,7 @@ struct HotelOwnerFPPViewFirstHalf: View {
                             .padding(.horizontal, UIScreen.screenWidth/40)
                             .onTapGesture {
                                 print("showing request list")
-                                navigateToRequestString.toggle()
+                                navigateToRequestString = true
                             }
                             .navigationDestination(isPresented: $navigateToRequestString, destination: {
                                 RequestProfileListView(loginData: loginData, globalVM: globalVM, mainUser: mainUser, profileVM: profileVM, mesiboVM: mesiboVM)
@@ -225,7 +225,7 @@ struct HotelOwnerFPPViewFirstHalf: View {
                                     MessageView(loginData: loginData, mesiboAddress: globalVM.getHotelOwnerProfileHeader.profiledata.mesiboAccount[0].address, mesiboData: mesiboVM, profileVM: profileVM, globalVM: globalVM)
                                 }, label: {Text("")})
                                 Button(action: {
-                                    navigateTOCHatView.toggle()
+                                    navigateTOCHatView = true
                                 }, label: {
                                     Text("INTERACT")
                                         .font(.body)
@@ -266,6 +266,9 @@ struct HotelOwnerFPPViewFirstHalf: View {
             }
         }
         .onAppear{
+            navigateToConnectionString = false
+            navigateToRequestString = false
+            navigateTOCHatView = false
         }
     }
 }

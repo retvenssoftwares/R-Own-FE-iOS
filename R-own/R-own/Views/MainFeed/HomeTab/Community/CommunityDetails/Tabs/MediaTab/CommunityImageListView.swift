@@ -24,11 +24,16 @@ struct CommunityImageListView: View {
                                 .frame(width: UIScreen.screenWidth/1.2)
                                 .cornerRadius(15)
                                 .onTapGesture {
-                                    navigateToImageDetailView.toggle()
+                                    navigateToImageDetailView = true
                                 }
                                 .navigationDestination(isPresented: $navigateToImageDetailView, destination: {
                                     CommunityImageDetailView(imageLink: "GalleryImageDemo")
                                 })
+                            NavigationLink(isActive: $navigateToImageDetailView, destination: {
+                                CommunityImageDetailView(imageLink: "GalleryImageDemo")
+                            }, label: {
+                                Text("")
+                            })
                             Image("EventBGIcon")
                                 .resizable()
                                 .scaledToFit()
@@ -43,6 +48,9 @@ struct CommunityImageListView: View {
             }
         }
         .navigationBarBackButtonHidden()
+        .onAppear{
+            navigateToImageDetailView = false
+        }
     }
 }
 

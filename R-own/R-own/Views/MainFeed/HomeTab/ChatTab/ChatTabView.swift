@@ -223,7 +223,7 @@ struct ChatTabView: View {
                 .background(.white.opacity(0.1))
                 .frame(width: UIScreen.screenWidth)
                 .onTapGesture {
-                    navigateToChat.toggle()
+                    navigateToChat = true
                 }
                 .onLongPressGesture(perform: {
                     longTapChat.toggle()
@@ -267,6 +267,7 @@ struct ChatTabView: View {
 //                }
         }
         .onAppear{
+            navigateToChat = false
 //            firstFourLetter = getFirstFourLetters(text.message ?? "")
             decodedData = decodeData(message.message ?? "")
             print(decodeData(message.message ?? ""))

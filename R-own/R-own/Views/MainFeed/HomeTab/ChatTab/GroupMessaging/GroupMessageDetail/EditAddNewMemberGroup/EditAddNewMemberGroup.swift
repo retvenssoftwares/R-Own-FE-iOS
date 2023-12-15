@@ -162,7 +162,7 @@ struct EditAddNewMemberGroup: View {
                             loginData.showLoader = true
                             
                             if communityVM.selectedGroupMember.count == 0 {
-                                userNotSelected.toggle()
+                                userNotSelected = true
                             } else {
                                 var resultArr = [String]()
                                 for i in 0..<communityVM.selectedGroupMember.count{
@@ -201,6 +201,11 @@ struct EditAddNewMemberGroup: View {
                         .navigationDestination(isPresented: $navigateToUploadIconView, destination:{
                             CommunityUploadIconView(loginData: loginData, communityVM: communityVM, mesiboVM: mesiboVM, globalVM: globalVM, profileVM: profileVM)
                         })
+                        NavigationLink(isActive: $navigateToUploadIconView, destination: {
+                            CommunityUploadIconView(loginData: loginData, communityVM: communityVM, mesiboVM: mesiboVM, globalVM: globalVM, profileVM: profileVM)
+                        }, label: {
+                            Text("")
+                        })
                     }
                 }
             }
@@ -211,6 +216,7 @@ struct EditAddNewMemberGroup: View {
                 AlertToast( type: .systemImage("exclamationmark.triangle.fill", .red), title: "User Added Successfully")
             }
             .onAppear{
+                navigateToUploadIconView = false
                 Task{
                     communityVM.selectedGroupMember = [Conn334]()
                     globalVM.getConnectionList = [ProfileConnectionListModel]()

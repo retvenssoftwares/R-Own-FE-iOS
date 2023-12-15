@@ -108,6 +108,7 @@ struct ProfileFieldsHandler: View {
                 .padding(.top, UIScreen.screenHeight/70)
             
             CustomGreenButton(title: "Save") {
+                loginData.showLoader = true
                 if loginData.mainUserFullName == "" {
                     alertNoFullName.toggle()
                 } else if loginData.mainUserEmail == "" {
@@ -116,44 +117,85 @@ struct ProfileFieldsHandler: View {
                     alertInvalidEmail.toggle()
                 } else if profilePic == nil {
                     print("There is no image selected")
-                    mesiboData.addUserToMesiboModelFunc(loginData: loginData)
-                    print(loginData.mainUserPhoneNumber)
-                    print(loginData.mainUserFullName)
-                    mesiboData.mesiboInitalize(loginData.mainUserMesiboToken, address: loginData.mainUserPhoneNumber, remoteUserName: loginData.mainUserFullName)
-                    mesiboData.mesiboSetSelfProfile(loginData.mainUserPhoneNumber)
-                    encodedStatus = encodeStatusData(userID: loginData.mainUserID, userRole: loginData.mainUserRole == "" ? "Normal User" : loginData.mainUserRole)
-                    mesiboData.mSelfProfile.setName(loginData.mainUserFullName)
-                    mesiboData.mSelfProfile.setStatus(encodedStatus)
-                    mesiboData.mSelfProfile.save()
-                    print("printing mesibo data down there:")
-                    print(mesiboData.mSelfProfile.getAddress())
-                    print(mesiboData.mSelfProfile.getName())
-                    print(mesiboData.mSelfProfile.getStatus())
-                    print(mesiboData.mSelfProfile.getAddress())
-                    userVM.updateUserDetailsAfterLoginWithoutPic(loginData: loginData)
+                    Task {
+                        let res = await mesiboData.addUserToMesiboModelFunc(loginData: loginData)
+                        if res == "Success"{
+                            
+                            print(loginData.mainUserPhoneNumber)
+                            print(loginData.mainUserFullName)
+                            mesiboData.mesiboInitalize(loginData.mainUserMesiboToken, address: loginData.mainUserPhoneNumber, remoteUserName: loginData.mainUserFullName)
+                            mesiboData.mesiboSetSelfProfile(loginData.mainUserPhoneNumber)
+                            encodedStatus = encodeStatusData(userID: loginData.mainUserID, userRole: loginData.mainUserRole == "" ? "Normal User" : loginData.mainUserRole)
+                            mesiboData.mSelfProfile.setName(loginData.mainUserFullName)
+                            mesiboData.mSelfProfile.setStatus(encodedStatus)
+                            mesiboData.mSelfProfile.save()
+//                            print("printing mesibo data down there:")
+//                            print(mesiboData.mSelfProfile.getAddress())
+//                            print(mesiboData.mSelfProfile.getName())
+//                            print(mesiboData.mSelfProfile.getStatus())
+//                            print(mesiboData.mSelfProfile.getAddress())
+                            let res1 = await userVM.updateUserDetailsAfterLoginWithoutPic(loginData: loginData)
+                            
+                            if res1 == "Success" {
+                                
+                                    loginData.showLoader = true
+                                isKeyboardShowing = false
+                                globalVM.keyboardVisibility = false
+                                loginData.showSheet.toggle()
+                                
+                                if  loginData.userAlreadyExist{
+                                    loginData.loginStatusFinal = true
+                                } else {
+                                    loginData.navigateToInterestView.toggle()
+                                }
+                            } else {
+                                
+                            }
+                        } else {
+                            
+                        }
+                    }
                 } else {
                     print("image is uploaded")
-                    mesiboData.addUserToMesiboModelFunc(loginData: loginData)
-                    mesiboData.mesiboInitalize(loginData.mainUserMesiboToken, address: loginData.mainUserPhoneNumber, remoteUserName: loginData.mainUserFullName)
-                    mesiboData.mesiboSetSelfProfile(loginData.mainUserPhoneNumber)
-                    encodedStatus = encodeStatusData(userID: loginData.mainUserID, userRole: loginData.mainUserRole == "" ? "Normal User" : loginData.mainUserRole)
-                    mesiboData.mSelfProfile.setName(loginData.mainUserFullName)
-                    mesiboData.mSelfProfile.setStatus(encodedStatus)
-                    mesiboData.mSelfProfile.setImage(profilePic)
-                    mesiboData.mSelfProfile.save()
-                    print("printing mesibo data down there:")
-                    print(mesiboData.mSelfProfile.getName())
-                    print(mesiboData.mSelfProfile.getStatus())
-                    profileService.updateUserDataAfterLogin(loginData: loginData, profilePic: profilePic, fullName: loginData.mainUserFullName, email: loginData.mainUserEmail, apnToken: loginData.apnToken)
-                }
-                isKeyboardShowing = false
-                globalVM.keyboardVisibility = false
-                loginData.showSheet.toggle()
-                
-                if  loginData.userAlreadyExist{
-                    loginData.loginStatusFinal = true
-                } else {
-                    loginData.navigateToInterestView.toggle()
+                    Task {
+                        let res = await mesiboData.addUserToMesiboModelFunc(loginData: loginData)
+                        if res == "Success"{
+                            mesiboData.mesiboInitalize(loginData.mainUserMesiboToken, address: loginData.mainUserPhoneNumber, remoteUserName: loginData.mainUserFullName)
+                            mesiboData.mesiboSetSelfProfile(loginData.mainUserPhoneNumber)
+                            encodedStatus = encodeStatusData(userID: loginData.mainUserID, userRole: loginData.mainUserRole == "" ? "Normal User" : loginData.mainUserRole)
+                            mesiboData.mSelfProfile.setName(loginData.mainUserFullName)
+                            mesiboData.mSelfProfile.setStatus(encodedStatus)
+                            mesiboData.mSelfProfile.setImage(profilePic)
+                            mesiboData.mSelfProfile.save()
+//                            print("printing mesibo data down there:")
+//                            print(mesiboData.mSelfProfile.getName())
+//                            print(mesiboData.mSelfProfile.getStatus())
+                            do {
+                                let result = try await profileService.updateUserDataAfterLogin(loginData: loginData, profilePic: profilePic, fullName: loginData.mainUserFullName, email: loginData.mainUserEmail, apnToken: loginData.apnToken)
+                                
+                                if result == "Success" {
+                                    
+                                        loginData.showLoader = true
+                                    isKeyboardShowing = false
+                                    globalVM.keyboardVisibility = false
+                                    loginData.showSheet.toggle()
+                                    
+                                    if  loginData.userAlreadyExist{
+                                        loginData.loginStatusFinal = true
+                                    } else {
+                                        loginData.navigateToInterestView.toggle()
+                                    }
+                                } else {
+                                    // Handle other success cases or failures
+                                    print("Update failed.")
+                                }
+                            } catch {
+                                print("Error: \(error)")
+                            }
+                        } else {
+                            
+                        }
+                    }
                 }
             }
             .background(Color.white)

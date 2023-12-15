@@ -39,7 +39,7 @@ struct NormalProfileEditBottomSheet: View {
                         VStack(alignment: .leading){
                             Button(action: {
                                 
-                                    navigateToSetting.toggle()
+                                    navigateToSetting = true
                             }, label: {
                                 
                                 HStack{
@@ -59,12 +59,17 @@ struct NormalProfileEditBottomSheet: View {
                             .navigationDestination(isPresented: $navigateToSetting, destination: {
                                 ProfileSettingView(loginData: loginData, globalVM: globalVM, profileVM: profileVM, mesiboVM: mesiboVM)
                             })
+                            NavigationLink(isActive: $navigateToSetting, destination: {
+                                ProfileSettingView(loginData: loginData, globalVM: globalVM, profileVM: profileVM, mesiboVM: mesiboVM)
+                            }, label: {
+                                Text("")
+                            })
                             Divider()
                         }
                         VStack(alignment: .leading){
                             Button(action: {
                                 
-                                    navigateToEditProfile.toggle()
+                                    navigateToEditProfile = true
                             }, label: {
                                 
                                 HStack{
@@ -84,12 +89,17 @@ struct NormalProfileEditBottomSheet: View {
                             .navigationDestination(isPresented: $navigateToEditProfile, destination: {
                                 EditFPPProfileView(loginData: loginData, profileVM: profileVM, globalVM: globalVM)
                             })
+                            NavigationLink(isActive: $navigateToEditProfile, destination: {
+                                EditFPPProfileView(loginData: loginData, profileVM: profileVM, globalVM: globalVM)
+                            }, label: {
+                                Text("")
+                            })
                             Divider()
                         }
                         VStack(alignment: .leading){
                             Button(action: {
                                 print("opening saved")
-                                navigateToSaved.toggle()
+                                navigateToSaved = true
                             }, label: {
                                 HStack{
                                     Image("EditProfileSaveIcon")
@@ -109,12 +119,17 @@ struct NormalProfileEditBottomSheet: View {
                             .navigationDestination(isPresented: $navigateToSaved, destination: {
                                 ProfileSavedView(loginData: loginData, jobsVM: jobsVM, globalVM: globalVM, profileVM: profileVM, mesiboVM: mesiboVM)
                             })
+                            NavigationLink(isActive: $navigateToSaved, destination: {
+                                ProfileSavedView(loginData: loginData, jobsVM: jobsVM, globalVM: globalVM, profileVM: profileVM, mesiboVM: mesiboVM)
+                            }, label: {
+                                Text("")
+                            })
                             Divider()
                         }
                         VStack(alignment: .leading){
                             Button(action: {
                                 
-                                    navigateToDiscoverPeople.toggle()
+                                    navigateToDiscoverPeople = true
                             }, label: {
                                 HStack{
                                     Image("SidebarBecomeOurPartner")
@@ -132,6 +147,11 @@ struct NormalProfileEditBottomSheet: View {
                             })
                             .navigationDestination(isPresented: $navigateToDiscoverPeople, destination: {
                                 DiscoverPeopleView(loginData: loginData, globalVM: globalVM, profileVM: profileVM, mesiboVM: mesiboVM)
+                            })
+                            NavigationLink(isActive: $navigateToDiscoverPeople, destination: {
+                                DiscoverPeopleView(loginData: loginData, globalVM: globalVM, profileVM: profileVM, mesiboVM: mesiboVM)
+                            }, label: {
+                                Text("")
                             })
                             Divider()
                         }
@@ -155,6 +175,12 @@ struct NormalProfileEditBottomSheet: View {
                     }
                 }
             )
+        }
+        .onAppear{
+            navigateToSetting = false
+            navigateToEditProfile = false
+            navigateToSaved = false
+            navigateToDiscoverPeople = false
         }
         .onDisappear{
             profileVM.showNormalProfileEditBottomSheet = false

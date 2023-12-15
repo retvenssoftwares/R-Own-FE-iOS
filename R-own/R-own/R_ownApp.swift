@@ -147,7 +147,9 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
           print(notification.request.content.userInfo["postType"]!)
           
       } else if notification.request.content.userInfo["notificationType"] as! String == "message" {
-          print(notification.request.content.userInfo["userAddress"]!)
+          if notification.request.content.userInfo["userAddress"] != nil {
+              print(notification.request.content.userInfo["userAddress"]!)
+          }
 //          mesiboVM.mesiboInitalize(loginData.mainUserMesiboToken, address: loginData.mainUserPhoneNumber, remoteUserName: loginData.mainUserFullName)
 //          mesiboVM.mesiboSetTPPUser(userInfo["userAddress"] as! String)
 //          loginData.notificationMessageView = true

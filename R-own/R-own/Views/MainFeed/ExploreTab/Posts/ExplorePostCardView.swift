@@ -33,7 +33,7 @@ struct ExplorePostCardView: View {
                 .clipped()
                 .onTapGesture {
                     print("imagePost is tapped")
-                    navigateToImagePostDetailScreen.toggle()
+                    navigateToImagePostDetailScreen = true
                     print(post.liked)
                     print(post.likeCount)
                 }
@@ -53,8 +53,14 @@ struct ExplorePostCardView: View {
                     }
                 }
             }
+            NavigationLink(isActive: $navigateToImagePostDetailScreen, destination: {
+                PostDetailView(newComment: "", postProfilePic: post.profilePic ?? "", postUserFullName: post.fullName ?? "", postUserName: post.userName ?? "", postUserDesignation: "", postUserLocation: post.location, postTime: post.media[0].dateAdded, postCaption: post.caption ?? "", media: post.media, likeCount: $post.likeCount, commentCount: $post.commentCount, postID: post.postID, loginData: loginData, posterID: post.userID, globalVM: globalVM, liked: $post.liked, saved: $post.saved, verificationStatus: post.verificationStatus, profileVM: profileVM, role: "", mesiboVM: mesiboVM)
+            }, label: {
+                Text("")
+            })
         }
         .onAppear {
+            navigateToImagePostDetailScreen = false
             if currentUrl == nil {
                 DispatchQueue.main.async {
                     currentUrl = URL(string: imgData[0].post)

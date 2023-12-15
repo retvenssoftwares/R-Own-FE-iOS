@@ -15,61 +15,54 @@ class PostsService: ObservableObject{
     // MARK: - multipart service
 
     //post normal Status
-    func postNormalStatusService(loginData: LoginViewModel, postCaption: String, location: String, postType: String, canSee: String, canComment: String) {
-    //        let userphonenumber: Int = (loginData.mainUserPhoneNumber.deletingPrefix("+") as NSString).integerValue
-        //Set Your URL
-            let api_url = "http://64.227.150.47/main/post/\(loginData.mainUserID)"
-            guard let url = URL(string: api_url) else {
-                return
-            }
-    
-            var urlRequest = URLRequest(url: url, cachePolicy: .reloadIgnoringLocalAndRemoteCacheData, timeoutInterval: 10.0 * 1000)
-            urlRequest.httpMethod = "POST"
-            urlRequest.addValue("application/json", forHTTPHeaderField: "Accept")
-    
-           // Now Execute
-            AF.upload(multipartFormData: { multiPart in
-                multiPart.append((loginData.mainUserID).data(using: String.Encoding.utf8)!, withName: "user_id")
-                multiPart.append((postCaption).data(using: String.Encoding.utf8)!, withName: "caption")
-                multiPart.append((location).data(using: String.Encoding.utf8)!, withName: "location")
-                multiPart.append((postType).data(using: String.Encoding.utf8)!, withName: "post_type")
-                multiPart.append((canSee).data(using: String.Encoding.utf8)!, withName: "Can_See")
-                multiPart.append((canComment).data(using: String.Encoding.utf8)!, withName: "Can_comment")
-            }, with: urlRequest)
+    @MainActor
+    func postNormalStatusService(loginData: LoginViewModel, postCaption: String, location: String, postType: String, canSee: String, canComment: String) async throws -> String {
+        let api_url = "http://64.227.150.47/main/post/\(loginData.mainUserID)"
+        guard let url = URL(string: api_url) else {
+            throw AFError.explicitlyCancelled
+        }
+
+        var urlRequest = URLRequest(url: url, cachePolicy: .reloadIgnoringLocalAndRemoteCacheData, timeoutInterval: 10.0 * 1000)
+        urlRequest.httpMethod = "POST"
+        urlRequest.addValue("application/json", forHTTPHeaderField: "Accept")
+
+        do {
+            return try await withCheckedThrowingContinuation { continuation in
+                AF.upload(multipartFormData: { multiPart in
+                    multiPart.append((loginData.mainUserID).data(using: String.Encoding.utf8)!, withName: "user_id")
+                    multiPart.append((postCaption).data(using: String.Encoding.utf8)!, withName: "caption")
+                    multiPart.append((location).data(using: String.Encoding.utf8)!, withName: "location")
+                    multiPart.append((postType).data(using: String.Encoding.utf8)!, withName: "post_type")
+                    multiPart.append((canSee).data(using: String.Encoding.utf8)!, withName: "Can_See")
+                    multiPart.append((canComment).data(using: String.Encoding.utf8)!, withName: "Can_comment")
+                }, with: urlRequest)
                 .uploadProgress(queue: .main, closure: { progress in
-                    //Current upload progress of file
+                    // Current upload progress of the file
                     print("Upload Progress: \(progress.fractionCompleted)")
                 })
-                .responseJSON(completionHandler: { data in
-    
-                           switch data.result {
-    
-                           case .success(_):
-    
-                            do {
-    
-                            let dictionary = try JSONSerialization.jsonObject(with: data.data!, options: .fragmentsAllowed) as! NSDictionary
-    
-                                print("Success!")
-                                print(dictionary)
-                           }
-                           catch {
-                              // catch error.
-                            print("catch error")
-    
-                                  }
-                            break
-    
-                           case .failure(_):
-                            print("failure")
-    
-                            break
-    
+                .responseJSON { response in
+                    switch response.result {
+                    case .success:
+                        do {
+                            let dictionary = try JSONSerialization.jsonObject(with: response.data!, options: .fragmentsAllowed) as! NSDictionary
+                            print("Success!")
+                            print(dictionary)
+                            continuation.resume(returning: "Success")
+                        } catch {
+                            continuation.resume(throwing: error)
                         }
-    
-    
-                })
+
+                    case .failure(let error):
+                        print("Failure: \(error)")
+                        continuation.resume(throwing: error)
+                    }
+                }
+            }
+        } catch {
+            throw error
+        }
     }
+
     
     
     func postClickNShareService(loginData: LoginViewModel, postCaption: String, location: String, postType: String, canSee: String, canComment: String, image: UIImage) async -> String {

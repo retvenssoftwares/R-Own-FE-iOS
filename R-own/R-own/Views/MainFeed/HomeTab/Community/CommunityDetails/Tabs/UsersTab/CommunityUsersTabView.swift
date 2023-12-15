@@ -32,7 +32,7 @@ struct CommunityUsersTabView: View {
                         }
                     }
                     Button(action: {
-                        navigateToBusinessUserList.toggle()
+                        navigateToBusinessUserList = true
                     }, label: {
                         HStack(spacing: 1){
                             Text("View all Business")
@@ -51,6 +51,11 @@ struct CommunityUsersTabView: View {
                     .navigationDestination(isPresented: $navigateToBusinessUserList, destination: {
                         CommunityBusinessListView()
                     })
+                    NavigationLink(isActive: $navigateToBusinessUserList, destination: {
+                        CommunityBusinessListView()
+                    }, label: {
+                        Text("")
+                    })
                 }
                 
                 VStack{
@@ -67,7 +72,7 @@ struct CommunityUsersTabView: View {
                         }
                     }
                     Button(action: {
-                        navigateToVendorsUserList.toggle()
+                        navigateToVendorsUserList = true
                     }, label: {
                         HStack(spacing: 1){
                             Text("View all Vendors")
@@ -86,6 +91,11 @@ struct CommunityUsersTabView: View {
                     .navigationDestination(isPresented: $navigateToVendorsUserList, destination: {
                         CommunityVendorListView()
                     })
+                    NavigationLink(isActive: $navigateToVendorsUserList, destination: {
+                        CommunityVendorListView()
+                    }, label: {
+                        Text("")
+                    })
                 }
                 
                 VStack{
@@ -102,7 +112,7 @@ struct CommunityUsersTabView: View {
                         }
                     }
                     Button(action: {
-                        navigateToHoteliersUserList.toggle()
+                        navigateToHoteliersUserList = true
                     }, label: {
                         HStack(spacing: 1){
                             Text("View all Hoteliers")
@@ -121,6 +131,11 @@ struct CommunityUsersTabView: View {
                     .navigationDestination(isPresented: $navigateToHoteliersUserList, destination: {
                         CommunityHotelierListView()
                     })
+                    NavigationLink(isActive: $navigateToHoteliersUserList, destination: {
+                        CommunityHotelierListView()
+                    }, label: {
+                        Text("")
+                    })
                 }
                 
                 VStack{
@@ -137,7 +152,7 @@ struct CommunityUsersTabView: View {
                         }
                     }
                     Button(action: {
-                        navigateToOthersUserList.toggle()
+                        navigateToOthersUserList = true
                     }, label: {
                         HStack(spacing: 1){
                             Text("View all Others")
@@ -156,9 +171,20 @@ struct CommunityUsersTabView: View {
                     .navigationDestination(isPresented: $navigateToOthersUserList, destination: {
                         CommuityOthersListView()
                     })
+                    NavigationLink(isActive: $navigateToOthersUserList, destination: {
+                        CommuityOthersListView()
+                    }, label: {
+                        Text("")
+                    })
                 }
                 Spacer()
             }
+        }
+        .onAppear{
+            navigateToOthersUserList = false
+            navigateToVendorsUserList = false
+            navigateToBusinessUserList = false
+            navigateToHoteliersUserList = false
         }
     }
 }

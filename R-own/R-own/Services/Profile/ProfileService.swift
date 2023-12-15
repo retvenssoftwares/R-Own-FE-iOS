@@ -655,7 +655,8 @@ class ProfileService: ObservableObject{
             print("Error: cannot create URL")
             return "Failure: Cannot create URL"
         }
-        
+        print("http://64.227.150.47/main/deleteRequest/\(senderID)")
+        print(receiverID)
         let body: [String: AnyHashable] = [
             "user_id": receiverID
         ]

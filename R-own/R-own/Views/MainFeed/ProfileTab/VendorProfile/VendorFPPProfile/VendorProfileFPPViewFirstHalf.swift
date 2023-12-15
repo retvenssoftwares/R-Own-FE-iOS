@@ -59,9 +59,6 @@ struct VendorProfileFPPViewFirstHalf: View {
                             
                             Spacer()
                             
-                            NavigationLink(isActive: $navigateToConnectionString, destination: {
-                                ConnectionsProfileListView(connectionOwnerName: mainUser ? "My" : globalVM.getVendorProfileHeader.roleDetails.fullName, loginData: loginData, globalVM: globalVM, mainUser: mainUser, profileVM: profileVM, mesiboVM: mesiboVM)
-                            }, label: {Text("")})
                             
                             VStack{
                                 Text(String(globalVM.getVendorProfileHeader.connectioncount))
@@ -74,18 +71,20 @@ struct VendorProfileFPPViewFirstHalf: View {
                             .onTapGesture {
                                 if globalVM.getVendorProfileHeader.connectionStatus == "Connected" || mainUser {
                                     print("showing connections list")
-                                    navigateToConnectionString.toggle()
+                                    navigateToConnectionString = true
                                 }
                             }
                             .navigationDestination(isPresented: $navigateToConnectionString, destination: {
                                 ConnectionsProfileListView(connectionOwnerName: mainUser ? "My" : globalVM.getVendorProfileHeader.roleDetails.fullName, loginData: loginData, globalVM: globalVM, mainUser: mainUser, profileVM: profileVM, mesiboVM: mesiboVM)
                             })
+                            NavigationLink(isActive: $navigateToConnectionString, destination: {
+                                ConnectionsProfileListView(connectionOwnerName: mainUser ? "My" : globalVM.getVendorProfileHeader.roleDetails.fullName, loginData: loginData, globalVM: globalVM, mainUser: mainUser, profileVM: profileVM, mesiboVM: mesiboVM)
+                            }, label: {
+                                Text("")
+                            })
                             
                             Spacer()
                             if mainUser{
-                                NavigationLink(isActive: $navigateToRequestString, destination: {
-                                    RequestProfileListView(loginData: loginData, globalVM: globalVM, mainUser: mainUser, profileVM: profileVM, mesiboVM: mesiboVM)
-                                }, label: {Text("")})
                                 VStack{
                                     Text(String(globalVM.getVendorProfileHeader.requestcount))
                                         .font(.footnote)
@@ -97,10 +96,15 @@ struct VendorProfileFPPViewFirstHalf: View {
                                 .padding(.horizontal, UIScreen.screenWidth/40)
                                 .onTapGesture {
                                     print("showing request list")
-                                    navigateToRequestString.toggle()
+                                    navigateToRequestString = true
                                 }
                                 .navigationDestination(isPresented: $navigateToRequestString, destination: {
                                     RequestProfileListView(loginData: loginData, globalVM: globalVM, mainUser: mainUser, profileVM: profileVM, mesiboVM: mesiboVM)
+                                })
+                                NavigationLink(isActive: $navigateToRequestString, destination: {
+                                    RequestProfileListView(loginData: loginData, globalVM: globalVM, mainUser: mainUser, profileVM: profileVM, mesiboVM: mesiboVM)
+                                }, label: {
+                                    Text("")
                                 })
                                 Spacer()
                             }
@@ -211,11 +215,8 @@ struct VendorProfileFPPViewFirstHalf: View {
                                 }
                                 
                                 if globalVM.getVendorProfileHeader.roleDetails.mesiboAccount.count != 0 {
-                                    NavigationLink(isActive: $navigateTOCHatView, destination: {
-                                        MessageView(loginData: loginData, mesiboAddress: globalVM.getVendorProfileHeader.roleDetails.mesiboAccount[0].address, mesiboData: mesiboVM, profileVM: profileVM, globalVM: globalVM)
-                                    }, label: {Text("")})
                                     Button(action: {
-                                        navigateTOCHatView.toggle()
+                                        navigateTOCHatView = true
                                     }, label: {
                                         Text("INTERACT")
                                             .font(.body)
@@ -231,6 +232,11 @@ struct VendorProfileFPPViewFirstHalf: View {
                                             MessageView(loginData: loginData, mesiboAddress: globalVM.getVendorProfileHeader.roleDetails.mesiboAccount[0].address, mesiboData: mesiboVM, profileVM: profileVM, globalVM: globalVM)
                                         }
                                     })
+                                    NavigationLink(isActive: $navigateTOCHatView, destination: {
+                                        MessageView(loginData: loginData, mesiboAddress: globalVM.getVendorProfileHeader.roleDetails.mesiboAccount[0].address, mesiboData: mesiboVM, profileVM: profileVM, globalVM: globalVM)
+                                    }, label: {
+                                        Text("")
+                                    })
                                 }
                                 
                             }
@@ -243,11 +249,8 @@ struct VendorProfileFPPViewFirstHalf: View {
                         
                         HStack{
                             
-                            NavigationLink(isActive: $navigateToVendorBrand, destination: {
-                                BrandProfileView(loginData: loginData, globalVM: globalVM, userID: userID, profileVM: profileVM, mesiboVM: mesiboVM, mainUser: mainUser)
-                            }, label: {Text("")})
                             Button(action: {
-                                navigateToVendorBrand.toggle()
+                                navigateToVendorBrand = true
                             }, label: {
                                 Text("VENDOR'S BRAND")
                                     .font(.body)
@@ -264,6 +267,11 @@ struct VendorProfileFPPViewFirstHalf: View {
                             })
                             .navigationDestination(isPresented: $navigateToVendorBrand, destination: {
                                 BrandProfileView(loginData: loginData, globalVM: globalVM, userID: userID, profileVM: profileVM, mesiboVM: mesiboVM, mainUser: mainUser)
+                            })
+                            NavigationLink(isActive: $navigateToVendorBrand, destination: {
+                                BrandProfileView(loginData: loginData, globalVM: globalVM, userID: userID, profileVM: profileVM, mesiboVM: mesiboVM, mainUser: mainUser)
+                            }, label: {
+                                Text("")
                             })
                         }
                         .padding(.horizontal, UIScreen.screenWidth/30)

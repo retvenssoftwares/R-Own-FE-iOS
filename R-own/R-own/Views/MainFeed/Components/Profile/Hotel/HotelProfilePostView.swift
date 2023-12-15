@@ -106,8 +106,11 @@ struct HotelProfilePostView: View {
             }
             .padding(.bottom, UIScreen.screenHeight/24)
             .onTapGesture {
-                navigateToHotelDetail.toggle()
+                navigateToHotelDetail = true
             }
+        }
+        .onAppear{
+            navigateToHotelDetail = false
         }
     }
 }

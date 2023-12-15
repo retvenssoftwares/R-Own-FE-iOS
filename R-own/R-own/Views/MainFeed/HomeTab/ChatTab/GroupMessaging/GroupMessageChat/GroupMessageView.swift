@@ -46,7 +46,7 @@ struct GroupMessageView: View {
                         .background(.white)
                         .border(width: 1, edges: [.bottom], color: greenUi)
                     MessageViewSecondHalf(loginData: loginData, mesiboVM: mesiboVM, profileVM: profileVM, globalVM: globalVM, keyboardVisibility: $keyboardVisibility)
-                    MessageViewThirdHalf(image: $image, showSelectedImagePreview: $showSelectedImagePreview, selectedVideoURL: $selectedVideoURL, showSelectedVideoPreview: $showSelectedVideoPreview, selectedDocumentURL: $selectedDocumentURL, showSelectedDocumentPreview: $showSelectedDocumentPreview, loginData:loginData, mesiboVM: mesiboVM, keyboardVisibility: $keyboardVisibility, globalVM: globalVM)
+                    MessageViewThirdHalf(image: $image, showSelectedImagePreview: $showSelectedImagePreview, selectedVideoURL: $selectedVideoURL, showSelectedVideoPreview: $showSelectedVideoPreview, selectedDocumentURL: $selectedDocumentURL, showSelectedDocumentPreview: $showSelectedDocumentPreview, loginData:loginData, mesiboVM: mesiboVM, keyboardVisibility: $keyboardVisibility, globalVM: globalVM, isGroup: true, communityName: communityName, groupID: groupID)
 //                    GroupMessageSecondHalfView(loginData:loginData, communityVM: communityVM, mesiboVM: mesiboVM)
 //                    GroupMessageThirdHalfView(loginData:loginData, communityVM: communityVM, mesiboVM: mesiboVM)
                         .padding(.vertical, 15)
@@ -59,7 +59,7 @@ struct GroupMessageView: View {
                 )
                 if image != nil {
                     if showSelectedImagePreview {
-                        SelectedMessageImagePreview(image: $image, mesiboVM: mesiboVM, loginData: loginData, showSelectedImagePreview: $showSelectedImagePreview, globalVM: globalVM)
+                        SelectedMessageImagePreview(image: $image, mesiboVM: mesiboVM, loginData: loginData, showSelectedImagePreview: $showSelectedImagePreview, isGroup: true, communityName: communityName, groupID: groupID, globalVM: globalVM)
                     }
                 }
                 

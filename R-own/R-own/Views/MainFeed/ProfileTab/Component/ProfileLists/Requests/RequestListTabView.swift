@@ -48,10 +48,15 @@ struct RequestListTabView: View {
                 }
                 .onTapGesture {
                     print("switching to profile view")
-                    navigateToUserProfile.toggle()
+                    navigateToUserProfile = true
                 }
                 .navigationDestination(isPresented: $navigateToUserProfile, destination: {
                     ProfileView(loginData: loginData, profileVM: profileVM, globalVM: globalVM, mesiboVM: mesiboVM, role: requestedConnection.role, mainUser: false, userID: requestedConnection.userID)
+                })
+                NavigationLink(isActive: $navigateToUserProfile, destination: {
+                    ProfileView(loginData: loginData, profileVM: profileVM, globalVM: globalVM, mesiboVM: mesiboVM, role: requestedConnection.role, mainUser: false, userID: requestedConnection.userID)
+                }, label: {
+                    Text("")
                 })
                 
                 Spacer()
@@ -126,6 +131,9 @@ struct RequestListTabView: View {
             }
             .padding(.horizontal, UIScreen.screenWidth/30)
             .padding(.vertical, UIScreen.screenHeight/60)
+        }
+        .onAppear{
+            navigateToUserProfile = false
         }
     }
     func deleteElementFromList(id: String) {

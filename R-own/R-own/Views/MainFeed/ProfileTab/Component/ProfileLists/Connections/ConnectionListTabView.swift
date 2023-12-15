@@ -56,7 +56,7 @@ struct ConnectionListTabView: View {
                 VStack{
                     Button(action: {
                         print("viewing..")
-                        navigateToUserProfile.toggle()
+                        navigateToUserProfile = true
                     }, label: {
                         Text("VIEW")
                             .font(.footnote)
@@ -70,6 +70,11 @@ struct ConnectionListTabView: View {
                     })
                     .navigationDestination(isPresented: $navigateToUserProfile, destination: {
                         ProfileView(loginData: loginData, profileVM: profileVM, globalVM: globalVM, mesiboVM: mesiboVM, role: connection.role, mainUser: false, userID: connection.userID)
+                    })
+                    NavigationLink(isActive: $navigateToUserProfile, destination: {
+                        ProfileView(loginData: loginData, profileVM: profileVM, globalVM: globalVM, mesiboVM: mesiboVM, role: connection.role, mainUser: false, userID: connection.userID)
+                    }, label: {
+                        Text("")
                     })
                     
                     if mainUser {
@@ -93,6 +98,9 @@ struct ConnectionListTabView: View {
             }
             .padding(.horizontal, UIScreen.screenWidth/30)
             .padding(.vertical, UIScreen.screenHeight/60)
+        }
+        .onAppear{
+            navigateToUserProfile = false
         }
     }
     func deleteElementFromList(id: String) {

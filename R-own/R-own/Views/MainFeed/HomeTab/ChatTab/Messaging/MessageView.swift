@@ -45,7 +45,7 @@ struct MessageView: View {
                     
                     MessageViewSecondHalf(loginData:loginData, mesiboVM: mesiboData, profileVM: profileVM, globalVM: globalVM, keyboardVisibility: $keyboardVisibility)
                     
-                    MessageViewThirdHalf(image: $image, showSelectedImagePreview: $showSelectedImagePreview, selectedVideoURL: $selectedVideoURL, showSelectedVideoPreview: $showSelectedVideoPreview, selectedDocumentURL: $selectedDocumentURL, showSelectedDocumentPreview: $showSelectedDocumentPreview, loginData:loginData, mesiboVM: mesiboData, keyboardVisibility: $keyboardVisibility, globalVM: globalVM)
+                    MessageViewThirdHalf(image: $image, showSelectedImagePreview: $showSelectedImagePreview, selectedVideoURL: $selectedVideoURL, showSelectedVideoPreview: $showSelectedVideoPreview, selectedDocumentURL: $selectedDocumentURL, showSelectedDocumentPreview: $showSelectedDocumentPreview, loginData:loginData, mesiboVM: mesiboData, keyboardVisibility: $keyboardVisibility, globalVM: globalVM, isGroup: false, communityName: "", groupID: "")
                 }
                 .background(
                     Image("DefaultChatBG")
@@ -59,7 +59,7 @@ struct MessageView: View {
                 )
                 if image != nil {
                     if showSelectedImagePreview {
-                        SelectedMessageImagePreview(image: $image, mesiboVM: mesiboData, loginData: loginData, showSelectedImagePreview: $showSelectedImagePreview, globalVM: globalVM)
+                        SelectedMessageImagePreview(image: $image, mesiboVM: mesiboData, loginData: loginData, showSelectedImagePreview: $showSelectedImagePreview, isGroup: false, communityName: "", groupID: "", globalVM: globalVM)
                     }
                 }
                 

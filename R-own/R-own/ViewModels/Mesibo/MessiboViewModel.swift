@@ -53,6 +53,7 @@ class MesiboViewModel: UIViewController, MesiboDelegate, ObservableObject{
     @AppStorage("m_Remote_User") var mRemoteUser: String!
     var mProfile: MesiboProfile!
     var mSelfProfile: MesiboProfile!
+    
     let settings: MesiboGroupSettings = MesiboGroupSettings()
     @State var mConnectionStatus: String = "Connection Status: nil"
     var mMessageStatus: String = ""
@@ -61,8 +62,13 @@ class MesiboViewModel: UIViewController, MesiboDelegate, ObservableObject{
     
     
     
-    func addUserToMesiboModelFunc(loginData: LoginViewModel) {
-        mesiboData.addUserToMesibo(loginData: loginData)
+    func addUserToMesiboModelFunc(loginData: LoginViewModel) async -> String {
+        let res = await mesiboData.addUserToMesibo(loginData: loginData)
+        if res == "Success" {
+            return "Success"
+        } else {
+            return "Failure"
+        }
     }
     
     func mesiboInitalize(_ token: String?, address: String?, remoteUserName name: String?){

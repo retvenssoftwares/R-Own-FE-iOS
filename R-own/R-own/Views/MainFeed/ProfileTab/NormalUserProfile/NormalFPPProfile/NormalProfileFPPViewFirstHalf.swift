@@ -43,7 +43,7 @@ struct NormalProfileFPPViewFirstHalf: View {
                 }
                 VStack(alignment: .leading){
                     HStack{
-                        ProfilePictureView(profilePic: mainUser ? loginData.mainUserProfilePic : globalVM.getNormalProfileHeader.data.profile.profilePic , verified: true , height: UIScreen.screenHeight/10, width: UIScreen.screenHeight/10)
+                        ProfilePictureView(profilePic: mainUser ? loginData.mainUserProfilePic : globalVM.getNormalProfileHeader.data.profile.profilePic , verified: mainUser ? (loginData.mainUserVerificationStatus == "true" ? true : false) : (globalVM.getNormalProfileHeader.data.profile.verificationStatus == "true" ? true : false) , height: UIScreen.screenHeight/10, width: UIScreen.screenHeight/10)
                             .onLongPressGesture(perform: {
                                 if globalVM.getNormalProfileHeader.data.profile.profilePic != ""{
                                     loginData.selectedProfilePicMax = mainUser ? loginData.mainUserProfilePic : globalVM.getNormalProfileHeader.data.profile.profilePic
@@ -82,7 +82,7 @@ struct NormalProfileFPPViewFirstHalf: View {
                         .onTapGesture {
                             if globalVM.getNormalProfileHeader.data.connectionStatus == "Connected" || mainUser {
                                 print("showing connections list")
-                                navigateToConnectionString.toggle()
+                                navigateToConnectionString = true
                             }
                         }
                         .navigationDestination(isPresented: $navigateToConnectionString, destination: {
@@ -105,7 +105,7 @@ struct NormalProfileFPPViewFirstHalf: View {
                             }
                             .onTapGesture {
                                 print("showing request list")
-                                navigateToRequestString.toggle()
+                                navigateToRequestString = true
                             }
                             .navigationDestination(isPresented: $navigateToRequestString, destination: {
                                 RequestProfileListView(loginData: loginData, globalVM: globalVM, mainUser: mainUser, profileVM: profileVM, mesiboVM: mesiboVM)
@@ -225,7 +225,7 @@ struct NormalProfileFPPViewFirstHalf: View {
                                 }, label: {Text("")})
                                 
                                 Button(action: {
-                                    navigateTOCHatView.toggle()
+                                    navigateTOCHatView = true
                                 }, label: {
                                     Text("INTERACT")
                                         .font(.body)
@@ -241,22 +241,26 @@ struct NormalProfileFPPViewFirstHalf: View {
                                         MessageView(loginData: loginData, mesiboAddress: globalVM.getNormalProfileHeader.data.profile.mesiboAccount[0].address, mesiboData: mesiboVM, profileVM: profileVM, globalVM: globalVM)
                                     }
                                 })
+                                NavigationLink(isActive: $navigateTOCHatView, destination: {
+                                    MessageView(loginData: loginData, mesiboAddress: globalVM.getNormalProfileHeader.data.profile.mesiboAccount[0].address, mesiboData: mesiboVM, profileVM: profileVM, globalVM: globalVM)
+                                }, label: {
+                                    Text("")
+                                })
                             }
                             if globalVM.getNormalProfileHeader.data.connectionStatus != "Connected" {
-                                NavigationLink(destination: {
-                                    NormalUserProfessionalProfileView(loginData: loginData, userID: userID, role: role, mainUser: mainUser, globalVM: globalVM)
-                                }, label: {
-                                    Text("PROFESSIONAL PROFILE")
-                                        .font(.body)
-                                        .fontWeight(.semibold)
-                                        .foregroundColor(.black)
-                                        .padding(.vertical, UIScreen.screenHeight/100)
-                                        .frame(maxWidth: UIScreen.screenWidth)
-                                        .overlay{
-                                            RoundedRectangle(cornerRadius: 8)
-                                                .stroke(Color.black, lineWidth: 1)
-                                        }
-                                })
+                                Text("PROFESSIONAL PROFILE")
+                                    .font(.body)
+                                    .fontWeight(.semibold)
+                                    .foregroundColor(.black)
+                                    .padding(.vertical, UIScreen.screenHeight/100)
+                                    .frame(maxWidth: UIScreen.screenWidth)
+                                    .overlay{
+                                        RoundedRectangle(cornerRadius: 8)
+                                            .stroke(Color.black, lineWidth: 1)
+                                    }
+                                    .onTapGesture {
+                                        navigateToProfessionalProfile1 = true
+                                    }
                             }
                             
                         }
@@ -268,29 +272,38 @@ struct NormalProfileFPPViewFirstHalf: View {
                         
                         HStack{
                             
-                            NavigationLink(destination: {
-                                NormalUserProfessionalProfileView(loginData: loginData, userID: userID, role: role, mainUser: mainUser, globalVM: globalVM)
-                            }, label: {
-                                Text("PROFESSIONAL PROFILE")
-                                    .font(.body)
-                                    .fontWeight(.semibold)
-                                    .foregroundColor(.black)
-                                    .padding(.vertical, UIScreen.screenHeight/100)
-                                    .frame(maxWidth: UIScreen.screenWidth)
-                                    .overlay{
-                                        RoundedRectangle(cornerRadius: 8)
-                                            .stroke(Color.black, lineWidth: 1)
-                                    }
-                            })
+                            Text("PROFESSIONAL PROFILE")
+                                .font(.body)
+                                .fontWeight(.semibold)
+                                .foregroundColor(.black)
+                                .padding(.vertical, UIScreen.screenHeight/100)
+                                .frame(maxWidth: UIScreen.screenWidth)
+                                .overlay{
+                                    RoundedRectangle(cornerRadius: 8)
+                                        .stroke(Color.black, lineWidth: 1)
+                                }
+                                .onTapGesture {
+                                    navigateToProfessionalProfile1 = true
+                                }
                             
                         }
                         .padding(.horizontal, UIScreen.screenWidth/30)
                         .padding(.vertical, UIScreen.screenHeight/110)
                     }
+                    NavigationLink(isActive: $navigateToProfessionalProfile1, destination: {
+                        NormalUserProfessionalProfileView(loginData: loginData, userID: userID, role: role, mainUser: mainUser, globalVM: globalVM)
+                    }, label: {
+                        Text("")
+                    })
                 }
             }
         }
         .onAppear{
+            navigateTOCHatView = false
+            navigateToRequestString = false
+            navigateToConnectionString = false
+            navigateToProfessionalProfile1 = false
+            navigateToProfessionalProfile2 = false
             print(loginData.mainUserProfilePic)
             print(profileVM.showNormalProfileEditBottomSheet)
         }

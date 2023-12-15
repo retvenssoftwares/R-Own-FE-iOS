@@ -38,9 +38,9 @@ struct ExploreSearchServicesTabView: View {
                                                 Image("MapsPin")
                                                     .resizable()
                                                     .scaledToFit()
-                                                    .frame(width: UIScreen.screenHeight/50, height: UIScreen.screenHeight/50)
+                                                    .frame(width: UIScreen.screenHeight/60, height: UIScreen.screenHeight/60)
                                                 Text(extractFirstWord(from: vendor.location ) ?? (vendor.location ))
-                                                    .font(.body)
+                                                    .font(.footnote)
                                                     .foregroundColor(.white)
                                                     .cornerRadius(10)
                                                     .padding(.leading, UIScreen.screenWidth/40)
@@ -52,7 +52,7 @@ struct ExploreSearchServicesTabView: View {
                                             Spacer()
                                         }
                                         .padding(.vertical, UIScreen.screenHeight/110)
-                                        .padding(.leading, UIScreen.screenWidth/30)
+                                        .padding(.leading, UIScreen.screenWidth/15)
                                     }
                                 }
                         }
@@ -115,11 +115,19 @@ struct ExploreSearchServicesTabView: View {
             .cornerRadius(10)
             .shadow(color: .black.opacity(0.2), radius: 5, x: 2, y: 2)
             .onTapGesture {
-                navigateToServiceDetailPage.toggle()
+                navigateToServiceDetailPage = true
             }
             .navigationDestination(isPresented: $navigateToServiceDetailPage, destination: {
                 BrandProfileView(loginData: loginData, globalVM: globalVM, userID: vendor.userID, profileVM: profileVM, mesiboVM: mesiboVM, mainUser: false)
             })
+            NavigationLink(isActive: $navigateToServiceDetailPage, destination: {
+                BrandProfileView(loginData: loginData, globalVM: globalVM, userID: vendor.userID, profileVM: profileVM, mesiboVM: mesiboVM, mainUser: false)
+            }, label: {
+                Text("")
+            })
+        }
+        .onAppear{
+            navigateToServiceDetailPage = false
         }
     }
 }

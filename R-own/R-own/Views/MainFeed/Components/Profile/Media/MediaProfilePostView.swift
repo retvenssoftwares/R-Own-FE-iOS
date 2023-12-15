@@ -39,7 +39,7 @@ struct MediaProfilePostView: View {
                 .padding(.horizontal, UIScreen.screenWidth/30)
                 .onTapGesture {
                     print("imagePost is tapped")
-                    navigateToImagePostDetailScreen.toggle()
+                    navigateToImagePostDetailScreen = true
                 }
                 .navigationDestination(isPresented: $navigateToImagePostDetailScreen, destination: {
                     ProfilePostDetailView( post: post, loginData: loginData, globalVM: globalVM, profileVM: profileVM, mesiboVM: mesiboVM, mainUser: mainUser)
@@ -58,7 +58,8 @@ struct MediaProfilePostView: View {
                 }
             }
         }
-        .onLongPressGesture {
+        .onAppear{
+            navigateToImagePostDetailScreen = false
         }
     }
 }

@@ -62,7 +62,7 @@ struct SavedJobsTabView: View {
                         .background(.white.opacity(0.5))
                     Spacer()
                     Button(action: {
-                        navigateToJobDetails.toggle()
+                        navigateToJobDetails = true
                     }, label: {
                         Text("Apply Now")
                             .font(.system(size: UIScreen.screenHeight/80))
@@ -75,6 +75,11 @@ struct SavedJobsTabView: View {
                     .navigationDestination(isPresented: $navigateToJobDetails, destination: {
                         JobDetailsView(loginData: loginData, jobsVM: jobsVM, globalVM: globalVM, jobID: "", profileVM: profileVM, mesiboVM: mesiboVM)
                     })
+                    NavigationLink(isActive: $navigateToJobDetails, destination: {
+                        JobDetailsView(loginData: loginData, jobsVM: jobsVM, globalVM: globalVM, jobID: "", profileVM: profileVM, mesiboVM: mesiboVM)
+                    }, label: {
+                        Text("")
+                    })
                 }
             }
             .frame(width: UIScreen.screenWidth/1.3)
@@ -83,6 +88,9 @@ struct SavedJobsTabView: View {
             .cornerRadius(5)
             .shadow(color: .black.opacity(0.2), radius: 5, x: 2, y: 2)
         .padding(20)
+        }
+        .onAppear{
+            navigateToJobDetails = false
         }
     }
 }

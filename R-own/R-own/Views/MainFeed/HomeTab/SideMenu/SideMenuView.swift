@@ -140,7 +140,7 @@ struct SideMenuView: View {
                                             
                                             if loginData.profileCompletionPercentage != "100" {
                                                 Button(action: {
-                                                    navigateToCompleteYourProfile.toggle()
+                                                    navigateToCompleteYourProfile = true
                                                 }, label: {
                                                     HStack{
                                                         Text("Complete your profile")
@@ -218,18 +218,28 @@ struct SideMenuView: View {
                                     VStack{
                                         SideBarTilesView(tileImage: "SidebarNotificationIcon", tileText: "Notifications")
                                             .onTapGesture {
-                                                navigateToNotificationsView.toggle()
+                                                navigateToNotificationsView = true
                                             }
                                             .navigationDestination(isPresented: $navigateToNotificationsView, destination: {
                                                 NotificationsView(loginData: loginData, notificationVM: notificationVM, globalVM: globalVM, profileVM: profileVM, mesiboVM: mesiboVM)
                                             })
+                                        NavigationLink(isActive: $navigateToNotificationsView, destination: {
+                                            NotificationsView(loginData: loginData, notificationVM: notificationVM, globalVM: globalVM, profileVM: profileVM, mesiboVM: mesiboVM)
+                                        }, label: {
+                                            Text("")
+                                        })
                                         SideBarTilesView(tileImage: "SidebarMyConnections", tileText: "My Connections")
                                             .onTapGesture {
-                                                navigateToMyConnectionView.toggle()
+                                                navigateToMyConnectionView = true
                                             }
                                             .navigationDestination(isPresented: $navigateToMyConnectionView, destination: {
                                                 ConnectionsProfileListView(connectionOwnerName: "My", loginData: loginData, globalVM: globalVM, mainUser: true, profileVM: profileVM, mesiboVM: mesiboVM)
                                             })
+                                        NavigationLink(isActive: $navigateToMyConnectionView, destination: {
+                                            ConnectionsProfileListView(connectionOwnerName: "My", loginData: loginData, globalVM: globalVM, mainUser: true, profileVM: profileVM, mesiboVM: mesiboVM)
+                                        }, label: {
+                                            Text("")
+                                        })
                                         if loginData.isHiddenKPI{
                                             if loginData.mainUserRole == "Hotel Owner" {
                                                 SideBarTilesView(tileImage: "SidebarJobsAppliedFor", tileText: "Jobs Posted")
@@ -249,19 +259,29 @@ struct SideMenuView: View {
                                         if loginData.isHiddenKPI{
                                             SideBarTilesView(tileImage: "SidebarEventsNearMe", tileText: "Events Near Me")
                                                 .onTapGesture {
-                                                    navigateToEventsNearMe.toggle()
+                                                    navigateToEventsNearMe = true
                                                 }
                                                 .navigationDestination(isPresented: $navigateToEventsNearMe, destination: {
                                                     NearestConcertListView(loginData: loginData, globalVM: globalVM)
                                                 })
+                                            NavigationLink(isActive: $navigateToEventsNearMe, destination: {
+                                                NearestConcertListView(loginData: loginData, globalVM: globalVM)
+                                            }, label: {
+                                                Text("")
+                                            })
                                         }
                                         SideBarTilesView(tileImage: "SidebarBlogs", tileText: "Blogs")
                                             .onTapGesture {
-                                                navigateToBlogsView.toggle()
+                                                navigateToBlogsView = true
                                             }
                                             .navigationDestination(isPresented: $navigateToBlogsView, destination: {
                                                 AllBlogsView(blogsVM: blogsVM, globalVM: globalVM, loginData: loginData)
                                             })
+                                        NavigationLink(isActive: $navigateToBlogsView, destination: {
+                                            AllBlogsView(blogsVM: blogsVM, globalVM: globalVM, loginData: loginData)
+                                        }, label: {
+                                            Text("")
+                                        })
                                     }
                                     VStack{
                                         SideBarTilePnSDropDownView()
@@ -293,6 +313,12 @@ struct SideMenuView: View {
                 Spacer()
             }
             .frame(height: UIScreen.screenHeight)
+        }
+        .onAppear{
+            navigateToNotificationsView = false
+            navigateToMyConnectionView = false
+            navigateToEventsNearMe = false
+            navigateToBlogsView = false
         }
     }
 }

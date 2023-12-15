@@ -17,6 +17,9 @@ struct SelectedMessageImagePreview: View {
     @Binding var showSelectedImagePreview: Bool
     @State var message: String = ""
     @FocusState private var isKeyboardShowing: Bool
+    @State var isGroup: Bool
+    @State var communityName: String
+    @State var groupID: String
     
     
     @State private var showingCropper = false
@@ -26,6 +29,8 @@ struct SelectedMessageImagePreview: View {
     @State private var cropperType: ImageCropperType = .normal
     
     @StateObject var globalVM: GlobalViewModel
+    
+    @StateObject var communityService = CommunityService()
     
     var body: some View {
         VStack{
@@ -96,6 +101,10 @@ struct SelectedMessageImagePreview: View {
                     Button(action: {
                         if image != nil {
                             mesiboVM.onSendImageMessage(img: image!, loginData: loginData, text: message)
+                            if isGroup{
+                                print("sending group notification")
+                                communityService.sendGroupNotificationWithImage(loginData: loginData, title: communityName, body: message, groupID: groupID, senderUserID: loginData.mainUserID, messageImage: image)
+                            }
                             showSelectedImagePreview = false
                         }
                     }, label: {

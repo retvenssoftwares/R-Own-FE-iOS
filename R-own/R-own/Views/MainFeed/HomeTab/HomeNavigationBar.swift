@@ -50,7 +50,7 @@ struct HomeNavigationBar: View {
                     Spacer()
                     
                     Button(action: {
-                        navigateToNotification.toggle()
+                        navigateToNotification = true
                     }, label: {
                         Image("NotificationIcon")
                             .resizable()
@@ -60,9 +60,14 @@ struct HomeNavigationBar: View {
                     .navigationDestination(isPresented: $navigateToNotification, destination: {
                         NotificationsView(loginData: loginData, notificationVM: notificationVM, globalVM: globalVM, profileVM: profileVM, mesiboVM: mesiboData)
                     })
+                    NavigationLink(isActive: $navigateToNotification, destination: {
+                        NotificationsView(loginData: loginData, notificationVM: notificationVM, globalVM: globalVM, profileVM: profileVM, mesiboVM: mesiboData)
+                    }, label: {
+                        Text("")
+                    })
                     
                     Button(action: {
-                        navigateToMessaging.toggle()
+                        navigateToMessaging = true
                     }, label: {
                         
                         Image("TopNavChat")
@@ -87,6 +92,11 @@ struct HomeNavigationBar: View {
                     })
                     .navigationDestination(isPresented: $navigateToMessaging, destination: {
                         ChatView(loginData: loginData, mesiboData: mesiboData, globalVM: globalVM, profileVM: profileVM, communityVM: communityVM)
+                    })
+                    NavigationLink(isActive: $navigateToMessaging, destination: {
+                        ChatView(loginData: loginData, mesiboData: mesiboData, globalVM: globalVM, profileVM: profileVM, communityVM: communityVM)
+                    }, label: {
+                        Text("")
                     })
                     
                 }
@@ -117,6 +127,8 @@ struct HomeNavigationBar: View {
             }
         }
         .onAppear{
+            navigateToNotification = false
+            navigateToMessaging = false
             if !loginData.rownLogoPosChange {
                 
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.5){

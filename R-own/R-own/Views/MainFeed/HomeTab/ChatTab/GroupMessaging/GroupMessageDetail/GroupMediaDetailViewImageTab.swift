@@ -40,13 +40,20 @@ struct GroupMediaDetailViewImageTab: View {
                     }
                 }
                 .onTapGesture {
-                    openImagePreviewChat.toggle()
+                    openImagePreviewChat = true
                 }
                 .navigationDestination(isPresented: $openImagePreviewChat, destination: {
                     ImagePreviewTab(message: message)
                 })
-                
+                NavigationLink(isActive: $openImagePreviewChat, destination: {
+                    ImagePreviewTab(message: message)
+                }, label: {
+                    Text("")
+                })
             }
+        }
+        .onAppear{
+            openImagePreviewChat = false
         }
     }
 }

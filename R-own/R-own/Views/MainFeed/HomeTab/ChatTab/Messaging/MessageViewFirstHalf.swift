@@ -60,7 +60,7 @@ struct MessageViewFirstHalf: View {
                     
                     if mesiboVM.mProfile != nil {
                         Button(action: {
-                            navigateToProfileScreen.toggle()
+                            navigateToProfileScreen = true
                         }, label: {
                             
                             if mesiboVM.mProfile.getImageUrl() == "" || mesiboVM.mProfile.getImageUrl() == nil {
@@ -91,13 +91,18 @@ struct MessageViewFirstHalf: View {
                             
                         })
                         VStack(alignment: .leading){
-                            NavigationLink(destination: ProfileView(loginData: loginData, profileVM: profileVM, globalVM: globalVM, mesiboVM: mesiboVM, role: decodedData["userRole"] ?? "", mainUser: false, userID: decodedData["userID"] ?? ""), label: {
-                                
-                                    Text(mesiboVM.mProfile.getName() ?? "")
-                                        .foregroundColor(.black)
-                                        .font(.headline)
-                                        .fontWeight(.bold)
-                                        .frame(alignment: .leading)
+                            Text(mesiboVM.mProfile.getName() ?? "")
+                                .foregroundColor(.black)
+                                .font(.headline)
+                                .fontWeight(.bold)
+                                .frame(alignment: .leading)
+                                .onTapGesture {
+                                    navigateToProfileScreen = true
+                                }
+                            NavigationLink(isActive: $navigateToProfileScreen, destination: {
+                                ProfileView(loginData: loginData, profileVM: profileVM, globalVM: globalVM, mesiboVM: mesiboVM, role: decodedData["userRole"] ?? "", mainUser: false, userID: decodedData["userID"] ?? "")
+                            }, label: {
+                                Text("")
                             })
                             if Int(mesiboVM.mProfile.getLastSeen()) > 0 {
                                 Text("last seen at \( timeAgoString(fromSeconds: Int(mesiboVM.mProfile.getLastSeen())) )")
@@ -123,7 +128,7 @@ struct MessageViewFirstHalf: View {
                         mesiboVM.onAudioCall(loginData: loginData)
                         loginData.callActivated = true
                         mesiboChatService.callingNotification(receiveruserID: decodedData["userID"] ?? "", sendingUserID: loginData.mainUserID)
-                        navigateToVideoCallScreen.toggle()
+                        navigateToVideoCallScreen = true
                     }) {
                         Image("ChatCall")
                             .resizable()
@@ -136,7 +141,7 @@ struct MessageViewFirstHalf: View {
                         mesiboVM.onVideoCall(loginData: loginData)
                         loginData.callActivated = true
                         mesiboChatService.callingNotification(receiveruserID: decodedData["userID"] ?? "", sendingUserID: loginData.mainUserID)
-                        navigateToVideoCallScreen.toggle()
+                        navigateToVideoCallScreen = true
                     }) {
                         Image("ChatVideoCall")
                             .resizable()
@@ -160,6 +165,8 @@ struct MessageViewFirstHalf: View {
             }
         }
         .onAppear{
+            navigateToProfileScreen = false
+            navigateToVideoCallScreen = false
             print("=======================================")
             print(mesiboVM.mProfile.getStatus() ?? "")
             decodedData = decodeData(encodedData: mesiboVM.mProfile.getStatus() ?? "")

@@ -89,16 +89,19 @@ struct GroupMembersCardView: View {
                         communityVM.selectedGRoupUserAddress = user.address
                         communityVM.showAdminMemberSettingBottomSheet = true
                     } else {
-                        navigateToProfileView.toggle()
+                        navigateToProfileView = true
                     }
                 }
             }
-//            .navigationDestination(isPresented: $navigateToProfileView, destination: {
-//                ProfileView(loginData: loginData, profileVM: profileVM, globalVM: globalVM, mesiboVM: mesiboVM, role: user.role, mainUser: false, userID: user.userID)
-//            })
+            .navigationDestination(isPresented: $navigateToProfileView, destination: {
+                ProfileView(loginData: loginData, profileVM: profileVM, globalVM: globalVM, mesiboVM: mesiboVM, role: user.role, mainUser: false, userID: user.userID)
+            })
             NavigationLink(isActive: $navigateToProfileView, destination: {
                 ProfileView(loginData: loginData, profileVM: profileVM, globalVM: globalVM, mesiboVM: mesiboVM, role: user.role, mainUser: false, userID: user.userID)
             }, label: {Text("")})
+        }
+        .onAppear{
+            navigateToProfileView = false
         }
     }
     

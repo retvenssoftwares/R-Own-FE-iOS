@@ -28,6 +28,8 @@ struct CommentBottomSheetView: View {
     
     @FocusState private var isKeyboardShowing: Bool
     
+    @State var isLoadingNewComments: Bool = false
+    
     var body: some View {
         VStack(alignment: .leading){
             Text("Comments")
@@ -38,19 +40,23 @@ struct CommentBottomSheetView: View {
                 .padding(.horizontal, UIScreen.screenWidth/30)
             ScrollView{
                 VStack(alignment: .leading){
-                    if globalVM.commentList.post.comments.count > 0 {
-                        ForEach(0..<globalVM.commentList.post.comments.count, id: \.self){ count in
-                            if globalVM.commentList.post.comments[count].displayStatus == "1"{
-                                CommentTabView(comment: globalVM.commentList.post.comments[count], replySelected: $replySelected, selectedCommentID: $selectedCommentID, selectedCommentUserName: $selectedCommentUserName, newComment: $newComment, replyCount: $replyCount, selectedComment: $selectedComment, selectedCommentFullName: $selectedCommentFullName, count: count)
+                    if isLoadingNewComments == false {
+                        if globalVM.commentList.post.comments.count > 0 {
+                            ForEach(0..<globalVM.commentList.post.comments.count, id: \.self){ count in
+                                if globalVM.commentList.post.comments[count].displayStatus == "1"{
+                                    CommentTabView(comment: globalVM.commentList.post.comments[count], replySelected: $replySelected, selectedCommentID: $selectedCommentID, selectedCommentUserName: $selectedCommentUserName, newComment: $newComment, replyCount: $replyCount, selectedComment: $selectedComment, selectedCommentFullName: $selectedCommentFullName, count: count)
+                                }
+                            }
+                        } else {
+                            HStack{
+                                Spacer()
+                                Text("No comment yet. Be first one to comment")
+                                    .font(.body)
+                                Spacer()
                             }
                         }
                     } else {
-                        HStack{
-                            Spacer()
-                            Text("No comment yet. Be first one to comment")
-                                .font(.body)
-                            Spacer()
-                        }
+                        ProgressView()
                     }
                 }
                 .padding(.horizontal, UIScreen.screenWidth/40)
@@ -86,12 +92,15 @@ struct CommentBottomSheetView: View {
                             print("Post reply")
                             if newComment != "" {
                                 
+                                isLoadingNewComments = true
                                 mainFeedService.replyCommentPost(loginData: loginData, postID: postID, posterID: posterID, comment: newComment, parentCommentID: selectedCommentID)
-                                
-                                globalVM.commentList.post.comments[replyCount].replies!.append(Reply5355(userID: loginData.mainUserID, comment: newComment, commentID: "", parentCommentID: "", dateAdded: "few seconds ago", displayStatus: "1", profilePic: loginData.mainUserProfilePic, userName: loginData.mainUserUserName, fullName: loginData.mainUserFullName, id: ""))
-                                print(globalVM.commentList.post.comments[replyCount].replies)
-                                newComment = ""
+                                DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                                    globalVM.commentList = CommentServiceModel(post: Post5355(id: "", userID: "", postID: "", comments: [Comment5355](), v: 0), commentCount: 0)
+                                    mainFeedService.getCommentPost(globalVM: globalVM, postID: postID)
+                                    isLoadingNewComments = false
+                                }
                                 replySelected = false
+                                newComment = ""
                             }
                         }, label: {
                             Text("Post")
@@ -114,9 +123,15 @@ struct CommentBottomSheetView: View {
                     Button(action: {
                         print("Post comment")
                         if newComment != "" {
+                            isLoadingNewComments = true
                             mainFeedService.commentPost(loginData: loginData, postID: postID, posterID: posterID, comment: newComment)
-                            globalVM.commentList.post.comments.append(Comment5355(userID: loginData.mainUserID, comment: newComment, commentID: "", dateAdded: "few seconds ago", profilePic: loginData.mainUserProfilePic, userName: loginData.mainUserUserName, fullName: loginData.mainUserFullName, verificationStatus: "", role: "", displayStatus: "1", id: "", replies: [Reply5355]()))
+//                            globalVM.commentList.post.comments.append(Comment5355(userID: loginData.mainUserID, comment: newComment, commentID: "", dateAdded: "few seconds ago", profilePic: loginData.mainUserProfilePic, userName: loginData.mainUserUserName, fullName: loginData.mainUserFullName, verificationStatus: "", role: "", displayStatus: "1", id: "", replies: [Reply5355]()))
                             commentCount += 1
+                            DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                                globalVM.commentList = CommentServiceModel(post: Post5355(id: "", userID: "", postID: "", comments: [Comment5355](), v: 0), commentCount: 0)
+                                mainFeedService.getCommentPost(globalVM: globalVM, postID: postID)
+                                isLoadingNewComments = false
+                            }
                             newComment = ""
                         }
                     }, label: {

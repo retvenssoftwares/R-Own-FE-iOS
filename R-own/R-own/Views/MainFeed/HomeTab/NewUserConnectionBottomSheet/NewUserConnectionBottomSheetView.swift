@@ -229,7 +229,7 @@ struct NewUserConnectionBottomSheetView: View {
                     .offset(y: loginData.showNewUserConnectionBottomSheet ? 0 : UIScreen.main.bounds.height)
                 }
                 .ignoresSafeArea()
-                .background(Color.white.opacity(loginData.showNewUserConnectionBottomSheet ? 0 : 0).ignoresSafeArea()
+                .background(Color.white.opacity(loginData.showNewUserConnectionBottomSheet ? 0.3 : 0).ignoresSafeArea()
                     .onTapGesture {
                         withAnimation{
                             loginData.showNewUserConnectionBottomSheet.toggle()

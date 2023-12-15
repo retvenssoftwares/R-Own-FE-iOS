@@ -23,8 +23,6 @@ struct SavedBlogCardView: View {
     
     var body: some View {
         NavigationStack {
-            NavigationLink(isActive: $navigateToBlogsDetailView, destination:
-                           { BlogsDetailView(loginData: loginData, globalVM: globalVM, blogID: blogs.blogid, saved: $savedStatus)}, label: {Text("")})
             VStack{
                 ZStack{
                     AsyncImage(url: currentUrl) { image in
@@ -32,6 +30,7 @@ struct SavedBlogCardView: View {
                             .resizable()
                             .aspectRatio(contentMode: .fill)
                             .frame(width: UIScreen.screenWidth/2.5, height: UIScreen.screenHeight/5)
+                            .clipped()
                             .overlay{
                                 VStack{
                                     HStack{
@@ -43,8 +42,6 @@ struct SavedBlogCardView: View {
                                             .padding(.vertical, 5)
                                             .background(.white)
                                             .cornerRadius(5)
-                                            .padding(.leading, UIScreen.screenWidth/40)
-                                            .padding(.vertical, UIScreen.screenHeight/70)
                                         Spacer()
                                         //                                    Button(action: {
                                         //                                        blogService.likeBlogs(loginData: loginData, blogID: blogs.blogID)
@@ -61,14 +58,16 @@ struct SavedBlogCardView: View {
                                         //                                            .padding(.trailing, UIScreen.screenWidth/40)
                                         //                                    })
                                     }
+                                    .padding(.horizontal, UIScreen.screenWidth/40)
                                     Spacer()
                                 }
+                                .padding(.top, UIScreen.screenHeight/30)
                             }
                     } placeholder: {
                         //put your placeholder here
                         Rectangle()
                             .fill(lightGreyUi)
-                            .frame(width: UIScreen.screenWidth/2.5, height: UIScreen.screenHeight/5)
+                            .frame(width: UIScreen.screenWidth/3, height: UIScreen.screenHeight/5)
                             .shimmering(active: true)
                     }
                     .onAppear {
@@ -83,56 +82,68 @@ struct SavedBlogCardView: View {
                 VStack{
                     HStack{
                         Text(blogs.blogTitle )
-                            .font(.body)
+                            .font(.subheadline)
+                            .multilineTextAlignment(.leading)
                             .fontWeight(.bold)
+                            .foregroundColor(.black)
                         Spacer()
                     }
                     HStack{
-                        ProfilePictureView(profilePic: blogs.profilePic , verified: false, height: UIScreen.screenHeight/80, width: UIScreen.screenHeight/80)
+                        ProfilePictureView(profilePic: blogs.profilePic , verified: false, height: UIScreen.screenHeight/50, width: UIScreen.screenHeight/50)
                         Text(blogs.userName)
                             .font(.footnote)
                             .fontWeight(.thin)
+                            .foregroundColor(.black)
                         Spacer()
                     }
-//                    HStack{
-//                        Spacer()
-//                        Button(action: {
-//                        }, label: {
-//                            Text("Read More")
-//                                .font(.system(size: UIScreen.screenHeight/110))
-//                                .fontWeight(.regular)
-//                                .foregroundColor(.black)
-//                                .padding(.horizontal, 5)
-//                                .padding(.vertical, 5)
-//                                .background(greyUi)
-//                                .cornerRadius(5)
-//                        })
-//                        .navigationDestination(isPresented: $navigateToBlogsDetailView, destination: {
-//                        })
-//                    }
+                    //                    HStack{
+                    //                        Spacer()
+                    //                        Button(action: {
+                    //                        }, label: {
+                    //                            Text("Read More")
+                    //                                .font(.system(size: UIScreen.screenHeight/110))
+                    //                                .fontWeight(.regular)
+                    //                                .foregroundColor(.black)
+                    //                                .padding(.horizontal, 5)
+                    //                                .padding(.vertical, 5)
+                    //                                .background(greyUi)
+                    //                                .cornerRadius(5)
+                    //                        })
+                    //                        .navigationDestination(isPresented: $navigateToBlogsDetailView, destination: {
+                    //                        })
+                    //                    }
                     Divider()
                         .padding(.horizontal, UIScreen.screenWidth/40)
-                    HStack{
-//                        Text("2.2k Reads")
-//                            .font(.system(size: UIScreen.screenHeight/110))
-//                            .fontWeight(.bold)
-                        Spacer()
-                        Text("date")
-                            .font(.footnote)
-                            .fontWeight(.light)
-                    }
+                    //                    HStack{
+                    ////                        Text("2.2k Reads")
+                    ////                            .font(.system(size: UIScreen.screenHeight/110))
+                    ////                            .fontWeight(.bold)
+                    //                        Spacer()
+                    //                        Text(blogs.)
+                    //                            .font(.footnote)
+                    //                            .fontWeight(.light)
+                    //                    }
                     
                     
                 }
                 .padding()
             }
-            .frame(width: UIScreen.screenWidth/2.5, height: UIScreen.screenHeight/3)
+            .frame(width: UIScreen.screenWidth/2.2, height: UIScreen.screenHeight/3)
             .background(.white)
             .cornerRadius(10)
-            .shadow(color: .black.opacity(0.2), radius: 5, x: 2, y: 2)
+            .shadow(color: .black.opacity(0.2), radius: 2, x: 2, y: 2)
             .onTapGesture {
-                navigateToBlogsDetailView.toggle()
+                navigateToBlogsDetailView = true
             }
+            .navigationDestination(isPresented: $navigateToBlogsDetailView, destination: {
+                BlogsDetailView(loginData: loginData, globalVM: globalVM, blogID: blogs.blogid, saved: $savedStatus)
+            })
+            
+            NavigationLink(isActive: $navigateToBlogsDetailView, destination:
+                            { BlogsDetailView(loginData: loginData, globalVM: globalVM, blogID: blogs.blogid, saved: $savedStatus)}, label: {Text("")})
+        }
+        .onAppear{
+            navigateToBlogsDetailView = false
         }
     }
 }

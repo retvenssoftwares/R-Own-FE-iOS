@@ -38,6 +38,7 @@ struct EditCommunityDetailView: View {
             VStack{
                 BasicNavbarView(navbarTitle: "Edit community details")
             }
+            .padding(.top, UIScreen.screenHeight/80)
             VStack{
                 
 //                VStack{
@@ -91,7 +92,7 @@ struct EditCommunityDetailView: View {
 //                .padding(.vertical,40)
                 
                 EditFPPProfilePicView(loginData: loginData, globalVM: globalVM, newHotelLogo: $croppedImage, currentLogoURL: communityPic)
-                    .padding(.vertical,40)
+                    .padding(.vertical,10)
                 
                 TextField("Enter Name", text: $communityName)
                     .padding()
@@ -110,7 +111,7 @@ struct EditCommunityDetailView: View {
                                     .background(Color.white)
                                     .padding(.horizontal,5)
                                     .fontWeight(.ultraLight)
-                                    .offset(x: UIScreen.screenWidth/30, y: -27)
+                                    .offset(x: UIScreen.screenWidth/40, y: -UIScreen.screenHeight/130)
                                 Spacer()
                             }
                             Spacer()
@@ -149,7 +150,7 @@ struct EditCommunityDetailView: View {
                                     .background(Color.white)
                                     .padding(.horizontal,5)
                                     .fontWeight(.ultraLight)
-                                    .offset(x: UIScreen.screenWidth/30, y: -27)
+                                    .offset(x: UIScreen.screenWidth/40, y: -UIScreen.screenHeight/130)
                                 Spacer()
                             }
                             Spacer()
@@ -160,17 +161,20 @@ struct EditCommunityDetailView: View {
                     .padding(.horizontal, UIScreen.screenWidth/40)
             }
             Button(action: {
+                loginData.showLoader = true
                 Task {
-                    communityService.updateGroupInfo(loginData: loginData, communityVM: communityVM, groupID: groupID, communityName: communityName, communityLocation: "", communityLat: "", communityLong: "", communityType: "", commuinityDescp: communityDescription, communityImage: croppedImage){ result in
+                    communityService.updateNewGroupInfo(loginData: loginData, communityVM: communityVM, groupID: groupID, communityName: communityName, commuinityDescp: communityDescription, communityImage: croppedImage){ result in
                         switch result {
                         case .success(let message):
                             print("Update successful: \(message)")
                             mesiboVM.settings.name = communityName
                             mesiboVM.mProfile.getGroupProfile()?.setProperties(mesiboVM.settings)
                             updatedGroupInfo = true
+                            loginData.showLoader = false
                         case .failure(let error):
                             print("Update failed with error: \(error)")
                             alertFailed = true
+                            loginData.showLoader = false
                         }
                     }
                 }

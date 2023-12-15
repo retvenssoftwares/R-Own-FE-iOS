@@ -31,6 +31,7 @@ struct PostTypeBottomSheet: View {
     @State var navigateToPolls: Bool = false
     
     var body: some View {
+        NavigationStack{
             VStack{
                 Spacer()
                 VStack(spacing: 12){
@@ -66,12 +67,9 @@ struct PostTypeBottomSheet: View {
                             }
                             .padding(.horizontal, UIScreen.screenWidth/20)
                             .onTapGesture(perform: {
-                                navigateToClicknShare.toggle()
+                                navigateToClicknShare = true
                                 print("navigate")
                             })
-                            .onAppear{
-                                navigateToClicknShare = false
-                            }
                             .navigationDestination(isPresented: $navigateToClicknShare, destination: {
                                 ClickNShareView(loginData: loginData, createPostVM: createPostVM, globalVM: globalVM)
                             })
@@ -99,10 +97,7 @@ struct PostTypeBottomSheet: View {
                             }
                             .padding(.horizontal, UIScreen.screenWidth/20)
                             .onTapGesture{
-                                navigateToShareSomeMedia.toggle()
-                            }
-                            .onAppear{
-                                navigateToShareSomeMedia = false
+                                navigateToShareSomeMedia = true
                             }
                             .navigationDestination(isPresented: $navigateToShareSomeMedia, destination: {
                                 ShareSomeMediaView(loginData: loginData, createPostVM: createPostVM, globalVM: globalVM)
@@ -134,10 +129,7 @@ struct PostTypeBottomSheet: View {
                                 }
                                 .padding(.horizontal, UIScreen.screenWidth/20)
                                 .onTapGesture{
-                                    navigateToupdateEvent.toggle()
-                                }
-                                .onAppear{
-                                    navigateToupdateEvent = false
+                                    navigateToupdateEvent = true
                                 }
                                 .navigationDestination(isPresented: $navigateToupdateEvent, destination: {
                                     UpdateEventView(loginData: loginData, createPostVM: createPostVM, profileVM: profileVM, globalVM: globalVM)
@@ -169,10 +161,7 @@ struct PostTypeBottomSheet: View {
                             }
                             .padding(.horizontal, UIScreen.screenWidth/20)
                             .onTapGesture{
-                                navigateToCheckIn.toggle()
-                            }
-                            .onAppear{
-                                navigateToCheckIn = false
+                                navigateToCheckIn = true
                             }
                             .navigationDestination(isPresented: $navigateToCheckIn, destination: {
                                 CheckInView(loginData: loginData, createPostVM: createPostVM)
@@ -203,10 +192,7 @@ struct PostTypeBottomSheet: View {
                             }
                             .padding(.horizontal, UIScreen.screenWidth/20)
                             .onTapGesture{
-                                navigateToPolls.toggle()
-                            }
-                            .onAppear{
-                                navigateToPolls = false
+                                navigateToPolls = true
                             }
                             .navigationDestination(isPresented: $navigateToPolls, destination: {
                                 PollsView(loginData: loginData, createPostVM: createPostVM, globalVM: globalVM, profileVM: profileVM)
@@ -235,13 +221,14 @@ struct PostTypeBottomSheet: View {
                     }
                 }
             )
-            .onAppear{
-                navigateToClicknShare = false
-                navigateToShareSomeMedia = false
-                navigateToupdateEvent = false
-                navigateToCheckIn = false
-                navigateToPolls = false
-            }
+        }
+        .onAppear{
+            navigateToClicknShare = false
+            navigateToShareSomeMedia = false
+            navigateToupdateEvent = false
+            navigateToCheckIn = false
+            navigateToPolls = false
+        }
     }
     func onChanged(value: DragGesture.Value){
         if value.translation.height > 0{

@@ -273,7 +273,7 @@ struct BrandProfileView: View {
                                                                 }
                                                             }
                                                             .onTapGesture {
-                                                                navigateToPortFolio.toggle()
+                                                                navigateToPortFolio = true
                                                             }
                                                         }
                                                     }
@@ -475,12 +475,9 @@ struct BrandProfileView: View {
                                 }
                             }
                             
-                            NavigationLink(isActive: $navigateToProfileView, destination: {
-                                ProfileView(loginData: loginData, profileVM: profileVM, globalVM: globalVM, mesiboVM: mesiboVM, role: "Business Vendor / Freelancer", mainUser: false, userID: userID)
-                            }, label: {Text("")})
                             if !mainUser{
                                 Button(action: {
-                                    navigateToProfileView.toggle()
+                                    navigateToProfileView = true
                                 }, label: {
                                     Text("Hire")
                                         .font(.body)
@@ -498,6 +495,11 @@ struct BrandProfileView: View {
                                 .navigationDestination(isPresented: $navigateToProfileView, destination: {
                                     ProfileView(loginData: loginData, profileVM: profileVM, globalVM: globalVM, mesiboVM: mesiboVM, role: "Business Vendor / Freelancer", mainUser: false, userID: userID)
                                 })
+                                NavigationLink(isActive: $navigateToProfileView, destination: {
+                                    ProfileView(loginData: loginData, profileVM: profileVM, globalVM: globalVM, mesiboVM: mesiboVM, role: "Business Vendor / Freelancer", mainUser: false, userID: userID)
+                                }, label: {
+                                    Text("")
+                                })
                             }
                         }
                     }
@@ -508,6 +510,8 @@ struct BrandProfileView: View {
         }
         .navigationBarHidden(true)
         .onAppear{
+            navigateToPortFolio = false
+            navigateToProfileView = false
             Task{
                 globalVM.getVendorProfileHeader = VendorProfileHeaderModel(roleDetails: RoleDetails321(vendorInfo: VendorInfo321(vendorImage: "", vendorName: "", vendorDescription: "", websiteLink: "", vendorServices: [VendorService321](), portfolioLink: [PortfolioLink321]()), id: "", fullName: "", profilePic: "", mesiboAccount: [MesiboAccount](), verificationStatus: "", userBio: "", createdOn: "", userName: "", location: "", role: "", postCount: [JSONAny]()), postcount: 0, connectioncount: 0, requestcount: 0, connectionStatus: "")
                 Task{

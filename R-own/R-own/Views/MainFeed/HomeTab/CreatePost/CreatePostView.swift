@@ -52,8 +52,23 @@ struct CreatePostView: View {
                             if createPostVM.postCaption == "" {
                                 alertNoStatusCaption = true
                             } else {
-                                postService.postNormalStatusService(loginData: loginData, postCaption: createPostVM.postCaption, location: createPostVM.postLoction, postType: postType, canSee: canSeeAudienceName, canComment: canCommentAudienceName)
-                                dismiss()
+                                Task{
+                                    do {
+                                        let result = try await postService.postNormalStatusService(loginData: loginData, postCaption: createPostVM.postCaption, location: createPostVM.postLoction, postType: postType, canSee: canSeeAudienceName, canComment: canCommentAudienceName)
+
+                                        if result == "Success" {
+                                            // Handle success
+                                            dismiss()
+                                        } else {
+                                            // Handle other success cases or failures
+                                            print("Post failed.")
+                                        }
+                                    } catch {
+                                        // Handle errors
+                                        print("Error: \(error)")
+                                    }
+
+                                }
                             }
                         }, label: {
                             Text("Share")

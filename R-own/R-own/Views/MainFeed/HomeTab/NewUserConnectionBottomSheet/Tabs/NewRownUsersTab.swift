@@ -24,6 +24,7 @@ struct NewRownUsersTab: View {
     @State var navigateToChat: Bool = false
     
     var body: some View {
+        NavigationStack{
             VStack{
                 ProfilePictureView(profilePic: user.profilePic, verified: user.verificationStatus == "false" ? false : true , height: UIScreen.screenHeight/10, width: UIScreen.screenHeight/10)
                 Text(user.fullName)
@@ -61,6 +62,11 @@ struct NewRownUsersTab: View {
                             MessageView(loginData: loginData, mesiboAddress: user.mesiboAccount[0].address, mesiboData: mesiboVM, profileVM: profileVM, globalVM: globalVM)
                         }
                     })
+                    NavigationLink(isActive: $navigateToChat, destination: {
+                        MessageView(loginData: loginData, mesiboAddress: user.mesiboAccount[0].address, mesiboData: mesiboVM, profileVM: profileVM, globalVM: globalVM)
+                    }, label: {
+                        Text("")
+                    })
                 } else if user.connectionStatus == "Confirm request" {
                     CustomBlueButton(title: "Confirm", width: UIScreen.screenWidth/4, action: {
                         Task {
@@ -87,11 +93,21 @@ struct NewRownUsersTab: View {
             .cornerRadius(10)
             .shadow(color: .black.opacity(0.2), radius: 5, x: 2, y: 2)
             .onTapGesture{
-                navigateToROwnProfileView.toggle()
+                navigateToROwnProfileView = true
             }
             .navigationDestination(isPresented: $navigateToROwnProfileView, destination: {
                 ProfileView(loginData: loginData, profileVM: profileVM, globalVM: globalVM, mesiboVM: mesiboVM, role: user.role, mainUser: false, userID: user.userID)
             })
+            NavigationLink(isActive: $navigateToROwnProfileView, destination: {
+                ProfileView(loginData: loginData, profileVM: profileVM, globalVM: globalVM, mesiboVM: mesiboVM, role: user.role, mainUser: false, userID: user.userID)
+            }, label: {
+                Text("")
+            })
+        }
+        .onAppear{
+            navigateToChat = false
+            navigateToROwnProfileView = false
+        }
     }
 }
 

@@ -123,7 +123,7 @@ struct CommunityLocationView: View {
                                         communityVM.communityLatitude = String(loginData.coordinates.latitude)
                                         communityVM.communityLongitude = String(loginData.coordinates.longitude)
                                         
-                                        navigateToSelectMembers.toggle()
+                                        navigateToSelectMembers = true
                                     }
                                 }, label: {
                                     Circle()
@@ -140,6 +140,11 @@ struct CommunityLocationView: View {
                                 })
                                 .padding(.trailing, UIScreen.screenWidth/30)
                                 .navigationDestination(isPresented: $navigateToSelectMembers, destination: {CommunitySelectUserView(loginData: loginData, communityVM: communityVM, mesiboVM: mesiboVM, globalVM: globalVM, profileVM: profileVM)})
+                                NavigationLink(isActive: $navigateToSelectMembers, destination: {
+                                    CommunitySelectUserView(loginData: loginData, communityVM: communityVM, mesiboVM: mesiboVM, globalVM: globalVM, profileVM: profileVM)
+                                }, label: {
+                                    Text("")
+                                })
                             }
                         }
                     }
@@ -158,6 +163,9 @@ struct CommunityLocationView: View {
                             globalVM.keyboardVisibility = false
         }
         .navigationBarBackButtonHidden()
+        .onAppear{
+            navigateToSelectMembers = false
+        }
     }
 }
 

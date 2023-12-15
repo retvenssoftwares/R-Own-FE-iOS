@@ -43,16 +43,13 @@ struct MediaPostsView: View {
                     })
                     VStack{
                         VStack{
-                            NavigationLink(isActive: $navigateToProfileView, destination: {
-                                ProfileView(loginData: loginData, profileVM: profileVM, globalVM: globalVM, mesiboVM: mesiboVM, role: post.role!, mainUser: false, userID: post.userID)
-                            }, label: {Text("")})
                             HStack{
                                 //profilepic
                                 
                                 
                                 ProfilePictureView(profilePic: post.profilePic ?? "", verified: post.verificationStatus == "true" ? true : false, height: UIScreen.screenHeight/18, width: UIScreen.screenHeight/18)
                                     .onTapGesture {
-                                        navigateToProfileView.toggle()
+                                        navigateToProfileView = true
                                         print("move to profile screen")
                                     }
                                     .navigationDestination(isPresented: $navigateToProfileView, destination: {
@@ -73,6 +70,11 @@ struct MediaPostsView: View {
                                         .navigationDestination(isPresented: $navigateToProfileView, destination: {
                                             ProfileView(loginData: loginData, profileVM: profileVM, globalVM: globalVM, mesiboVM: mesiboVM, role: post.role!, mainUser: false, userID: post.userID)
                                         })
+                                    NavigationLink(isActive: $navigateToProfileView, destination: {
+                                        ProfileView(loginData: loginData, profileVM: profileVM, globalVM: globalVM, mesiboVM: mesiboVM, role: post.role!, mainUser: false, userID: post.userID)
+                                    }, label: {
+                                        Text("")
+                                    })
                                     //profile
                                     if post.jobTitle != "" {
                                         Text(post.jobTitle)
@@ -114,6 +116,11 @@ struct MediaPostsView: View {
                                 .navigationDestination(isPresented: $navigateToImageDetailView, destination: {
                                     ImagePostDetailScreen(post: $post, globalVM: globalVM, loginData: loginData)
                                 })
+                            NavigationLink(isActive: $navigateToImageDetailView, destination: {
+                                ImagePostDetailScreen(post: $post, globalVM: globalVM, loginData: loginData)
+                            }, label: {
+                                Text("")
+                            })
                             
                             //caption display
                             VStack{
@@ -128,15 +135,14 @@ struct MediaPostsView: View {
                                 }
                                 HStack(spacing: 5){
                                     VStack{
-                                        NavigationLink(destination: {
-                                            ProfileView(loginData: loginData, profileVM: profileVM, globalVM: globalVM, mesiboVM: mesiboVM, role: post.role!, mainUser: false, userID: post.userID)
-                                        }, label: {
-                                            Text(post.userName == "" ? post.fullName! : post.userName)
-                                                .foregroundColor(.black)
-                                                .font(.body)
-                                                .fontWeight(.bold)
-                                                .frame(alignment: .leading)
-                                        })
+                                        Text(post.userName == "" ? post.fullName! : post.userName)
+                                            .foregroundColor(.black)
+                                            .font(.body)
+                                            .fontWeight(.bold)
+                                            .frame(alignment: .leading)
+                                            .onTapGesture {
+                                                navigateToProfileView = true
+                                            }
                                         Spacer()
                                     }
                                     if post.caption != "" {
@@ -305,6 +311,12 @@ struct MediaPostsView: View {
                                     .frame(width: UIScreen.screenWidth/1.1)
                                 }
                             }
+                            
+                            NavigationLink(isActive: $navigateToProfileView, destination: {
+                                ProfileView(loginData: loginData, profileVM: profileVM, globalVM: globalVM, mesiboVM: mesiboVM, role: post.role!, mainUser: false, userID: post.userID)
+                            }, label: {
+                                Text("")
+                            })
                         }
                     }
                     .padding(.top, UIScreen.screenHeight/80)
@@ -314,7 +326,12 @@ struct MediaPostsView: View {
                     .padding(.horizontal, UIScreen.screenWidth/30)
                     .frame(width: UIScreen.screenWidth)
                     .onTapGesture {
-                        navigateToPostDetailView.toggle()
+                        navigateToPostDetailView = true
+                    }
+                    .onAppear{
+                        navigateToProfileView = false
+                        navigateToPostDetailView = false
+                        navigateToImageDetailView = false
                     }
                 }
             }

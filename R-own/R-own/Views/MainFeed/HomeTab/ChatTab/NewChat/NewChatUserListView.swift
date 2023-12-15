@@ -101,22 +101,22 @@ struct NewChatUserListView: View {
                                                     Spacer()
                                                 }
                                             }
-                                            .overlay{
-                                                if isLoading {
-                                                    HStack{
-                                                        VStack{
-                                                            Text("Connect with \(globalVM.totalUsersInRown.count)+ hoteliers on R-Own and engage with a vibrant community!")
-                                                                .font(.body)
-                                                                .fontWeight(.medium)
-                                                                .multilineTextAlignment(.leading)
-                                                                .frame(width: UIScreen.screenWidth/2)
-                                                                .offset(x: UIScreen.screenWidth/9, y: UIScreen.screenHeight/6.5)
-                                                            Spacer()
-                                                        }
-                                                        Spacer()
-                                                    }
-                                                }
-                                            }
+//                                            .overlay{
+//                                                if isLoading {
+//                                                    HStack{
+//                                                        VStack{
+//                                                            Text("Connect with \(globalVM.totalUsersInRown.count)+ hoteliers on R-Own and engage with a vibrant community!")
+//                                                                .font(.body)
+//                                                                .fontWeight(.medium)
+//                                                                .multilineTextAlignment(.leading)
+//                                                                .frame(width: UIScreen.screenWidth/2)
+//                                                                .offset(x: UIScreen.screenWidth/9, y: UIScreen.screenHeight/6.5)
+//                                                            Spacer()
+//                                                        }
+//                                                        Spacer()
+//                                                    }
+//                                                }
+//                                            }
                                     }
                                     .onAppear{
                                         Task{

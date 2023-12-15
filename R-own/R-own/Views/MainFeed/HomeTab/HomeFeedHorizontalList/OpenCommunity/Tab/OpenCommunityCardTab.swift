@@ -31,9 +31,6 @@ struct OpenCommunityCardTab: View {
     
     var body: some View {
         NavigationStack{
-            NavigationLink(destination: {
-                GroupMessageDetailsView(loginData: loginData, communityVM: communityVM, mesiboVM: mesiboVM, groupID: community.groupID, globalVM: globalVM, profileVM: profileVM)
-            }, label: {
                 VStack(spacing: 0){
                     VStack{
                         AsyncImage(url: currentUrl) { image in
@@ -116,13 +113,29 @@ struct OpenCommunityCardTab: View {
                     .navigationDestination(isPresented: $navigateToGroupChatView, destination: {
                         GroupMessageView(loginData: loginData, communityVM: communityVM, mesiboVM: mesiboVM, groupID: community.groupID, communityName: community.groupName, communityPic: community.profilePic, globalVM: globalVM, profileVM: profileVM)
                     })
+                    NavigationLink(isActive: $navigateToGroupChatView, destination: {
+                        GroupMessageView(loginData: loginData, communityVM: communityVM, mesiboVM: mesiboVM, groupID: community.groupID, communityName: community.groupName, communityPic: community.profilePic, globalVM: globalVM, profileVM: profileVM)
+                    }, label: {
+                        Text("")
+                    })
                 }
                 .frame(width: UIScreen.screenWidth/3, height: UIScreen.screenHeight/4)
                 .background(Color.white)
                 .cornerRadius(10)
                 .shadow(color: .black.opacity(0.2), radius: 1)
                 .padding(.horizontal, 5)
+                .onTapGesture {
+                    navigateToGroupDetailView = true
+                }
+            NavigationLink(isActive: $navigateToGroupDetailView, destination: {
+                GroupMessageDetailsView(loginData: loginData, communityVM: communityVM, mesiboVM: mesiboVM, groupID: community.groupID, globalVM: globalVM, profileVM: profileVM)
+            }, label: {
+                Text("")
             })
+        }
+        .onAppear{
+            navigateToGroupChatView = false
+            navigateToGroupDetailView = false
         }
     }
 }

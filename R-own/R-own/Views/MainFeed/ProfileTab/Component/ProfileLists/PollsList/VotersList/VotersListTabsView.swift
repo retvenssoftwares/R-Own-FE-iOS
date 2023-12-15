@@ -19,28 +19,38 @@ struct VotersListTabsView: View {
     @State var navigateToProfile: Bool = false
     
     var body: some View {
-        HStack{
-            ProfilePictureView(profilePic: voters.profilePic, verified: false, height: UIScreen.screenHeight/20, width: UIScreen.screenHeight/20)
-                .padding(.horizontal, UIScreen.screenWidth/40)
-            VStack(alignment: .leading){
-                Text(voters.fullName)
-                    .font(.body)
-                    .fontWeight(.bold)
-                if voters.jobTitle != "" {
-                    Text(voters.jobTitle)
-                        .font(.footnote)
-                        .fontWeight(.regular)
+        VStack{
+            HStack{
+                ProfilePictureView(profilePic: voters.profilePic, verified: false, height: UIScreen.screenHeight/20, width: UIScreen.screenHeight/20)
+                    .padding(.horizontal, UIScreen.screenWidth/40)
+                VStack(alignment: .leading){
+                    Text(voters.fullName)
+                        .font(.body)
+                        .fontWeight(.bold)
+                    if voters.jobTitle != "" {
+                        Text(voters.jobTitle)
+                            .font(.footnote)
+                            .fontWeight(.regular)
+                    }
                 }
+                Spacer()
             }
-            Spacer()
+            .padding(.vertical, UIScreen.screenHeight/70)
+            .onTapGesture {
+                navigateToProfile = true
+            }
+            .navigationDestination(isPresented: $navigateToProfile, destination: {
+                ProfileView(loginData: loginData, profileVM: profileVM, globalVM: globalVM, mesiboVM: mesiboVM, role: voters.role, mainUser: false, userID: voters.userID)
+            })
+            NavigationLink(isActive: $navigateToProfile, destination: {
+                ProfileView(loginData: loginData, profileVM: profileVM, globalVM: globalVM, mesiboVM: mesiboVM, role: voters.role, mainUser: false, userID: voters.userID)
+            }, label: {
+                Text("")
+            })
         }
-        .padding(.vertical, UIScreen.screenHeight/70)
-        .onTapGesture {
-            navigateToProfile = true
+        .onAppear{
+            navigateToProfile = false
         }
-        .navigationDestination(isPresented: $navigateToProfile, destination: {
-            ProfileView(loginData: loginData, profileVM: profileVM, globalVM: globalVM, mesiboVM: mesiboVM, role: voters.role, mainUser: false, userID: voters.userID)
-        })
     }
 }
 

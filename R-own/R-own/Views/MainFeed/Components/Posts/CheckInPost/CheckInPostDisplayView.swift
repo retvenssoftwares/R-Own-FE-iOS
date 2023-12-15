@@ -105,7 +105,7 @@ struct CheckInPostDisplayView: View {
                                 .onTapGesture {
                                     print("move to hotel screen")
                                     if post.hotelID ?? "" != "" {
-                                        navigateToHotelDetail.toggle()
+                                        navigateToHotelDetail = true
                                     }
                                 }
                         } placeholder: {
@@ -490,6 +490,9 @@ struct CheckInPostDisplayView: View {
                     }
                 })
             }
+        }
+        .onAppear{
+            navigateToHotelDetail = false
         }
     }
 }

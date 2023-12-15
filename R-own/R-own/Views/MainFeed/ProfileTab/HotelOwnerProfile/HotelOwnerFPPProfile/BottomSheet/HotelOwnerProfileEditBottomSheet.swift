@@ -33,7 +33,7 @@ struct HotelOwnerProfileEditBottomSheet: View {
                     Capsule()
                         .fill(Color.gray)
                         .frame(width:60, height: 4)
-                        
+                    
                     VStack(alignment: .leading){
                         VStack(alignment: .leading){
                             Button(action: {
@@ -60,49 +60,59 @@ struct HotelOwnerProfileEditBottomSheet: View {
                         }
                         VStack(alignment: .leading){
                             
-                                Button(action: {
-                                    navigateToEditProfile.toggle()
-                                }, label: {
-                                    HStack{
-                                        Image("PostDiscardEditing")
-                                            .resizable()
-                                            .scaledToFit()
-                                            .frame(width: UIScreen.screenHeight/40, height: UIScreen.screenHeight/40)
-                                        Text("Edit Profile")
-                                            .font(.body)
-                                            .fontWeight(.regular)
-                                            .foregroundColor(.black)
-                                        Spacer()
-                                    }
-                                    .padding(.leading, UIScreen.screenWidth/20)
-                                    .frame(width: UIScreen.screenWidth, height: UIScreen.screenHeight/20)
-                                })
+                            Button(action: {
+                                navigateToEditProfile = true
+                            }, label: {
+                                HStack{
+                                    Image("PostDiscardEditing")
+                                        .resizable()
+                                        .scaledToFit()
+                                        .frame(width: UIScreen.screenHeight/40, height: UIScreen.screenHeight/40)
+                                    Text("Edit Profile")
+                                        .font(.body)
+                                        .fontWeight(.regular)
+                                        .foregroundColor(.black)
+                                    Spacer()
+                                }
+                                .padding(.leading, UIScreen.screenWidth/20)
+                                .frame(width: UIScreen.screenWidth, height: UIScreen.screenHeight/20)
+                            })
                             .navigationDestination(isPresented: $navigateToEditProfile, destination: {
                                 HotelUserEditProfileView(loginData: loginData, profileVM: profileVM, globalVM: globalVM)
+                            })
+                            NavigationLink(isActive: $navigateToEditProfile, destination: {
+                                HotelUserEditProfileView(loginData: loginData, profileVM: profileVM, globalVM: globalVM)
+                            }, label: {
+                                Text("")
                             })
                             Divider()
                         }
                         VStack(alignment: .leading){
                             
-                                Button(action: {
-                                    navigateToEditHotelProfile.toggle()
-                                }, label: {
-                                    HStack{
-                                        Image("PostDiscardEditing")
-                                            .resizable()
-                                            .scaledToFit()
-                                            .frame(width: UIScreen.screenHeight/40, height: UIScreen.screenHeight/40)
-                                        Text("Edit Hotel Profile")
-                                            .font(.body)
-                                            .fontWeight(.regular)
-                                            .foregroundColor(.black)
-                                        Spacer()
-                                    }
-                                    .padding(.leading, UIScreen.screenWidth/20)
-                                    .frame(width: UIScreen.screenWidth, height: UIScreen.screenHeight/20)
-                                })
+                            Button(action: {
+                                navigateToEditHotelProfile = true
+                            }, label: {
+                                HStack{
+                                    Image("PostDiscardEditing")
+                                        .resizable()
+                                        .scaledToFit()
+                                        .frame(width: UIScreen.screenHeight/40, height: UIScreen.screenHeight/40)
+                                    Text("Edit Hotel Profile")
+                                        .font(.body)
+                                        .fontWeight(.regular)
+                                        .foregroundColor(.black)
+                                    Spacer()
+                                }
+                                .padding(.leading, UIScreen.screenWidth/20)
+                                .frame(width: UIScreen.screenWidth, height: UIScreen.screenHeight/20)
+                            })
                             .navigationDestination(isPresented: $navigateToEditHotelProfile, destination: {
                                 HotelOwnerEditProfileView(loginData: loginData, profileVM: profileVM, globalVM: globalVM)
+                            })
+                            NavigationLink(isActive: $navigateToEditHotelProfile, destination: {
+                                HotelOwnerEditProfileView(loginData: loginData, profileVM: profileVM, globalVM: globalVM)
+                            }, label: {
+                                Text("")
                             })
                             Divider()
                         }
@@ -110,7 +120,7 @@ struct HotelOwnerProfileEditBottomSheet: View {
                             
                             Button(action: {
                                 print("opening saved")
-                                navigateToSaved.toggle()
+                                navigateToSaved = true
                             }, label: {
                                 HStack{
                                     Image("EditProfileSaveIcon")
@@ -130,37 +140,47 @@ struct HotelOwnerProfileEditBottomSheet: View {
                             .navigationDestination(isPresented: $navigateToSaved, destination: {
                                 ProfileSavedView(loginData: loginData, jobsVM: jobsVM, globalVM: globalVM, profileVM: profileVM, mesiboVM: mesiboVM)
                             })
+                            NavigationLink(isActive: $navigateToSaved, destination: {
+                                ProfileSavedView(loginData: loginData, jobsVM: jobsVM, globalVM: globalVM, profileVM: profileVM, mesiboVM: mesiboVM)
+                            }, label: {
+                                Text("")
+                            })
                             Divider()
                         }
                         VStack(alignment: .leading){
                             
-                                Button(action: {
-                                    navigateToDiscoverPeople.toggle()
-                                }, label: {
-                                    HStack{
-                                        Image("SidebarBecomeOurPartner")
-                                            .resizable()
-                                            .scaledToFit()
-                                            .frame(width: UIScreen.screenHeight/40, height: UIScreen.screenHeight/40)
-                                        Text("Discover People")
-                                            .font(.body)
-                                            .fontWeight(.regular)
-                                            .foregroundColor(.black)
-                                        Spacer()
-                                    }
-                                    .padding(.leading, UIScreen.screenWidth/20)
-                                    .frame(width: UIScreen.screenWidth, height: UIScreen.screenHeight/20)
-                                })
+                            Button(action: {
+                                navigateToDiscoverPeople = true
+                            }, label: {
+                                HStack{
+                                    Image("SidebarBecomeOurPartner")
+                                        .resizable()
+                                        .scaledToFit()
+                                        .frame(width: UIScreen.screenHeight/40, height: UIScreen.screenHeight/40)
+                                    Text("Discover People")
+                                        .font(.body)
+                                        .fontWeight(.regular)
+                                        .foregroundColor(.black)
+                                    Spacer()
+                                }
+                                .padding(.leading, UIScreen.screenWidth/20)
+                                .frame(width: UIScreen.screenWidth, height: UIScreen.screenHeight/20)
+                            })
                             .navigationDestination(isPresented: $navigateToDiscoverPeople, destination: {
                                 DiscoverPeopleView(loginData: loginData, globalVM: globalVM, profileVM: profileVM, mesiboVM: mesiboVM)
+                            })
+                            NavigationLink(isActive: $navigateToDiscoverPeople, destination: {
+                                DiscoverPeopleView(loginData: loginData, globalVM: globalVM, profileVM: profileVM, mesiboVM: mesiboVM)
+                            }, label: {
+                                Text("")
                             })
                             Divider()
                         }
                     }
-                        .padding(.horizontal)
-                        .padding(.bottom)
-                        .padding(.bottom,edges?.bottom)
-                        .frame(width: UIScreen.screenWidth ,height: UIScreen.screenHeight/2.5)
+                    .padding(.horizontal)
+                    .padding(.bottom)
+                    .padding(.bottom,edges?.bottom)
+                    .frame(width: UIScreen.screenWidth ,height: UIScreen.screenHeight/2.5)
                 }
                 .padding(.top)
                 .background(BlurView().clipShape(CustomCorner(corners: [.topLeft, .topRight])))
@@ -176,6 +196,12 @@ struct HotelOwnerProfileEditBottomSheet: View {
                     }
                 }
             )
+        }
+        .onAppear{
+            navigateToEditProfile = false
+            navigateToEditHotelProfile = false
+            navigateToSaved = false
+            navigateToDiscoverPeople = false
         }
         .onDisappear{
             profileVM.showHotelOwnerProfileEditBottomSheet = false

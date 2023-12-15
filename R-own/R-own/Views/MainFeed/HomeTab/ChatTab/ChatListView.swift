@@ -102,37 +102,37 @@ struct ChatListView: View {
                                 Image("NewChatIllustration")
                                     .resizable()
                                     .scaledToFit()
-                                    .frame(width: UIScreen.screenWidth/1.2)
-                                    .overlay{
-                                        HStack{
-                                            VStack{
-                                                Text(loginData.mainUserFullName)
-                                                    .font(.body)
-                                                    .fontWeight(.medium)
-                                                    .multilineTextAlignment(.leading)
-                                                    .frame(width: UIScreen.screenWidth/2.5)
-                                                    .offset(x: UIScreen.screenWidth/10, y: UIScreen.screenHeight/15)
-                                                Spacer()
-                                            }
-                                            Spacer()
-                                        }
-                                    }
-                                    .overlay{
-                                        if isLoading {
-                                            HStack{
-                                                VStack{
-                                                    Text("Connect with \(globalVM.totalUsersInRown.count)+ hoteliers on R-Own and engage with a vibrant community!")
-                                                        .font(.body)
-                                                        .fontWeight(.medium)
-                                                        .multilineTextAlignment(.leading)
-                                                        .frame(width: UIScreen.screenWidth/2)
-                                                        .offset(x: UIScreen.screenWidth/9, y: UIScreen.screenHeight/6.5)
-                                                    Spacer()
-                                                }
-                                                Spacer()
-                                            }
-                                        }
-                                    }
+                                    .frame(width: UIScreen.screenWidth)
+//                                    .overlay{
+//                                        HStack{
+//                                            VStack{
+//                                                Text(loginData.mainUserFullName)
+//                                                    .font(.body)
+//                                                    .fontWeight(.medium)
+//                                                    .multilineTextAlignment(.leading)
+//                                                    .frame(width: UIScreen.screenWidth/2.5)
+//                                                    .offset(x: UIScreen.screenWidth/12, y: UIScreen.screenHeight/15)
+//                                                Spacer()
+//                                            }
+//                                            Spacer()
+//                                        }
+//                                    }
+//                                    .overlay{
+//                                        if isLoading {
+//                                            HStack{
+//                                                VStack{
+//                                                    Text("Connect with \(globalVM.totalUsersInRown.count)+ hoteliers on R-Own and engage with a vibrant community!")
+//                                                        .font(.body)
+//                                                        .fontWeight(.medium)
+//                                                        .multilineTextAlignment(.leading)
+//                                                        .frame(width: UIScreen.screenWidth/2)
+//                                                        .offset(x: UIScreen.screenWidth/9, y: UIScreen.screenHeight/6.5)
+//                                                    Spacer()
+//                                                }
+//                                                Spacer()
+//                                            }
+//                                        }
+//                                    }
                             }
                             .onAppear{
                                 Task{

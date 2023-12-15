@@ -40,10 +40,15 @@ struct CommunityMediaTabView: View {
                         }
                         .padding(.horizontal, UIScreen.screenWidth/40)
                         .onTapGesture {
-                            navigateToImageListViewTab.toggle()
+                            navigateToImageListViewTab = true
                         }
                         .navigationDestination(isPresented: $navigateToImageListViewTab, destination: {
                             CommunityImageListView()
+                        })
+                        NavigationLink(isActive: $navigateToImageListViewTab, destination: {
+                            CommunityImageListView()
+                        }, label: {
+                            Text("")
                         })
                         
                         LazyVGrid(columns: columns, spacing: 10) {
@@ -58,6 +63,9 @@ struct CommunityMediaTabView: View {
                     }
                 }
             }
+        }
+        .onAppear{
+            navigateToImageListViewTab = false
         }
     }
 }

@@ -53,6 +53,12 @@ struct MessageViewThirdHalf: View {
     
     @StateObject var globalVM: GlobalViewModel
     
+    @State var isGroup: Bool
+    @State var communityName: String
+    @State var groupID: String
+    
+    @StateObject var communityService = CommunityService()
+    
     var body: some View {
         VStack{
             HStack{
@@ -111,7 +117,14 @@ struct MessageViewThirdHalf: View {
                         
                         let senderUser = decodedData["userID"] ?? ""
                         print(senderUser)
-                        notificationService.sendMessageNotification(loginData: loginData, userID: senderUser, header: loginData.mainUserFullName, body: message)
+                        
+                        if isGroup{
+                            print("sending group notification")
+                            communityService.sendGroupNotificationWithoutImage(loginData: loginData, title: communityName, body: message, groupID: groupID, senderUserID: loginData.mainUserID)
+                        } else {
+                            
+                            notificationService.sendMessageNotification(loginData: loginData, userID: senderUser, header: loginData.mainUserFullName, body: message)
+                        }
                         message = ""
                     }, label: {
                         Image(systemName: "paperplane.circle")
@@ -166,6 +179,7 @@ struct MessageViewThirdHalf: View {
                             VStack{
                                 Button(action: {
                                     showImagePicker.toggle()
+                                    chatAttachmentTapped = false
                                 }, label: {
                                     HStack{
                                         Image("ChatGallery")
@@ -185,6 +199,7 @@ struct MessageViewThirdHalf: View {
                                 Button(action: {
                                     
                                     isShowingVideoPicker = true
+                                    chatAttachmentTapped = false
                                 }, label: {
                                     HStack{
                                         Image("ChatVideo")
@@ -203,6 +218,7 @@ struct MessageViewThirdHalf: View {
                                     .frame(width: UIScreen.screenWidth/1.3)
                                 Button(action: {
                                     showDocumentPicker = true
+                                    chatAttachmentTapped = false
                                 }, label: {
                                     HStack{
                                         Image("ChatDocuments")

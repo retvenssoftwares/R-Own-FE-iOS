@@ -351,7 +351,7 @@ struct HotelDetailView: View {
                             if mainUser{
                                 HStack(spacing: UIScreen.screenWidth/30){
                                     Button(action: {
-                                        switchToEditView.toggle()
+                                        switchToEditView = true
                                     }, label: {
                                         Text("Edit")
                                             .font(.body)
@@ -366,6 +366,11 @@ struct HotelDetailView: View {
                                     })
                                     .navigationDestination(isPresented: $switchToEditView, destination: {
                                         HotelEditView(globalVM: globalVM, hotelGallery: hotelGallery, hotelName: hotelName, hotelStar: hotelStar, hotelOverview: hotelOverview, hotelID: hotelID, hotelLocation: hotelLocation, hotelCoverpicURL: hotelCoverpicURL)
+                                    })
+                                    NavigationLink(isActive: $switchToEditView, destination: {
+                                        HotelEditView(globalVM: globalVM, hotelGallery: hotelGallery, hotelName: hotelName, hotelStar: hotelStar, hotelOverview: hotelOverview, hotelID: hotelID, hotelLocation: hotelLocation, hotelCoverpicURL: hotelCoverpicURL)
+                                    }, label: {
+                                        Text("")
                                     })
                                 }
 //                                Button(action: {
@@ -392,6 +397,7 @@ struct HotelDetailView: View {
         }
         .navigationBarBackButtonHidden()
         .onAppear{
+            switchToEditView = false
             if hotelGallery.count > 0 {
                 if hotelGallery[0].image1 != "" {
                     selectedImage = hotelGallery[0].image1

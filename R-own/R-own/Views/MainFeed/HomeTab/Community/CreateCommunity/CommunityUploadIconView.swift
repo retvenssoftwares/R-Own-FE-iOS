@@ -157,7 +157,7 @@ struct CommunityUploadIconView: View {
                                         
                                         let response = await communityService.createMesiboGroup(loginData: loginData, communityVM: communityVM, image: croppedImage)
                                         if response == "Success" {
-                                            navigateToCommunityChatView.toggle()
+                                            navigateToCommunityChatView = true
                                         } else {
                                             alertCantPost.toggle()
                                         }
@@ -182,6 +182,11 @@ struct CommunityUploadIconView: View {
                             .padding(.trailing, UIScreen.screenWidth/30)
                             .navigationDestination(isPresented: $navigateToCommunityChatView, destination: {
                                 GroupMessageView(loginData: loginData, communityVM: communityVM, mesiboVM: mesiboVM, groupID: String(communityVM.communityJustMadeID), communityName: communityVM.communityName, communityPic: "", globalVM: globalVM, profileVM: profileVM)
+                            })
+                            NavigationLink(isActive: $navigateToCommunityChatView, destination: {
+                                GroupMessageView(loginData: loginData, communityVM: communityVM, mesiboVM: mesiboVM, groupID: String(communityVM.communityJustMadeID), communityName: communityVM.communityName, communityPic: "", globalVM: globalVM, profileVM: profileVM)
+                            }, label: {
+                                Text("")
                             })
                         }
                     }
@@ -215,6 +220,9 @@ struct CommunityUploadIconView: View {
             AlertToast( type: .systemImage("exclamationmark.triangle.fill", .red), title: "Please select group icon")
         }
         .navigationBarBackButtonHidden()
+        .onAppear{
+            navigateToCommunityChatView = false
+        }
     }
 }
 

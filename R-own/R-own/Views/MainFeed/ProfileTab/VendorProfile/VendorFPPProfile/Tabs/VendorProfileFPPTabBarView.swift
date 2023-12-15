@@ -25,8 +25,10 @@ struct VendorProfileFPPTabBarView: View {
                             .fontWeight(.medium)
                             .foregroundColor(.black)
                             .frame(width: UIScreen.screenWidth/4, height: UIScreen.screenHeight/40)
+                            .padding(.horizontal, UIScreen.screenWidth/20)
+                            .padding(.vertical, UIScreen.screenHeight/85)
                             .background(profileTabSelected == "Media" ? .white : .white.opacity(0))
-                            .cornerRadius(15)
+                            .cornerRadius(8)
                     })
                     
                     Button(action: {
@@ -39,8 +41,10 @@ struct VendorProfileFPPTabBarView: View {
                             .fontWeight(.medium)
                             .foregroundColor(.black)
                             .frame(width: UIScreen.screenWidth/4, height: UIScreen.screenHeight/40)
+                            .padding(.horizontal, UIScreen.screenWidth/20)
+                            .padding(.vertical, UIScreen.screenHeight/85)
                             .background(profileTabSelected == "Polls" ? .white : .white.opacity(0))
-                            .cornerRadius(15)
+                            .cornerRadius(8)
                     })
                     
                     Button(action: {
@@ -53,8 +57,10 @@ struct VendorProfileFPPTabBarView: View {
                             .fontWeight(.medium)
                             .foregroundColor(.black)
                             .frame(width: UIScreen.screenWidth/4, height: UIScreen.screenHeight/40)
+                            .padding(.horizontal, UIScreen.screenWidth/20)
+                            .padding(.vertical, UIScreen.screenHeight/85)
                             .background(profileTabSelected == "Status" ? .white : .white.opacity(0))
-                            .cornerRadius(15)
+                            .cornerRadius(8)
                     })
                     
                     Button(action: {
@@ -67,8 +73,10 @@ struct VendorProfileFPPTabBarView: View {
                             .fontWeight(.medium)
                             .foregroundColor(.black)
                             .frame(width: UIScreen.screenWidth/4, height: UIScreen.screenHeight/40)
+                            .padding(.horizontal, UIScreen.screenWidth/20)
+                            .padding(.vertical, UIScreen.screenHeight/85)
                             .background(profileTabSelected == "Services" ? .white : .white.opacity(0))
-                            .cornerRadius(15)
+                            .cornerRadius(8)
                     })
                     
                 }

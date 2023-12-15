@@ -41,11 +41,19 @@ struct ConnectionNotificationCard: View {
             }
             .padding(.horizontal, UIScreen.screenWidth/20)
             .onTapGesture {
-                navigateToProfile.toggle()
+                navigateToProfile = true
             }
             .navigationDestination(isPresented: $navigateToProfile, destination: {
                 ProfileView(loginData: loginData, profileVM: profileVM, globalVM: globalVM, mesiboVM: mesiboVM, role: notification.role, mainUser: false, userID: notification.userID)
             })
+            NavigationLink(isActive: $navigateToProfile, destination: {
+                ProfileView(loginData: loginData, profileVM: profileVM, globalVM: globalVM, mesiboVM: mesiboVM, role: notification.role, mainUser: false, userID: notification.userID)
+            }, label: {
+                Text("")
+            })
+        }
+        .onAppear{
+            navigateToProfile = false
         }
     }
 }

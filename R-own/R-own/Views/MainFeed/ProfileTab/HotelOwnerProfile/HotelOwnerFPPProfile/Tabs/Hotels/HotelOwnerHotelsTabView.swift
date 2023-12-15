@@ -116,7 +116,7 @@ struct HotelOwnerHotelsTabView: View {
                         if loginData.profileCompletionPercentage == "100"{
                             Button(action: {
                                 //                        print(globalVM.getHotelOwnerProfileHeader.hotellogo.hotelLogoURL)
-                                navigateToAddNewHotel.toggle()
+                                navigateToAddNewHotel = true
                             }, label: {
                                 Text("Add Hotel")
                                     .font(.body)
@@ -131,6 +131,11 @@ struct HotelOwnerHotelsTabView: View {
                             .navigationDestination(isPresented: $navigateToAddNewHotel, destination: {
                                 AddNewPropertyView(loginData: loginData, globalVM: globalVM)
                             })
+                            NavigationLink(isActive: $navigateToAddNewHotel, destination: {
+                                AddNewPropertyView(loginData: loginData, globalVM: globalVM)
+                            }, label: {
+                                Text("")
+                            })
                         }
                     }
                     
@@ -139,6 +144,7 @@ struct HotelOwnerHotelsTabView: View {
             }
         }
         .onAppear{
+            navigateToAddNewHotel = false
             hotelService.getHotelsByUserID(globalVM: globalVM, loginData: loginData, userID: userID, viewerID: loginData.mainUserID)
         }
     }
